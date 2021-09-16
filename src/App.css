@@ -1,0 +1,27 @@
+@import "./styles/reset.css";
+
+.App {
+  /* text-align: center; */
+  background-color: var(--primary-bg);
+  color: var(--title-color);
+  min-height: 100vh;
+  padding: 20px;
+  font-family: "Roboto";
+  font-size: var(--fs-base);
+}
+
+/* .App-header { */
+/* background-color: #282c34; */
+/* min-height: 100vh; */
+/* display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center; */
+/* font-size: 14px; */
+/* font-weight: bold; */
+/* } */
+
+@import "primereact/resources/themes/bootstrap4-dark-purple/theme.css";
+@import "primereact/resources/primereact.min.css";
+@import "primeicons/primeicons.css";
+@import "./styles/variables.css";
