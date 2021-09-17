@@ -5,7 +5,6 @@ import { Button } from "primereact/button";
 export const ButtonPrimary = styled(Button)`
   ${compose(space, position, layout, typography)};
   color: var(--title-color);
-  // text-transform: uppercase;
   font-weight: var(--semibold-weight);
   filter: drop-shadow(4px 4px 4px rgba(0, 0, 0, 0.25));
   border-radius: 5px;

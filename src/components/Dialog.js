@@ -1,8 +1,8 @@
-import { Dialog } from "primereact/dialog";
+import { Dialog as PrimeDialog} from "primereact/dialog";
 import { compose, space, position, layout, typography } from "styled-system";
 import styled from "styled-components";
 
-export const DialogPrimary = styled(Dialog)`
+export const Dialog = styled(PrimeDialog)`
   ${compose(space, position, layout, typography)};
   color: var(--title-color);
   .p-dialog-header,

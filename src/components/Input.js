@@ -2,7 +2,7 @@ import { InputText } from "primereact/inputtext";
 import { compose, space, position, layout, typography } from "styled-system";
 import styled from "styled-components";
 
-export const InputPrimary = styled(InputText)`
+export const Input = styled(InputText)`
   ${compose(space, position, layout, typography)};
   background-color: var(--primary-bg);
   color: var(--title-color);

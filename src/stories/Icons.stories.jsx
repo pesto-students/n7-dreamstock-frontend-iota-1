@@ -1,21 +1,25 @@
 import React from "react";
-import { UserIcon, WalletIcon } from "../components/IconFonts";
 import Logo from "../assets/images/Logo.png";
 import FullLogo from "../assets/images/FullLogo.png";
 import { CardHorizontal } from "../components/Card";
+import { Image } from "../components/Image";
+import { Icon } from "../components/Icon";
+import { user, userCircle, wallet } from "../components/IconFonts";
 
 export default {
   title: "Component/Icons",
 };
 
-export const AppLogo = () => <img alt="logo" src={Logo} height="40"></img>;
+export const AppLogo = () => <Image src={Logo} />;
 
 export const AppFullLogo = () => (
   <CardHorizontal>
-    <img alt="logo" src={FullLogo} height="40"></img>
+    <Image src={FullLogo} />
   </CardHorizontal>
 );
 
-export const Wallet = () => <WalletIcon size="2x" />;
+export const Wallet = () => <Icon name={wallet} size="5x" />;
 
-export const User = () => <UserIcon size="2x" />;
+export const User = () => <Icon name={user} size="5x" />;
+
+export const UserCircle = () => <Icon name={userCircle} size="5x" />;

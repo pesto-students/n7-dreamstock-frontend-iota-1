@@ -5,4 +5,8 @@ import styled from "styled-components";
 export const SideBar = styled(Sidebar)`
   ${compose(space, position, layout, typography)};
   background-color: var(--sidebar-bg);
+
+  .p-sidebar-content {
+    padding: 0;
+}
 `;

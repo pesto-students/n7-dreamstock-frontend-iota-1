@@ -1,11 +1,15 @@
-import { Menubar } from "primereact/menubar";
+import { Menubar as PrimeMenubar } from "primereact/menubar";
 import { compose, space, position, layout, typography } from "styled-system";
 import styled from "styled-components";
 
-export const HeaderPrimary = styled(Menubar)`
+export const Menubar = styled(PrimeMenubar)`
   ${compose(space, position, layout, typography)};
   color: var(--title-color);
   background: var(--secondary-bg);
+
+  .p-menubar-root-list {
+    background: var(--secondary-bg);
+  }
 
   .p-menubar-root-list > .p-menuitem > .p-menuitem-link .p-menuitem-text {
     color: var(--title-color);

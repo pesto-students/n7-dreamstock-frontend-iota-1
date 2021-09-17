@@ -1,5 +1,5 @@
 import React from "react";
-import { CardPrimary } from "../components/Card";
+import { Card } from "../components/Card";
 import { Div } from "../components/Div";
 import { P } from "../components/Paragraph";
 import { Span } from "../components/Span";
@@ -22,7 +22,7 @@ export const PrimaryCard = () => {
   props?.content?.forEach((lineItem) => {
     cardData.push(
       <P>
-        <Span fontSize={"var(--fs-milli)"} fontWeight={"var(--light-weight)"}>
+        <Span fontSize={"var(--fs-milli)"} fontWeight={"light"}>
           {lineItem.title}
         </Span>{" "}
         {lineItem.content}
@@ -32,7 +32,7 @@ export const PrimaryCard = () => {
 
   return (
     <Div>
-      <CardPrimary>{cardData}</CardPrimary>
+      <Card>{cardData}</Card>
     </Div>
   );
 };

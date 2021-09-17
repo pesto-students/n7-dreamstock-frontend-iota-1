@@ -1,21 +1,17 @@
-import { Card } from "primereact/card";
+import { Card as PrimeCard } from "primereact/card";
 import styled from "styled-components";
 import { compose, space, position, layout, typography } from "styled-system";
 
-export const CardPrimary = styled(Card)`
+export const Card = styled(PrimeCard)`
   ${compose(space, position, layout, typography)};
   background-color: var(--card-bg);
   color: var(--title-color);
   border-radius: 5px;
-  // display: flex;
-  // flex-direction: column;
-  // align-items: center;
-  // justify-content: center;
   font-weight: bold;
   filter: drop-shadow(4px 4px 4px rgba(0, 0, 0, 0.25));
 `;
 
-export const CardHorizontal = styled(CardPrimary)`
+export const CardHorizontal = styled(Card)`
   width: 100%;
   background-color: var(--primary-bg);
   .p-card-body {

@@ -1,8 +1,8 @@
-import { Accordion } from "primereact/accordion";
+import { Accordion as PrimeAccordion } from "primereact/accordion";
 import styled from "styled-components";
 import { compose, space, position, layout, typography } from "styled-system";
 
-export const AccordionPrimary = styled(Accordion)`
+export const Accordion = styled(PrimeAccordion)`
   ${compose(space, position, layout, typography)};
 
   .p-accordion-header .p-highlight .p-accordion-header-link,

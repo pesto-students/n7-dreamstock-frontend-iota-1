@@ -1,6 +1,6 @@
 import { AccordionTab } from "primereact/accordion";
 import React from "react";
-import { AccordionPrimary } from "../components/Accordion";
+import { Accordion as PrimeAccordion } from "../components/Accordion";
 import { CardHorizontal, CardHorizontalTransparent } from "../components/Card";
 import { P } from "../components/Paragraph";
 import { Span } from "../components/Span";
@@ -24,7 +24,7 @@ export const Accordion = () => {
   props?.content?.forEach((lineItem) => {
     accordionData.push(
       <P>
-        <Span fontSize={"var(--fs-milli)"} fontWeight={"var(--light-weight)"}>
+        <Span fontSize={"var(--fs-milli)"} fontWeight={"light"}>
           {lineItem.title}
         </Span>{" "}
         {lineItem.content}
@@ -38,7 +38,7 @@ export const Accordion = () => {
   let accordionContent = <CardHorizontal m={2}>{accordionData}</CardHorizontal>;
 
   return (
-    <AccordionPrimary>
+    <PrimeAccordion>
       <AccordionTab header="Header I" headerTemplate={accordionHeader}>
         {accordionContent}
         {accordionContent}
@@ -53,6 +53,6 @@ export const Accordion = () => {
       <AccordionTab header="Header III" headerTemplate={accordionHeader}>
         {accordionContent} {accordionContent}
       </AccordionTab>
-    </AccordionPrimary>
+    </PrimeAccordion>
   );
 };

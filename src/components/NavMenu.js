@@ -10,10 +10,6 @@ export const NavMenu = styled(Menu)`
   border-radius: 0;
   width: 100%;
 
-  .p-sidebar-content {
-    padding: 0;
-  }
-
   .p-submenu-header {
     background: transparent;
     font-size: var(--fs-h4);
@@ -21,10 +17,28 @@ export const NavMenu = styled(Menu)`
 
   .p-menuitem {
     margin: 5px 0;
-    background-image: linear-gradient(
+  }
+
+  .p-menuitem-link {
+    background: linear-gradient(
       90deg,
       var(--gradient-color-primary) 0%,
       var(--gradient-color-secondary) 100%
     );
+    border-left: 3px solid transparent;
+    transition: all 0.6s;
+    transition-property: all;
+    transition-duration: 0.6s;
+    transition-timing-function: ease;
+    transition-delay: 0s;
+    z-index: 1;
   }
+
+  .p-menuitem-link:not(.p-disabled):hover {
+    color: #f5f5ff;
+    border-left: 3px solid var(--hover-color);
+    background: linear-gradient(
+      90deg,
+      var(--hover-color) 0%,
+      var(--gradient-color-secondary) 100%
 `;

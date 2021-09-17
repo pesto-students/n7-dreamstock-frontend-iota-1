@@ -1,12 +1,5 @@
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUser, faWallet } from "@fortawesome/free-solid-svg-icons";
-import styled from "styled-components";
-import { compose, space, position, layout, typography } from "styled-system";
+import { faUser as user } from "@fortawesome/free-solid-svg-icons";
+import { faUserCircle as userCircle } from "@fortawesome/free-solid-svg-icons";
+import { faWallet as wallet } from "@fortawesome/free-solid-svg-icons";
 
-export const FAIcon = styled(FontAwesomeIcon)`
-  ${compose(space, position, layout, typography)};
-`;
-
-export const WalletIcon = (props) => <FAIcon icon={faWallet} {...props} />;
-
-export const UserIcon = (props) => <FAIcon icon={faUser} {...props} />;
+export { user, userCircle, wallet };

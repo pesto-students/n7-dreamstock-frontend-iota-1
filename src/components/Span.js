@@ -11,6 +11,9 @@ const StyledSpan = styled.span`
       : color === "title"
       ? "var(--title-color)"
       : "var(--user-text)"};
+
+  font-weight: ${({ fontWeight }) =>
+    fontWeight === "light" ? "var(--light-weight)" : "var(--normal-weight)"};
 `;
 
 export const Span = (props) => <StyledSpan {...props} />;
