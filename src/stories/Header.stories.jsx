@@ -38,7 +38,7 @@ const HeaderStories = () => {
 
   const itemsAfter = [];
 
-  const start = <Image src={FullLogo} />;
+  const start = <Image src={FullLogo} height="40"/>;
 
   const endBefore = (
     <Div>

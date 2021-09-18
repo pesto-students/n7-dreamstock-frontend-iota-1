@@ -53,7 +53,7 @@ const NavMenuDemo = () => {
   );
 };
 
-const SideBarDemo = () => {
+const SideBarStories = () => {
   const [visibleLeft, setVisibleLeft] = useState(false);
 
   return (
@@ -61,7 +61,7 @@ const SideBarDemo = () => {
       <Div className="card">
         <SideNav visible={visibleLeft} onHide={() => setVisibleLeft(false)}>
           <CardHorizontal>
-            <Image src={FullLogo} />
+            <Image src={FullLogo} height="40"/>
           </CardHorizontal>
           <hr />
           <Card m={3}>
@@ -81,4 +81,4 @@ const SideBarDemo = () => {
   );
 };
 
-export const SideBar = () => <SideBarDemo />;
+export const SideBar = () => <SideBarStories />;

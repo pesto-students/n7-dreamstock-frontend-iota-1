@@ -4,12 +4,17 @@
   background-color: var(--primary-bg);
   color: var(--title-color);
   min-height: 100vh;
-  padding: 20px;
   font-family: "Roboto";
   font-size: var(--fs-base);
 }
 
+@import "primeflex/primeflex.css";
 @import "primereact/resources/themes/bootstrap4-dark-purple/theme.css";
 @import "primereact/resources/primereact.min.css";
 @import "primeicons/primeicons.css";
 @import "./styles/variables.css";
+
+.p-sidebar-mask.p-component-overlay {
+  background: transparent !important;
+  display: none !important;
+}

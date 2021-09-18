@@ -22,6 +22,10 @@ export const CardHorizontal = styled(Card)`
     flex-direction: row;
     justify-content: space-around;
   }
+
+  .p-card-content {
+    padding: 0;
+  }
 `;
 
 export const CardHorizontalTransparent = styled(CardHorizontal)`
@@ -40,5 +44,10 @@ export const CardFooter = styled(CardHorizontal)`
 
   .p-card-body .p-card-content {
     justify-content: space-between;
+  }
+
+  .p-card-content {
+    padding-top: 1em;
+    padding-bottom: 1em;
   }
 `;

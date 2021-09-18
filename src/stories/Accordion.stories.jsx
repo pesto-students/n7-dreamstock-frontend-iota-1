@@ -2,6 +2,7 @@ import { AccordionTab } from "primereact/accordion";
 import React from "react";
 import { Accordion as PrimeAccordion } from "../components/Accordion";
 import { CardHorizontal, CardHorizontalTransparent } from "../components/Card";
+import { Container } from "../components/Container";
 import { P } from "../components/Paragraph";
 import { Span } from "../components/Span";
 
@@ -20,7 +21,8 @@ const props = {
 
 let accordionData = [];
 
-export const Accordion = () => {
+const AccordionStories = () => {
+  accordionData = [];
   props?.content?.forEach((lineItem) => {
     accordionData.push(
       <P>
@@ -32,27 +34,33 @@ export const Accordion = () => {
     );
   });
 
-  let accordionHeader = (
+  const accordionHeader = (
     <CardHorizontalTransparent>{accordionData}</CardHorizontalTransparent>
   );
-  let accordionContent = <CardHorizontal m={2}>{accordionData}</CardHorizontal>;
+  const accordionContent = (
+    <CardHorizontal m={2}>{accordionData}</CardHorizontal>
+  );
 
   return (
-    <PrimeAccordion>
-      <AccordionTab header="Header I" headerTemplate={accordionHeader}>
-        {accordionContent}
-        {accordionContent}
-        {accordionContent}
-        {accordionContent}
-        {accordionContent}
-        {accordionContent}
-      </AccordionTab>
-      <AccordionTab header="Header II" headerTemplate={accordionHeader}>
-        {accordionContent} {accordionContent} {accordionContent}
-      </AccordionTab>
-      <AccordionTab header="Header III" headerTemplate={accordionHeader}>
-        {accordionContent} {accordionContent}
-      </AccordionTab>
-    </PrimeAccordion>
+    <Container>
+      <PrimeAccordion>
+        <AccordionTab header="Header I" headerTemplate={accordionHeader}>
+          {accordionContent}
+          {accordionContent}
+          {accordionContent}
+          {accordionContent}
+          {accordionContent}
+          {accordionContent}
+        </AccordionTab>
+        <AccordionTab header="Header II" headerTemplate={accordionHeader}>
+          {accordionContent} {accordionContent} {accordionContent}
+        </AccordionTab>
+        <AccordionTab header="Header III" headerTemplate={accordionHeader}>
+          {accordionContent} {accordionContent}
+        </AccordionTab>
+      </PrimeAccordion>
+    </Container>
   );
 };
+
+export const Accordion = () => <AccordionStories />;
