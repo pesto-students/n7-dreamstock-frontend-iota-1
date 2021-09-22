@@ -16,28 +16,36 @@ export default {
 const NavMenuDemo = () => {
   const items = [
     {
-      label: "Options",
+      label: "",
       items: [
         {
-          label: "Update",
-          command: () => {},
-        },
-        {
-          label: "Delete",
-          command: () => {},
-        },
-      ],
-    },
-    {
-      label: "Navigate",
-      items: [
-        {
-          label: "React Website",
-        },
-        {
-          label: "Router",
+          label: "Dashboard",
+          icon: "pi pi-fw pi-briefcase",
           command: (e) => {
-            window.location.hash = "/dashboard";
+          },
+        },
+        {
+          label: "Summary",
+          icon: "pi pi-fw pi-th-large",
+          command: (e) => {
+          },
+        },
+        {
+          label: "Passbook",
+          icon: "pi pi-fw pi-book",
+          command: (e) => {
+          },
+        },
+        {
+          label: "Transactions",
+          icon: "pi pi-fw pi-money-bill",
+          command: (e) => {
+          },
+        },
+        {
+          label: "Profile",
+          icon: "pi pi-fw pi-user-edit",
+          command: (e) => {
           },
         },
       ],
@@ -61,7 +69,7 @@ const SideBarStories = () => {
       <Div className="card">
         <SideNav visible={visibleLeft} onHide={() => setVisibleLeft(false)}>
           <CardHorizontal>
-            <Image src={FullLogo} height="40"/>
+            <Image src={FullLogo} height="40" />
           </CardHorizontal>
           <hr />
           <Card m={3}>

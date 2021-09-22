@@ -16,12 +16,16 @@
   min-height: inherit;
 }
 
-
 .header {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
+}
+
+.p-autocomplete-panel {
+  background-color: var(--primary-bg);
+  color: var(--title-color);
 }
 
 @import "primeflex/primeflex.css";

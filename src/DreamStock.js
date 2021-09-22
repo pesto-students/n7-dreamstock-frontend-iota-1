@@ -25,9 +25,11 @@ import Transactions from "./pages/Transactions";
 import Passbook from "./pages/Passbook";
 import Summary from "./pages/Summary";
 import Profile from "./pages/Profile";
+import Error from "./pages/Error";
+import LandingPage from "./pages/LandingPage";
 
 export default function DreamStock() {
-  const [visibleLeft, setVisibleLeft] = useState(true);
+  const [visibleLeft, setVisibleLeft] = useState(false);
   const [userLoggedIn, setUserLoggedIn] = useState(false);
 
   const cardContent = [
@@ -61,30 +63,35 @@ export default function DreamStock() {
         items: [
           {
             label: "Dashboard",
+            icon: "pi pi-fw pi-briefcase",
             command: (e) => {
               window.location.href = "/dashboard";
             },
           },
           {
             label: "Summary",
+            icon: "pi pi-fw pi-th-large",
             command: (e) => {
               window.location.href = "/summary";
             },
           },
           {
             label: "Passbook",
+            icon: "pi pi-fw pi-book",
             command: (e) => {
               window.location.href = "/passbook";
             },
           },
           {
             label: "Transactions",
+            icon: "pi pi-fw pi-money-bill",
             command: (e) => {
               window.location.href = "/transactions";
             },
           },
           {
             label: "Profile",
+            icon: "pi pi-fw pi-user-edit",
             command: (e) => {
               window.location.href = "/profile";
             },
@@ -243,7 +250,7 @@ export default function DreamStock() {
         className="body_content"
         style={visibleLeft ? { width: "80%" } : { width: "100%" }}
       >
-        <Div style={{ minHeight: "inherit" }} flexColumn>
+        <Div style={{ minHeight: "inherit", position: "relative" }} flexColumn>
           <Header />
           <Router>
             <Switch>
@@ -268,8 +275,12 @@ export default function DreamStock() {
               <Route path="/profile">
                 <Profile />
               </Route>
-              <Route path="/error"></Route>
-              <Route path="/"></Route>
+              <Route path="/error">
+                <Error />
+              </Route>
+              <Route path="/">
+                <LandingPage />
+              </Route>
             </Switch>
           </Router>
           <Footer />
