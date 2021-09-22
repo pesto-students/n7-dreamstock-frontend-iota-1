@@ -8,13 +8,24 @@
   font-size: var(--fs-base);
 }
 
+.dreamStock {
+  min-height: inherit;
+}
+
+.body_content {
+  min-height: inherit;
+}
+
+
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+}
+
 @import "primeflex/primeflex.css";
 @import "primereact/resources/themes/bootstrap4-dark-purple/theme.css";
 @import "primereact/resources/primereact.min.css";
 @import "primeicons/primeicons.css";
 @import "./styles/variables.css";
-
-.p-sidebar-mask.p-component-overlay {
-  background: transparent !important;
-  display: none !important;
-}

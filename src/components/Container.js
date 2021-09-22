@@ -6,8 +6,6 @@ const StyledDiv = styled.div`
   width: 100%;
   padding-right: 15px;
   padding-left: 15px;
-  margin-right: auto;
-  margin-left: auto;
 
   // @media (min-width: 576px) {
   //   width: 540px;
@@ -20,10 +18,35 @@ const StyledDiv = styled.div`
   // @media (min-width: 992px) {
   //   width: 960px;
   // }
-  
-  // @media (min-width: 1200px) {
-  //   width: 1140px;
+
+  // @media (min-width: 1920px) {
+  //   width: 1920px;
+  //   margin-right: auto;
+  //   margin-left: auto;
   // }
+
+  ${({ flexCenter }) =>
+    flexCenter &&
+    `display: flex;
+     justify-content: space-around;
+     flex-direction: row;
+  `};
+
+  ${({ flexColumn }) =>
+    flexColumn &&
+    `display: flex;
+     flex-direction: column;
+     justify-content: space-between;
+`};
+
+  ${({ flexRow }) =>
+    flexRow &&
+    `display: flex;
+     flex-direction: row;
+     justify-content: space-between;
+     align-items: flex-start;
+     flex-wrap: wrap
+`};
 `;
 
 export const Container = (props) => (

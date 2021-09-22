@@ -77,7 +77,18 @@ video {
 }
 
 body {
-  line-height: 1;
+  line-height: 1.5;
+}
+
+body::-webkit-scrollbar {
+  width: 8px;
+}
+body::-webkit-scrollbar-track {
+  background-color: #202442;
+}
+body::-webkit-scrollbar-thumb {
+  background-color: #343a6a;
+  border-radius: 5px;
 }
 
 article,

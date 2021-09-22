@@ -9,6 +9,17 @@ export const Card = styled(PrimeCard)`
   border-radius: 5px;
   font-weight: bold;
   filter: drop-shadow(4px 4px 4px rgba(0, 0, 0, 0.25));
+  .p-card-body {
+    width: 100%;
+  }
+
+  ${({ flexCenter }) =>
+    flexCenter &&
+    `display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  `};
 `;
 
 export const CardHorizontal = styled(Card)`

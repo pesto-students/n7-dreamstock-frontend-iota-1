@@ -20,6 +20,8 @@ export const NavMenu = styled(Menu)`
   }
 
   .p-menuitem-link {
+    font-size: var(--fs-h4);
+    padding: 20px;
     background: linear-gradient(
       90deg,
       var(--gradient-color-primary) 0%,

@@ -11,6 +11,7 @@ export const ButtonPrimary = styled(Button)`
   background-color: var(--primary-bg);
   border: 1px solid var(--outline-color);
   transition: all 0.6s;
+  padding: 10px;
 
   :not(a):not(.p-disabled):hover {
     background-color: var(--card-bg);

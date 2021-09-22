@@ -65,7 +65,7 @@ const SideBarStories = () => {
           </CardHorizontal>
           <hr />
           <Card m={3}>
-            <Div center>
+            <Div flexCenter>
               <Icon name={userCircle} size="5x" />
             </Div>
           </Card>
