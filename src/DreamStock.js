@@ -3,11 +3,14 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Dashboard from "./pages/Dashboard";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
-import { P } from "./components/Paragraph";
 import { Span } from "./components/Span";
 import { Div } from "./components/Div";
 import { NavMenu } from "./components/NavMenu";
-import { Card, CardFooter, CardHorizontalTransparent } from "./components/Card";
+import {
+  CardContent,
+  CardFooter,
+  CardHorizontalTransparent,
+} from "./components/Card";
 import { Image } from "./components/Image";
 import { Icon } from "./components/Icon";
 import {
@@ -29,83 +32,55 @@ import Error from "./pages/Error";
 import LandingPage from "./pages/LandingPage";
 
 export default function DreamStock() {
-  const [visibleLeft, setVisibleLeft] = useState(false);
+  const [visibleLeft, setVisibleLeft] = useState(true);
   const [userLoggedIn, setUserLoggedIn] = useState(false);
-
-  const cardContent = [
-    { title: "", content: "Apple(AAPL)" },
-    { title: "Bought At", content: "150.00 INR" },
-    { title: "Units", content: "10.0" },
-    { title: "Total", content: "1500.00 INR" },
-  ];
-
-  let cardData = [];
 
   const handleSideBarToggle = () => {
     setVisibleLeft(!visibleLeft);
   };
 
-  cardContent.forEach((lineItem) => {
-    cardData.push(
-      <P>
-        <Span fontSize={"var(--fs-milli)"} fontWeight={"light"}>
-          {lineItem.title}
-        </Span>{" "}
-        {lineItem.content}
-      </P>
-    );
-  });
-
-  const NavMenuDemo = () => {
-    const items = [
-      {
-        label: "",
-        items: [
-          {
-            label: "Dashboard",
-            icon: "pi pi-fw pi-briefcase",
-            command: (e) => {
-              window.location.href = "/dashboard";
-            },
+  const items = [
+    {
+      label: "",
+      items: [
+        {
+          label: "Dashboard",
+          icon: "pi pi-fw pi-briefcase",
+          command: (e) => {
+            window.location.href = "/dashboard";
           },
-          {
-            label: "Summary",
-            icon: "pi pi-fw pi-th-large",
-            command: (e) => {
-              window.location.href = "/summary";
-            },
+        },
+        {
+          label: "Summary",
+          icon: "pi pi-fw pi-th-large",
+          command: (e) => {
+            window.location.href = "/summary";
           },
-          {
-            label: "Passbook",
-            icon: "pi pi-fw pi-book",
-            command: (e) => {
-              window.location.href = "/passbook";
-            },
+        },
+        {
+          label: "Passbook",
+          icon: "pi pi-fw pi-book",
+          command: (e) => {
+            window.location.href = "/passbook";
           },
-          {
-            label: "Transactions",
-            icon: "pi pi-fw pi-money-bill",
-            command: (e) => {
-              window.location.href = "/transactions";
-            },
+        },
+        {
+          label: "Transactions",
+          icon: "pi pi-fw pi-money-bill",
+          command: (e) => {
+            window.location.href = "/transactions";
           },
-          {
-            label: "Profile",
-            icon: "pi pi-fw pi-user-edit",
-            command: (e) => {
-              window.location.href = "/profile";
-            },
+        },
+        {
+          label: "Profile",
+          icon: "pi pi-fw pi-user-edit",
+          command: (e) => {
+            window.location.href = "/profile";
           },
-        ],
-      },
-    ];
-
-    return (
-      <Div>
-        <NavMenu model={items} />
-      </Div>
-    );
-  };
+        },
+      ],
+    },
+  ];
 
   const SideBar = () => {
     return (
@@ -117,16 +92,39 @@ export default function DreamStock() {
         style={{ width: "inherit" }}
       >
         <CardHorizontalTransparent pt={3}>
-          <Image src={FullLogo} height="40" />
+          <Image src={FullLogo} height="42" />
         </CardHorizontalTransparent>
         <hr />
-        <Card m={3}>
+        <CardContent m={3}>
           <Div flexCenter>
             <Icon name={userCircle} size="5x" />
           </Div>
-        </Card>
+        </CardContent>
         <hr />
-        <NavMenuDemo />
+        <NavMenu model={items} />
+      </SideNav>
+    );
+  };
+
+  const MobileSideBar = () => {
+    return (
+      <SideNav
+        modal={false}
+        visible={visibleLeft}
+        onHide={() => setVisibleLeft(false)}
+        fullScreen={true}
+      >
+        <CardHorizontalTransparent pt={3}>
+          <Image src={FullLogo} height="42" />
+        </CardHorizontalTransparent>
+        <hr />
+        <CardContent m={3}>
+          <Div flexCenter>
+            <Icon name={userCircle} size="5x" />
+          </Div>
+        </CardContent>
+        <hr />
+        <NavMenu model={items} />
       </SideNav>
     );
   };
@@ -181,9 +179,8 @@ export default function DreamStock() {
     const endAfter = (
       <Div>
         <ButtonTransparent
-          label="100.00 INR"
+          label="1000.00 INR"
           mr={3}
-          p={3}
           onClick={() => {
             setUserLoggedIn(false);
           }}
@@ -204,13 +201,12 @@ export default function DreamStock() {
 
     return (
       <Div>
-        <Div className="card">
-          <Menubar
-            model={userLoggedIn ? itemsAfter : itemsBefore}
-            start={userLoggedIn ? startAfter : startBefore}
-            end={userLoggedIn ? endAfter : endBefore}
-          />
-        </Div>
+        <Menubar
+          minHeight={"8vh"}
+          model={userLoggedIn ? itemsAfter : itemsBefore}
+          start={userLoggedIn ? startAfter : startBefore}
+          end={userLoggedIn ? endAfter : endBefore}
+        />
       </Div>
     );
   };
@@ -230,10 +226,10 @@ export default function DreamStock() {
 
     return (
       <Div>
-        <Div className="card">
-          <Menubar model={items} />
+        <Div>
+          <Menubar minHeight={"8vh"} model={items} />
         </Div>
-        <CardFooter pl={4} pr={4}>
+        <CardFooter minHeight={"4vh"} pl={4} pr={4}>
           <Div>{COPYRIGHT_TEXT}</Div>
           <Div>{ALL_RIGHTS_RESERVED}</Div>
         </CardFooter>
@@ -242,15 +238,12 @@ export default function DreamStock() {
   };
 
   return (
-    <Div className="dreamStock" flexRow>
-      <Div className="sideBar" style={visibleLeft ? { width: "20%" } : {}}>
-        <SideBar style={{ width: "inherit" }} />
+    <Div flexRow>
+      <Div width={visibleLeft ? "20%" : "0%"}>
+        <SideBar />
       </Div>
-      <Div
-        className="body_content"
-        style={visibleLeft ? { width: "80%" } : { width: "100%" }}
-      >
-        <Div style={{ minHeight: "inherit", position: "relative" }} flexColumn>
+      <Div width={visibleLeft ? "80%" : "100%"}>
+        <Div minHeight={"100%"} flexColumn>
           <Header />
           <Router>
             <Switch>

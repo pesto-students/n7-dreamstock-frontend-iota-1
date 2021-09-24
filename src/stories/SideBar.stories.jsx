@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { SideBar as SideNav } from "../components/SideBar";
 import FullLogo from "../assets/images/FullLogo.png";
-import { CardHorizontal, Card } from "../components/Card";
+import { CardHorizontal, CardContent } from "../components/Card";
 import { ButtonSecondary } from "../components/Button";
 import { Image } from "../components/Image";
 import { NavMenu } from "../components/NavMenu";
@@ -72,11 +72,11 @@ const SideBarStories = () => {
             <Image src={FullLogo} height="40" />
           </CardHorizontal>
           <hr />
-          <Card m={3}>
+          <CardContent m={3}>
             <Div flexCenter>
               <Icon name={userCircle} size="5x" />
             </Div>
-          </Card>
+          </CardContent>
           <hr />
           <NavMenuDemo />
         </SideNav>

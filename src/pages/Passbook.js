@@ -105,7 +105,7 @@ const Passbook = (props) => {
   console.log(passBookDataBody);
 
   return (
-    <Container pb={3}>
+    <Container minHeight={"80vh"}>
       <Div>
         <P fontSize={"var(--fs-h2)"}>PASSBOOK</P>
         <Table width={"100%"}>

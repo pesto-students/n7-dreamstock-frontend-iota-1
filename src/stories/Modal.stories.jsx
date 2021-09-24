@@ -32,7 +32,11 @@ const DialogStories = () => {
     return (
       <Div>
         <ButtonPrimary label="Cancel" onClick={() => onHide(name)} />
-        <ButtonTertiary label="Confirm" onClick={() => onHide(name)} autoFocus />
+        <ButtonTertiary
+          label="Confirm"
+          onClick={() => onHide(name)}
+          autoFocus
+        />
       </Div>
     );
   };
@@ -49,7 +53,7 @@ const DialogStories = () => {
           visible={displayResponsive}
           onHide={() => onHide("displayResponsive")}
           breakpoints={{ "960px": "75vw" }}
-          style={{ width: "50vw" }}
+          width={"50vw"}
           footer={renderFooter("displayResponsive")}
         >
           <P>{MODAL_ACTION_CONFIRMATION}</P>

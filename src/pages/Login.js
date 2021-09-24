@@ -2,7 +2,7 @@ import React from "react";
 import { Container } from "../components/Container";
 import { Div } from "../components/Div";
 import { ButtonSecondary, ButtonTransparent } from "../components/Button";
-import { Card } from "../components/Card";
+import { CardContent } from "../components/Card";
 import { Input } from "../components/Input";
 import { P } from "../components/Paragraph";
 import { A } from "../components/Link";
@@ -10,7 +10,7 @@ import { A } from "../components/Link";
 const Signup = (props) => {
   return (
     <Container flexCenter>
-      <Card width={[1, 2 / 3, 3 / 5, 1 / 3]}>
+      <CardContent width={[1, 2 / 3, 3 / 5, 1 / 3]}>
         <Div>
           <P fontSize={"var(--fs-h1)"} textAlign={"center"}>
             Log In
@@ -35,7 +35,7 @@ const Signup = (props) => {
             Don't Have an account? <A>Sign Up</A>
           </P>
         </Div>
-      </Card>
+      </CardContent>
     </Container>
   );
 };

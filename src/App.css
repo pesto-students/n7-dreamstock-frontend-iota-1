@@ -1,4 +1,8 @@
 @import "./styles/reset.css";
+@import "primereact/resources/themes/bootstrap4-dark-purple/theme.css";
+@import "primereact/resources/primereact.min.css";
+@import "primeicons/primeicons.css";
+@import "./styles/variables.css";
 
 .App {
   background-color: var(--primary-bg);
@@ -23,13 +27,28 @@
   width: 100%;
 }
 
+table {
+  font-size: var(--fs-h5);
+}
+
+tr {
+  background-color: var(--card-bg);
+  color: var(--title-color);
+  border-radius: 5px;
+  width: 100%;
+  /* border: 1px solid var(--outline-color); */
+}
+
+td {
+  padding: 10px;
+}
+
+th {
+  padding: 10px;
+  background-color: var(--secondary-bg);
+}
+
 .p-autocomplete-panel {
   background-color: var(--primary-bg);
   color: var(--title-color);
 }
-
-@import "primeflex/primeflex.css";
-@import "primereact/resources/themes/bootstrap4-dark-purple/theme.css";
-@import "primereact/resources/primereact.min.css";
-@import "primeicons/primeicons.css";
-@import "./styles/variables.css";

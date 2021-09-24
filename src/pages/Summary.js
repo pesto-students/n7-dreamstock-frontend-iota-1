@@ -60,7 +60,7 @@ const Summary = (props) => {
   };
 
   return (
-    <Container>
+    <Container minHeight={"80vh"}>
       <Div>
         <P fontSize={"var(--fs-h2)"}>
           SUMMARY

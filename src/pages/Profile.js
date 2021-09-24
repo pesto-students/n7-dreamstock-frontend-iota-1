@@ -28,8 +28,8 @@ const Profile = (props) => {
         </Div>
         <P>Bank Details</P>
         <Div>
-          <P>Card Number</P>
-          <Input placeholder="Card Number" type="text" p={3} />
+          <P>CardContent Number</P>
+          <Input placeholder="CardContent Number" type="text" p={3} />
         </Div>
         <Div>
           <P>Account Holder Name</P>

@@ -10,7 +10,7 @@ import { Input } from "../components/Input";
 const Transactions = (props) => {
   let walletBalance = 100;
   return (
-    <Container pb={3}>
+    <Container minHeight={"80vh"}>
       <Div width={[1, 2 / 3, 3 / 4, 3 / 5]}>
         <P fontSize={"var(--fs-h2)"}>TRANSACTIONS</P>
         <P>
@@ -30,8 +30,14 @@ const Transactions = (props) => {
         <P>
           <Span>WALLET BALANCE</Span>
         </P>
-        <ProgressBar value={30} />
-        <ButtonSecondary label="PROCEED TO RECHARGE" mt={3} />
+        <ProgressBar value={30} mt={3} />
+        <Input
+          placeholder="Enter the amount you want to withdraw"
+          type="text"
+          mt={3}
+          p={3}
+        />
+        <ButtonSecondary label="PROCEED TO WITHDRAW" mt={3} />
       </Div>
     </Container>
   );
