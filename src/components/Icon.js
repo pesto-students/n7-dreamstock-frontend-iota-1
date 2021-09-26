@@ -6,10 +6,14 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 const StyledFontAwesomeIcon = styled(FontAwesomeIcon)`
   ${compose(space, position, layout, typography)};
   ${({ rounded }) => rounded && `border-radius: 50%;`};
+  ${({ topright }) =>
+    topright &&
+    `position: fixed;
+     top:5px;
+     right:5px;`};
 `;
 
 export const Icon = (props) => {
   const { name } = props;
-
   return <StyledFontAwesomeIcon icon={name} {...props} />;
 };

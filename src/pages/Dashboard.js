@@ -5,7 +5,7 @@ import { P } from "../components/Paragraph";
 import { ButtonSecondary } from "../components/Button";
 import { Span } from "../components/Span";
 import { Toast } from "../components/Toast";
-
+import { Column, Table } from "../components/Table";
 import {
   CardContent,
   CardHorizontal,
@@ -14,10 +14,13 @@ import {
 import { Search } from "../components/Search";
 import * as Constants from "../utils/Constants";
 import * as ObjectGenerator from "../utils/ObjectGenerator";
+import * as CommonUtils from "../utils/CommonUtils";
 import { Chart } from "../components/Chart";
 import { Input } from "../components/Input";
 import { AccordionTab } from "primereact/accordion";
 import { Accordion } from "../components/Accordion";
+import { Icon } from "../components/Icon";
+import { close } from "../components/IconFonts";
 
 const Dashboard = (props) => {
   const [searchedStocks, setSearchedStocks] = useState([]);
@@ -29,7 +32,8 @@ const Dashboard = (props) => {
   const [walletBalance, setWalletBalance] = useState(1000.0);
   const [selectedStockInfo, setSelectedStockInfo] = useState(null);
   const [selectedQuantity, setSelectedQuantity] = useState("");
-  const [showTodaysPortfolio, setShowTodaysPortfolio] = useState(false);
+  const [showTodaysPortfolio, setShowTodaysPortfolio] = useState(true);
+  const [todaysPortfolioList, setTodaysPortfolioList] = useState([]);
   const [
     selectedStockCalculatedTotal,
     setSelectedStockCalculatedTotal,
@@ -39,53 +43,57 @@ const Dashboard = (props) => {
 
   useEffect(() => {
     setSearchedStocks(Constants.STOCKS_RESPONSE.response.result);
+    setTodaysPortfolioList(Constants.PASSBOOK_REAL_DATA);
   }, []);
 
-  let content = [
-    { title: "", content: "Apple(AAPL)" },
-    { title: "Bought At", content: "150.00 INR" },
-    { title: "Units", content: "10.0" },
-    { title: "Total", content: "1500.00 INR" },
-  ];
-
-  let accordionData = [];
-
-  const AccordionData = () => {
-    accordionData = [];
-    content.forEach((lineItem) => {
-      accordionData.push(
-        <P>
-          <Span fontSize={"var(--fs-milli)"} fontWeight={"light"}>
-            {lineItem.title}
-          </Span>{" "}
-          {lineItem.content}
-        </P>
-      );
-    });
-
-    const accordionHeader = (
-      <CardHorizontalTransparent>{accordionData}</CardHorizontalTransparent>
-    );
-    const accordionContent = (
-      <CardHorizontal m={2}>{accordionData}</CardHorizontal>
-    );
-
+  const stocksBodyTemplate = (rowData) => {
     return (
-      <Container pb={3}>
-        <Accordion activeIndex={0}>
-          <AccordionTab header="Header I" headerTemplate={accordionHeader}>
-            {accordionContent}
-            {accordionContent}
-            {accordionContent}
-            {accordionContent}
-            {accordionContent}
-            {accordionContent}
-          </AccordionTab>
-        </Accordion>
-      </Container>
+      <React.Fragment>
+        <span className="p-column-title">Stock</span>
+        {rowData.stockName} {rowData.symbol}
+      </React.Fragment>
     );
   };
-
+  const boughtAtBodyTemplate = (rowData) => {
+    return (
+      <React.Fragment>
+        <span className="p-column-title">Bought At</span>
+        {rowData.boughtAt}
+      </React.Fragment>
+    );
+  };
+  const currentPriceBodyTemplate = (rowData) => {
+    return (
+      <React.Fragment>
+        <span className="p-column-title">Current Price</span>
+        {rowData.currentPrice}
+      </React.Fragment>
+    );
+  };
+  const changeBodyTemplate = (rowData) => {
+    return (
+      <React.Fragment>
+        <span className="p-column-title">Change</span>
+        {rowData.investmentChangePercentage}
+      </React.Fragment>
+    );
+  };
+  const mySharesBodyTemplate = (rowData) => {
+    return (
+      <React.Fragment>
+        <span className="p-column-title">My Shares</span>
+        {rowData.quantity}
+      </React.Fragment>
+    );
+  };
+  const earningsBodyTemplate = (rowData) => {
+    return (
+      <React.Fragment>
+        <span className="p-column-title">Earnings</span>
+        {rowData.investmentChange}
+      </React.Fragment>
+    );
+  };
   const handleSearchStock = (event) => {
     setTimeout(() => {
       let _filteredStocks;
@@ -164,9 +172,20 @@ const Dashboard = (props) => {
     setSelectedQuantity(0);
   };
 
+  const handleRemoveStocksFromPortfolioDraft = (index) => {
+    // console.log("index => ", index);
+    let modifiedPortfolioDraftList = CommonUtils.RemoveElementFromArray(
+      portfolioDraftList,
+      index
+    );
+    // console.log("after remove event => ", modifiedPortfolioDraftList);
+    setPortfolioDraftList(modifiedPortfolioDraftList);
+  };
+
   const handleSubmitPortfolio = (event) => {
     let requestObj = {};
     let payload = [];
+    let currentPortfolioList = todaysPortfolioList;
     for (let i = 0; i < portfolioDraftList.length; i++) {
       let data = {};
       let portfolioDraftObj = portfolioDraftList[i];
@@ -189,13 +208,28 @@ const Dashboard = (props) => {
       life: 3000,
     });
 
-    setShowTodaysPortfolio(true);
+    for (let i = 0; i < portfolioDraftList.length; i++) {
+      let todaysPortfolioObj = {};
+      let portfolioDraftObj = portfolioDraftList[i];
+      todaysPortfolioObj.stockName = portfolioDraftObj.description;
+      todaysPortfolioObj.description = portfolioDraftObj.description;
+      todaysPortfolioObj.symbol = portfolioDraftObj.symbol;
+      todaysPortfolioObj.quantity = portfolioDraftObj.units;
+      todaysPortfolioObj.boughtAt = portfolioDraftObj.boughtAt;
+      todaysPortfolioObj.currentPrice = 5.0 + portfolioDraftObj.boughtAt;
+      todaysPortfolioObj.investment = portfolioDraftObj.total;
+      todaysPortfolioObj.investmentChange = 50.55;
+      todaysPortfolioObj.investmentChangePercentage = "+11%";
+      currentPortfolioList.push(todaysPortfolioObj);
+    }
     setPortfolioDraftList([]);
+    setTodaysPortfolioList(currentPortfolioList);
+    setShowTodaysPortfolio(true);
   };
 
   return (
     <Container flexRow minHeight={"80vh"}>
-      <Div width={[1, 2 / 3, 3 / 4, 4 / 5]} p={3}>
+      <Div width={["100%", "100%", "60%", "70%"]} p={3}>
         <Search
           autoFocus={true}
           value={selectedStock}
@@ -256,52 +290,95 @@ const Dashboard = (props) => {
         {showTodaysPortfolio ? (
           <CardContent mt={4}>
             <P>Today's Portfolio</P>
-            <AccordionData />
+            <Div>
+              <Table value={todaysPortfolioList}>
+                <Column
+                  field="stockName"
+                  header="Stock"
+                  body={stocksBodyTemplate}
+                />
+                <Column
+                  field="boughtAt"
+                  header="Bought At"
+                  body={boughtAtBodyTemplate}
+                />
+                <Column
+                  field="currentPrice"
+                  header="Current Price"
+                  body={currentPriceBodyTemplate}
+                />
+                <Column
+                  field="investmentChangePercentage"
+                  header="Change"
+                  body={changeBodyTemplate}
+                />
+                <Column
+                  field="investment"
+                  header="My Shares"
+                  body={mySharesBodyTemplate}
+                />
+                <Column
+                  field="investmentChange"
+                  header="Earnings"
+                  body={earningsBodyTemplate}
+                />
+              </Table>
+            </Div>
           </CardContent>
         ) : null}
       </Div>
 
-      <Div width={[1, 1 / 3, 1 / 4, 1 / 5]} p={3}>
+      <Div width={["100%", "100%", "40%", "30%"]} p={3}>
         <CardHorizontal flexCenter p={2}>
           <Span color="title" fontSize={"var(--fs-h3)"}>
             Portfolio Draft
           </Span>
         </CardHorizontal>
-        {portfolioDraftList.reverse().map((portfolioDraftObj, index) => {
-          return (
-            <CardContent mt={3} key={index}>
-              <P>{portfolioDraftObj.stockName}</P>
-              <P>
-                <Span fontSize={"var(--fs-milli)"} fontWeight={"light"}>
-                  Bought At
-                </Span>{" "}
-                {portfolioDraftObj.boughtAt}
-              </P>
-              <P>
-                <Span fontSize={"var(--fs-milli)"} fontWeight={"light"}>
-                  Units
-                </Span>{" "}
-                {portfolioDraftObj.units}
-              </P>
-              <P>
-                <Span fontSize={"var(--fs-milli)"} fontWeight={"light"}>
-                  Total
-                </Span>{" "}
-                {portfolioDraftObj.total}
-              </P>
-            </CardContent>
-          );
-        })}
-        {portfolioDraftList.length > 0 ? (
-          <ButtonSecondary
-            onClick={(e) => handleSubmitPortfolio(e)}
-            width={"100%"}
-            p={3}
-            mt={3}
-            mb={3}
-            label="ADD TO PORTFOLIO"
-          />
-        ) : null}
+        <Div>
+          {portfolioDraftList.map((portfolioDraftObj, index) => {
+            return (
+              <CardContent mt={3} key={index}>
+                <Icon
+                  name={close}
+                  topright
+                  size="2x"
+                  onClick={() => handleRemoveStocksFromPortfolioDraft(index)}
+                />
+                <Div>
+                  <P>{portfolioDraftObj.stockName}</P>
+                </Div>
+                <P>
+                  <Span fontSize={"var(--fs-milli)"} fontWeight={"light"}>
+                    Bought At
+                  </Span>{" "}
+                  {portfolioDraftObj.boughtAt}
+                </P>
+                <P>
+                  <Span fontSize={"var(--fs-milli)"} fontWeight={"light"}>
+                    Units
+                  </Span>{" "}
+                  {portfolioDraftObj.units}
+                </P>
+                <P>
+                  <Span fontSize={"var(--fs-milli)"} fontWeight={"light"}>
+                    Total
+                  </Span>{" "}
+                  {portfolioDraftObj.total}
+                </P>
+              </CardContent>
+            );
+          })}
+          {portfolioDraftList.length > 0 ? (
+            <ButtonSecondary
+              onClick={(e) => handleSubmitPortfolio(e)}
+              width={"100%"}
+              p={3}
+              mt={3}
+              mb={3}
+              label="ADD TO PORTFOLIO"
+            />
+          ) : null}
+        </Div>
       </Div>
       <Toast ref={toast} />
     </Container>

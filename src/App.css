@@ -12,42 +12,6 @@
   font-size: var(--fs-base);
 }
 
-.dreamStock {
-  min-height: inherit;
-}
-
-.body_content {
-  min-height: inherit;
-}
-
-.header {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-}
-
-table {
-  font-size: var(--fs-h5);
-}
-
-tr {
-  background-color: var(--card-bg);
-  color: var(--title-color);
-  border-radius: 5px;
-  width: 100%;
-  /* border: 1px solid var(--outline-color); */
-}
-
-td {
-  padding: 10px;
-}
-
-th {
-  padding: 10px;
-  background-color: var(--secondary-bg);
-}
-
 .p-autocomplete-panel {
   background-color: var(--primary-bg);
   color: var(--title-color);

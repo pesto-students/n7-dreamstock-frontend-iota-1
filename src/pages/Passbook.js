@@ -1,119 +1,100 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Container } from "../components/Container";
 import { Div } from "../components/Div";
-import { P } from "../components/Paragraph";
-import { Span } from "../components/Span";
-import { Table, Td, Th, Tr } from "../components/Table";
+import { Column, Table } from "../components/Table";
+import * as Constants from "../utils/Constants";
 
 const Passbook = (props) => {
-  //   const content = [
-  //     [
-  //       { title: "Date", content: "08-Aug-2021" },
-  //       { title: "Amount", content: "150.00 INR" },
-  //       { title: "Action", content: "Wallet Top Up" },
-  //       { title: "Profit / Loss", content: "N/A" },
-  //       { title: "Final Balance", content: "20000.00 INR" },
-  //     ],
-  //     [
-  //       { title: "Date", content: "09-Aug-2021" },
-  //       { title: "Amount", content: "2000.00 INR" },
-  //       { title: "Action", content: "Win" },
-  //       { title: "Profit / Loss", content: "+100.00 INR" },
-  //       { title: "Final Balance", content: "20100.00 INR" },
-  //     ],
-  //     [
-  //       { title: "Date", content: "10-Aug-2021" },
-  //       { title: "Amount", content: "2000.00 INR" },
-  //       { title: "Action", content: "Loss" },
-  //       { title: "Profit / Loss", content: "-100.00 INR" },
-  //       { title: "Final Balance", content: "20000.00 INR" },
-  //     ],
-  //   ];
+  const [passbookData, setPassbookData] = useState([]);
 
-  const lineItemContent = [
-    {
-      date: "07-Aug-2021",
-      amount: "150.00 INR",
-      action: "Wallet Top Up",
-      pl: "N/A",
-      finalBalance: "20000.00 INR",
-    },
-    {
-      date: "08-Aug-2021",
-      amount: "1500.00 INR",
-      action: "Wallet Top Up",
-      pl: "+100.00 INR",
-      isProfit: true,
-      finalBalance: "20000.00 INR",
-    },
-    {
-      date: "09-Aug-2021",
-      amount: "150.00 INR",
-      action: "Loss",
-      isLoss: true,
-      pl: "-150.00 INR",
-      finalBalance: "20000.00 INR",
-    },
-  ];
+  useEffect(() => {
+    setPassbookData(Constants.PASSBOOK_REAL_DATA);
+  }, []);
 
-  let passBookDataBody = [];
-  let passBookDataHeader = [];
-
-  lineItemContent.forEach((lineItem) => {
-    let fontColor = lineItem.isProfit ? "green" : lineItem.isLoss ? "red" : "";
-    passBookDataBody.push(
-      <Tr>
-        <Td>
-          <Span>{lineItem.date}</Span>
-        </Td>
-        <Td>
-          <Span>{lineItem.amount}</Span>
-        </Td>
-        <Td>
-          <Span>{lineItem.action}</Span>
-        </Td>
-        <Td>
-          <Span color={fontColor}>{lineItem.pl}</Span>
-        </Td>
-        <Td>
-          <Span>{lineItem.finalBalance}</Span>
-        </Td>
-      </Tr>
+  const stocksBodyTemplate = (rowData) => {
+    return (
+      <React.Fragment>
+        <span className="p-column-title">Stock</span>
+        {rowData.stockName} {rowData.symbol}
+      </React.Fragment>
     );
-  });
-
-  passBookDataHeader.push(
-    <Tr>
-      <Th style={{ textAlign: "left" }}>
-        <Span>Date</Span>
-      </Th>
-      <Th style={{ textAlign: "left" }}>
-        <Span>Amount</Span>
-      </Th>
-      <Th style={{ textAlign: "left" }}>
-        <Span>Action</Span>
-      </Th>
-      <Th style={{ textAlign: "left" }}>
-        <Span>Profit / Loss</Span>
-      </Th>
-      <Th style={{ textAlign: "left" }}>
-        <Span>Final Balance</Span>
-      </Th>
-    </Tr>
-  );
-
-  console.log(passBookDataBody);
+  };
+  const boughtAtBodyTemplate = (rowData) => {
+    return (
+      <React.Fragment>
+        <span className="p-column-title">Bought At</span>
+        {rowData.boughtAt}
+      </React.Fragment>
+    );
+  };
+  const currentPriceBodyTemplate = (rowData) => {
+    return (
+      <React.Fragment>
+        <span className="p-column-title">Current Price</span>
+        {rowData.currentPrice}
+      </React.Fragment>
+    );
+  };
+  const changeBodyTemplate = (rowData) => {
+    return (
+      <React.Fragment>
+        <span className="p-column-title">Change</span>
+        {rowData.investmentChangePercentage}
+      </React.Fragment>
+    );
+  };
+  const mySharesBodyTemplate = (rowData) => {
+    return (
+      <React.Fragment>
+        <span className="p-column-title">My Shares</span>
+        {rowData.quantity}
+      </React.Fragment>
+    );
+  };
+  const earningsBodyTemplate = (rowData) => {
+    return (
+      <React.Fragment>
+        <span className="p-column-title">Earnings</span>
+        {rowData.investmentChange}
+      </React.Fragment>
+    );
+  };
 
   return (
-    <Container minHeight={"80vh"}>
+    <Container minHeight={"80vh"} mt={4} mb={4}>
       <Div>
-        <P fontSize={"var(--fs-h2)"}>PASSBOOK</P>
-        <Table width={"100%"}>
-          {passBookDataHeader}
-          {passBookDataBody}
-          {passBookDataBody}
-          {passBookDataBody}
-        </Table>
+          <Table value={passbookData} paginator rows={10}>
+            <Column
+              field="stockName"
+              header="Stock"
+              body={stocksBodyTemplate}
+            />
+            <Column
+              field="boughtAt"
+              header="Bought At"
+              body={boughtAtBodyTemplate}
+            />
+            <Column
+              field="currentPrice"
+              header="Current Price"
+              body={currentPriceBodyTemplate}
+            />
+            <Column
+              field="investmentChangePercentage"
+              header="Change"
+              body={changeBodyTemplate}
+            />
+            <Column
+              field="investment"
+              header="My Shares"
+              body={mySharesBodyTemplate}
+            />
+            <Column
+              field="investmentChange"
+              header="Earnings"
+              body={earningsBodyTemplate}
+            />
+          </Table>
       </Div>
     </Container>
   );

@@ -3,7 +3,6 @@ import { compose, space, position, layout, typography } from "styled-system";
 import styled from "styled-components";
 
 export const SideBar = styled(SideNav)`
-  ${compose(space, position, layout, typography)};
   background-color: var(--sidebar-bg);
   width: inherit;
 
@@ -14,4 +13,5 @@ export const SideBar = styled(SideNav)`
   .p-sidebar-header {
     display: none !important;
   }
+  ${compose(space, position, layout, typography)};
 `;

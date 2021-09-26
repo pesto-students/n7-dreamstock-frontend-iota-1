@@ -359,6 +359,7 @@ export const STOCK_CHART_RESPONSE = {
     ],
   },
 };
+
 export const CURRENT_STOCK_INFO_RESPONSE = {
   msg: "getCurrentStockInfo Works",
   response: {
@@ -372,3 +373,39 @@ export const CURRENT_STOCK_INFO_RESPONSE = {
     t: 1632340802,
   },
 };
+
+export const PASSBOOK_REAL_DATA = [
+  {
+    stockName: "Apple",
+    description: "Apple",
+    symbol: "AAPL",
+    quantity: 10,
+    boughtAt: 50.0,
+    currentPrice: 55.0,
+    investment: 500.0,
+    investmentChangePercentage: "+10%",
+    investmentChange: 50,
+  },
+  {
+    stockName: "Blackberry",
+    description: "Blackberry",
+    symbol: "BBL",
+    quantity: 10,
+    boughtAt: 50.0,
+    currentPrice: 45.0,
+    investment: 500.0,
+    investmentChangePercentage: "+10%",
+    investmentChange: 50.0,
+  },
+  {
+    stockName: "Samsung",
+    description: "Samung",
+    symbol: "SSG",
+    quantity: 10,
+    boughtAt: 50.0,
+    currentPrice: 55.0,
+    investment: 500.0,
+    investmentChangePercentage: "+10%",
+    investmentChange: 50.0,
+  },
+];

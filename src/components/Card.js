@@ -7,6 +7,10 @@ export const Card = styled(PrimeCard)`
   background-color: var(--card-bg);
   color: var(--title-color);
   border-radius: 5px;
+
+  .p-card-body {
+    padding: 10px;
+  }
 `;
 
 export const CardContent = styled(Card)`
