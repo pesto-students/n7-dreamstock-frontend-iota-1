@@ -17,8 +17,6 @@ import * as ObjectGenerator from "../utils/ObjectGenerator";
 import * as CommonUtils from "../utils/CommonUtils";
 import { Chart } from "../components/Chart";
 import { Input } from "../components/Input";
-import { AccordionTab } from "primereact/accordion";
-import { Accordion } from "../components/Accordion";
 import { Icon } from "../components/Icon";
 import { close } from "../components/IconFonts";
 
@@ -54,6 +52,7 @@ const Dashboard = (props) => {
       </React.Fragment>
     );
   };
+
   const boughtAtBodyTemplate = (rowData) => {
     return (
       <React.Fragment>
@@ -62,6 +61,7 @@ const Dashboard = (props) => {
       </React.Fragment>
     );
   };
+
   const currentPriceBodyTemplate = (rowData) => {
     return (
       <React.Fragment>
@@ -70,6 +70,7 @@ const Dashboard = (props) => {
       </React.Fragment>
     );
   };
+
   const changeBodyTemplate = (rowData) => {
     return (
       <React.Fragment>
@@ -78,6 +79,7 @@ const Dashboard = (props) => {
       </React.Fragment>
     );
   };
+
   const mySharesBodyTemplate = (rowData) => {
     return (
       <React.Fragment>
@@ -86,6 +88,7 @@ const Dashboard = (props) => {
       </React.Fragment>
     );
   };
+
   const earningsBodyTemplate = (rowData) => {
     return (
       <React.Fragment>
@@ -94,6 +97,7 @@ const Dashboard = (props) => {
       </React.Fragment>
     );
   };
+
   const handleSearchStock = (event) => {
     setTimeout(() => {
       let _filteredStocks;
@@ -164,13 +168,13 @@ const Dashboard = (props) => {
     // resetDashboard();
   };
 
-  const resetDashboard = () => {
-    setShowChart(false);
-    setSelectedStock(null);
-    setStockChartData(null);
-    setSelectedStockInfo(null);
-    setSelectedQuantity(0);
-  };
+  // const resetDashboard = () => {
+  //   setShowChart(false);
+  //   setSelectedStock(null);
+  //   setStockChartData(null);
+  //   setSelectedStockInfo(null);
+  //   setSelectedQuantity(0);
+  // };
 
   const handleRemoveStocksFromPortfolioDraft = (index) => {
     // console.log("index => ", index);

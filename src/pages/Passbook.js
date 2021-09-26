@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Container } from "../components/Container";
 import { Div } from "../components/Div";
+import { P } from "../components/Paragraph";
 import { Column, Table } from "../components/Table";
 import * as Constants from "../utils/Constants";
 
@@ -19,6 +20,7 @@ const Passbook = (props) => {
       </React.Fragment>
     );
   };
+
   const boughtAtBodyTemplate = (rowData) => {
     return (
       <React.Fragment>
@@ -27,6 +29,7 @@ const Passbook = (props) => {
       </React.Fragment>
     );
   };
+  
   const currentPriceBodyTemplate = (rowData) => {
     return (
       <React.Fragment>
@@ -35,6 +38,7 @@ const Passbook = (props) => {
       </React.Fragment>
     );
   };
+
   const changeBodyTemplate = (rowData) => {
     return (
       <React.Fragment>
@@ -43,6 +47,7 @@ const Passbook = (props) => {
       </React.Fragment>
     );
   };
+
   const mySharesBodyTemplate = (rowData) => {
     return (
       <React.Fragment>
@@ -51,6 +56,7 @@ const Passbook = (props) => {
       </React.Fragment>
     );
   };
+
   const earningsBodyTemplate = (rowData) => {
     return (
       <React.Fragment>
@@ -61,40 +67,37 @@ const Passbook = (props) => {
   };
 
   return (
-    <Container minHeight={"80vh"} mt={4} mb={4}>
+    <Container minHeight={"80vh"} mb={4}>
       <Div>
-          <Table value={passbookData} paginator rows={10}>
-            <Column
-              field="stockName"
-              header="Stock"
-              body={stocksBodyTemplate}
-            />
-            <Column
-              field="boughtAt"
-              header="Bought At"
-              body={boughtAtBodyTemplate}
-            />
-            <Column
-              field="currentPrice"
-              header="Current Price"
-              body={currentPriceBodyTemplate}
-            />
-            <Column
-              field="investmentChangePercentage"
-              header="Change"
-              body={changeBodyTemplate}
-            />
-            <Column
-              field="investment"
-              header="My Shares"
-              body={mySharesBodyTemplate}
-            />
-            <Column
-              field="investmentChange"
-              header="Earnings"
-              body={earningsBodyTemplate}
-            />
-          </Table>
+        <P fontSize={"var(--fs-h2)"}>PASSBOOK</P>
+        <Table value={passbookData} paginator rows={10}>
+          <Column field="stockName" header="Stock" body={stocksBodyTemplate} />
+          <Column
+            field="boughtAt"
+            header="Bought At"
+            body={boughtAtBodyTemplate}
+          />
+          <Column
+            field="currentPrice"
+            header="Current Price"
+            body={currentPriceBodyTemplate}
+          />
+          <Column
+            field="investmentChangePercentage"
+            header="Change"
+            body={changeBodyTemplate}
+          />
+          <Column
+            field="investment"
+            header="My Shares"
+            body={mySharesBodyTemplate}
+          />
+          <Column
+            field="investmentChange"
+            header="Earnings"
+            body={earningsBodyTemplate}
+          />
+        </Table>
       </Div>
     </Container>
   );

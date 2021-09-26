@@ -24,7 +24,7 @@ export const Table = styled(DataTable)`
 
   .p-datatable-thead > tr > th {
     border: 1px solid var(--outline-color);
-    border-width: 2px 0 2px 0;
+    border-width: 1px 0 1px 0;
     font-weight: 600;
     background: var(--secondary-bg);
     color: var(--title-color);
@@ -85,11 +85,14 @@ export const Table = styled(DataTable)`
     display: none;
   }
 
+  tr th:first-child,
   tr td:first-child {
     border: solid var(--outline-color);
     border-width: 1px 0 1px 1px;
     border-radius: 5px 0 0 5px;
   }
+
+  tr th:last-child,
   tr td:last-child {
     border: solid var(--outline-color);
     border-width: 1px 1px 1px 0;

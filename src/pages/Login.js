@@ -1,11 +1,12 @@
 import React from "react";
 import { Container } from "../components/Container";
 import { Div } from "../components/Div";
-import { ButtonSecondary, ButtonTransparent } from "../components/Button";
+import { ButtonSecondary } from "../components/Button";
 import { CardContent } from "../components/Card";
 import { Input } from "../components/Input";
 import { P } from "../components/Paragraph";
 import { A } from "../components/Link";
+import Login from "./google/Login";
 
 const Signup = (props) => {
   return (
@@ -30,7 +31,7 @@ const Signup = (props) => {
         <Div mt={4}>
           <ButtonSecondary label="Log In" width={"100%"} />
           <P textAlign={"center"}>OR</P>
-          <ButtonTransparent label="Google" width={"100%"} />
+          <Login />
           <P textAlign={"center"}>
             Don't Have an account? <A>Sign Up</A>
           </P>

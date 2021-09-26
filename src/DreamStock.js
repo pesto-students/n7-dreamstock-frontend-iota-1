@@ -89,11 +89,14 @@ export default function DreamStock() {
         appendTo={"self"}
         visible={true}
         onHide={() => setVisibleLeft(false)}
+        icons={
+          <CardHorizontalTransparent pt={3}>
+            <Image src={FullLogo} height="42" />
+          </CardHorizontalTransparent>
+        }
+        showCloseIcon={true}
         {...props}
       >
-        <CardHorizontalTransparent pt={3}>
-          <Image src={FullLogo} height="42" />
-        </CardHorizontalTransparent>
         <hr />
         <CardContent m={3}>
           <Div flexCenter>

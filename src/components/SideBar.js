@@ -10,8 +10,9 @@ export const SideBar = styled(SideNav)`
     padding: 0;
   }
 
-  .p-sidebar-header {
-    display: none !important;
-  }
+  // .p-sidebar-icon {
+  //   display: none;
+  // }
+
   ${compose(space, position, layout, typography)};
 `;
