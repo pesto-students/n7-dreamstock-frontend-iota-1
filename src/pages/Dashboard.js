@@ -40,15 +40,16 @@ const Dashboard = (props) => {
   const toast = useRef(null);
 
   useEffect(() => {
+    // Set all the data from APIs here
     setSearchedStocks(Constants.STOCKS_RESPONSE.response.result);
-    setTodaysPortfolioList(Constants.PASSBOOK_REAL_DATA);
+    setTodaysPortfolioList(Constants.TODAYS_PORTFOLIO_REAL_DATA.data);
   }, []);
 
   const stocksBodyTemplate = (rowData) => {
     return (
       <React.Fragment>
-        <span className="p-column-title">Stock</span>
-        {rowData.stockName} {rowData.symbol}
+        <Span className="p-column-title">Stock</Span>
+        {rowData.stock_name} {rowData.stock_symbol}
       </React.Fragment>
     );
   };
@@ -56,8 +57,8 @@ const Dashboard = (props) => {
   const boughtAtBodyTemplate = (rowData) => {
     return (
       <React.Fragment>
-        <span className="p-column-title">Bought At</span>
-        {rowData.boughtAt}
+        <Span className="p-column-title">Bought At</Span>
+        {rowData.order_price ? rowData.order_price : "-"}
       </React.Fragment>
     );
   };
@@ -65,8 +66,8 @@ const Dashboard = (props) => {
   const currentPriceBodyTemplate = (rowData) => {
     return (
       <React.Fragment>
-        <span className="p-column-title">Current Price</span>
-        {rowData.currentPrice}
+        <Span className="p-column-title">Current Price</Span>
+        {rowData.current_price ? rowData.current_price : "-"}
       </React.Fragment>
     );
   };
@@ -74,8 +75,8 @@ const Dashboard = (props) => {
   const changeBodyTemplate = (rowData) => {
     return (
       <React.Fragment>
-        <span className="p-column-title">Change</span>
-        {rowData.investmentChangePercentage}
+        <Span className="p-column-title">Change</Span>
+        {rowData.change ? rowData.change : "-"}
       </React.Fragment>
     );
   };
@@ -83,7 +84,7 @@ const Dashboard = (props) => {
   const mySharesBodyTemplate = (rowData) => {
     return (
       <React.Fragment>
-        <span className="p-column-title">My Shares</span>
+        <Span className="p-column-title">My Shares</Span>
         {rowData.quantity}
       </React.Fragment>
     );
@@ -92,8 +93,17 @@ const Dashboard = (props) => {
   const earningsBodyTemplate = (rowData) => {
     return (
       <React.Fragment>
-        <span className="p-column-title">Earnings</span>
-        {rowData.investmentChange}
+        <Span className="p-column-title">Earnings</Span>
+        {rowData.investmentChange ? rowData.investmentChange : "-"}
+      </React.Fragment>
+    );
+  };
+
+  const investmentBodyTemplate = (rowData) => {
+    return (
+      <React.Fragment>
+        <Span className="p-column-title">Total Investment</Span>
+        {rowData.investment}
       </React.Fragment>
     );
   };
@@ -295,7 +305,7 @@ const Dashboard = (props) => {
           <CardContent mt={4}>
             <P>Today's Portfolio</P>
             <Div>
-              <Table value={todaysPortfolioList}>
+              <Table value={todaysPortfolioList.data}>
                 <Column
                   field="stockName"
                   header="Stock"
@@ -320,6 +330,11 @@ const Dashboard = (props) => {
                   field="investment"
                   header="My Shares"
                   body={mySharesBodyTemplate}
+                />
+                <Column
+                  field="totalInvestment"
+                  header="Investment"
+                  body={investmentBodyTemplate}
                 />
                 <Column
                   field="investmentChange"

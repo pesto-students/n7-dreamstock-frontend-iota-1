@@ -30,3 +30,15 @@ export const ConvertMillisIntoDate = (millis) => {
     date.getUTCFullYear()
   );
 };
+
+export const ReturnColorBasedOnProfitLoss = (str) => {
+  let color = "white";
+  if (str) {
+    if (str.includes("+")) {
+      color = "green";
+    } else if (str.includes("-")) {
+      color = "red";
+    }
+  }
+  return color;
+};

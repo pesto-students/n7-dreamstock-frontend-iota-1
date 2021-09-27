@@ -14,13 +14,14 @@ const Summary = (props) => {
   const [summaryData, setSummaryData] = useState([]);
 
   useEffect(() => {
+    // Call the Summary API here and set the response data
     setSummaryData(Constants.SUMMARY_REAL_DATA.data);
   }, []);
 
   const stocksBodyTemplate = (rowData) => {
     return (
       <React.Fragment>
-        <span className="p-column-title">Stock</span>
+        <Span className="p-column-title">Stock</Span>
         {rowData.stock_name} {rowData.stock_symbol}
       </React.Fragment>
     );
@@ -29,8 +30,8 @@ const Summary = (props) => {
   const boughtAtBodyTemplate = (rowData) => {
     return (
       <React.Fragment>
-        <span className="p-column-title">Bought At</span>
-        {rowData.order_price}
+        <Span className="p-column-title">Bought At</Span>
+        {rowData.order_price ? rowData.order_price : "-"}
       </React.Fragment>
     );
   };
@@ -38,8 +39,8 @@ const Summary = (props) => {
   const currentPriceBodyTemplate = (rowData) => {
     return (
       <React.Fragment>
-        <span className="p-column-title">Current Price</span>
-        {rowData.current_price}
+        <Span className="p-column-title">Current Price</Span>
+        {rowData.current_price ? rowData.current_price : "-"}
       </React.Fragment>
     );
   };
@@ -47,8 +48,8 @@ const Summary = (props) => {
   const changeBodyTemplate = (rowData) => {
     return (
       <React.Fragment>
-        <span className="p-column-title">Change</span>
-        {rowData.change}
+        <Span className="p-column-title">Change</Span>
+        {rowData.change ? rowData.change : "-"}
       </React.Fragment>
     );
   };
@@ -56,7 +57,7 @@ const Summary = (props) => {
   const mySharesBodyTemplate = (rowData) => {
     return (
       <React.Fragment>
-        <span className="p-column-title">My Shares</span>
+        <Span className="p-column-title">My Shares</Span>
         {rowData.quantity}
       </React.Fragment>
     );
@@ -65,8 +66,8 @@ const Summary = (props) => {
   const earningsBodyTemplate = (rowData) => {
     return (
       <React.Fragment>
-        <span className="p-column-title">Earnings</span>
-        {rowData.investmentChange}
+        <Span className="p-column-title">Earnings</Span>
+        {rowData.investmentChange ? rowData.investmentChange : "-"}
       </React.Fragment>
     );
   };
@@ -74,7 +75,7 @@ const Summary = (props) => {
   const investmentBodyTemplate = (rowData) => {
     return (
       <React.Fragment>
-        <span className="p-column-title">Total Investment</span>
+        <Span className="p-column-title">Total Investment</Span>
         {rowData.investment}
       </React.Fragment>
     );
@@ -111,7 +112,13 @@ const Summary = (props) => {
                   <Span fontSize={"var(--fs-milli)"} fontWeight={"light"}>
                     PROFIT
                   </Span>{" "}
-                  {summaryOfCurrentRecord.profit_loss}
+                  <Span
+                    color={CommonUtils.ReturnColorBasedOnProfitLoss(
+                      summaryOfCurrentRecord.profit_loss
+                    )}
+                  >
+                    {summaryOfCurrentRecord.profit_loss}
+                  </Span>{" "}
                 </P>
               </CardHorizontalTransparent>
             );

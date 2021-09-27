@@ -2,66 +2,70 @@ import React, { useState, useEffect } from "react";
 import { Container } from "../components/Container";
 import { Div } from "../components/Div";
 import { P } from "../components/Paragraph";
+import { Span } from "../components/Span";
 import { Column, Table } from "../components/Table";
 import * as Constants from "../utils/Constants";
+import * as CommonUtils from "../utils/CommonUtils";
 
 const Passbook = (props) => {
   const [passbookData, setPassbookData] = useState([]);
 
   useEffect(() => {
-    setPassbookData(Constants.PASSBOOK_REAL_DATA);
+    // Call the PASSBOOK API here and set the response data
+    setPassbookData(Constants.PASSBOOK_DATA.data);
   }, []);
 
-  const stocksBodyTemplate = (rowData) => {
+  const dateBodyTemplate = (rowData) => {
     return (
       <React.Fragment>
-        <span className="p-column-title">Stock</span>
-        {rowData.stockName} {rowData.symbol}
+        <Span className="p-column-title">Date</Span>
+        {CommonUtils.ConvertMillisIntoDate(parseInt(rowData.date))}
       </React.Fragment>
     );
   };
 
-  const boughtAtBodyTemplate = (rowData) => {
+  const amountBodyTemplate = (rowData) => {
     return (
       <React.Fragment>
-        <span className="p-column-title">Bought At</span>
-        {rowData.boughtAt}
-      </React.Fragment>
-    );
-  };
-  
-  const currentPriceBodyTemplate = (rowData) => {
-    return (
-      <React.Fragment>
-        <span className="p-column-title">Current Price</span>
-        {rowData.currentPrice}
+        <Span className="p-column-title">Amount</Span>
+        {rowData.amount ? rowData.amount : "-"}
       </React.Fragment>
     );
   };
 
-  const changeBodyTemplate = (rowData) => {
+  const actionBodyTemplate = (rowData) => {
     return (
       <React.Fragment>
-        <span className="p-column-title">Change</span>
-        {rowData.investmentChangePercentage}
+        <Span className="p-column-title">Action</Span>
+        {rowData.action}
       </React.Fragment>
     );
   };
 
-  const mySharesBodyTemplate = (rowData) => {
+  const profitLossBodyTemplate = (rowData) => {
     return (
       <React.Fragment>
-        <span className="p-column-title">My Shares</span>
-        {rowData.quantity}
+        <Span className="p-column-title">Profit/Loss</Span>
+        {rowData.profit_loss ? (
+          <Span
+            color={CommonUtils.ReturnColorBasedOnProfitLoss(
+              rowData.profit_loss
+            )}
+          >
+            {rowData.profit_loss}
+          </Span>
+        ) : (
+          "-"
+        )}
       </React.Fragment>
     );
   };
 
-  const earningsBodyTemplate = (rowData) => {
+  const finalBalanceBodyTemplate = (rowData) => {
     return (
       <React.Fragment>
-        <span className="p-column-title">Earnings</span>
-        {rowData.investmentChange}
+        <Span className="p-column-title">Final Balance</Span>
+        {rowData.final_balance}
       </React.Fragment>
     );
   };
@@ -71,31 +75,18 @@ const Passbook = (props) => {
       <Div>
         <P fontSize={"var(--fs-h2)"}>PASSBOOK</P>
         <Table value={passbookData} paginator rows={10}>
-          <Column field="stockName" header="Stock" body={stocksBodyTemplate} />
+          <Column field="date" header="DATE" body={dateBodyTemplate} />
+          <Column field="amount" header="AMOUNT" body={amountBodyTemplate} />
+          <Column field="action" header="ACTION" body={actionBodyTemplate} />
           <Column
-            field="boughtAt"
-            header="Bought At"
-            body={boughtAtBodyTemplate}
+            field="profit_loss"
+            header="PROFIT / LOSS"
+            body={profitLossBodyTemplate}
           />
           <Column
-            field="currentPrice"
-            header="Current Price"
-            body={currentPriceBodyTemplate}
-          />
-          <Column
-            field="investmentChangePercentage"
-            header="Change"
-            body={changeBodyTemplate}
-          />
-          <Column
-            field="investment"
-            header="My Shares"
-            body={mySharesBodyTemplate}
-          />
-          <Column
-            field="investmentChange"
-            header="Earnings"
-            body={earningsBodyTemplate}
+            field="final_balance"
+            header="FINAL BALANCE"
+            body={finalBalanceBodyTemplate}
           />
         </Table>
       </Div>
