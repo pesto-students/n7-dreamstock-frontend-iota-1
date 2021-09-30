@@ -21,7 +21,7 @@ import { Input } from "../components/Input";
 import { Icon } from "../components/Icon";
 import { close } from "../components/IconFonts";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchMyDashoardDetails,updateMyportfolio } from '../store/actions/dashboardAction'
+import { fetchMyDashoardDetails,updateMyportfolio,fetchLiveStockPrice } from '../store/actions/dashboardAction'
 
 const Dashboard = (props) => {
   const [searchedStocks, setSearchedStocks] = useState([]);
@@ -39,12 +39,21 @@ const Dashboard = (props) => {
     setSelectedStockCalculatedTotal,
   ] = useState(0);
   const todaysPortfolioList =  useSelector((state)=>state.dashboard.myCurrentPortfolio) || []
+  const liveStockData = useSelector(state=>state.dashboard.liveStockData) || {}
+
   const toast = useRef(null);
-  
+  let pollingTimer = {}
   const dispatch = useDispatch()
 
   useEffect(() => {
+    dispatch(fetchLiveStockPrice())
+    pollingTimer = setInterval(()=>{
+      dispatch(fetchLiveStockPrice())
+    },1000*60*2)
     dispatch(fetchMyDashoardDetails())
+    return ()=>{
+      clearInterval(pollingTimer)
+    }
   }, []);
 
   const stocksBodyTemplate = (rowData) => {

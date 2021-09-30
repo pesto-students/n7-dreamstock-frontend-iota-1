@@ -10,10 +10,11 @@ import * as Constants from "../utils/Constants";
 import * as CommonUtils from "../utils/CommonUtils";
 import { Column, Table } from "../components/Table";
 import axios from "axios";
+import { useSelector } from "react-redux";
 
 const Summary = (props) => {
   const [summaryData, setSummaryData] = useState([]);
-
+  const liveStockData = useSelector(state=>state.dashboard.liveStockData)
   useEffect(() => {
     // Call the Summary API here and set the response data
     setSummaryData(Constants.SUMMARY_REAL_DATA.data);
@@ -71,10 +72,13 @@ const Summary = (props) => {
   };
 
   const earningsBodyTemplate = (rowData) => {
+    const {order_price} = rowData;
+
+    const change = liveStockData[rowData.stock_symbol] - order_price
     return (
       <React.Fragment>
         <Span className="p-column-title">Earnings</Span>
-        {rowData.investmentChange ? rowData.investmentChange : "-"}
+        {change ? change : "-"}
       </React.Fragment>
     );
   };

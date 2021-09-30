@@ -18,3 +18,12 @@ export const updateMyportfolio = (requestObj) => dispatch =>{
         })
       .catch((err) => console.log('create_order err', err))
 }
+
+export const fetchLiveStockPrice = () =>dispatch =>{
+  axios.get('/api/stocks/livePrices')
+  .then((res)=>{
+    console.log("fetchLiveStockPrice",res.data.liveStocksData)
+    dispatch({type:actionTypes.UPDATE_LIVE_STOCK_DATA, payload:res.data.liveStocksData})
+  })
+  .catch((err)=>console.log('myDashboard err',err))
+}

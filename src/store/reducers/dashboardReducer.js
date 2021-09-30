@@ -2,7 +2,8 @@ import * as actionTypes from '../actionTypes/dashboardActionTypes';
 
 const initialState = {
     myCurrentPortfolio: [],
-    selectedStockInfo: {}
+    selectedStockInfo: {},
+    livestockData: {}
 };
 
 export default function (state = initialState, action) {
@@ -15,9 +16,14 @@ export default function (state = initialState, action) {
         case actionTypes.ADD_TO_MY_PORTFOLIO:
             return {
                 ...state,
-                myCurrentPortfolio: [...state.myCurrentPortfolio,...action.payload]
+                myCurrentPortfolio: [...state.myCurrentPortfolio, ...action.payload]
             }
-        
+        case actionTypes.UPDATE_LIVE_STOCK_DATA:
+            return {
+                ...state,
+                livestockData: action.payload
+            }
+
         case actionTypes.SELECTED_STOCK_DETAILS:
             return {
                 ...state,
