@@ -1,0 +1,51 @@
+:root {
+  /* Background Colours */
+  --primary-bg: #25294a;
+  --secondary-bg: #181e4e;
+  --nav-bg: #2d325a;
+  --card-bg: #3d447a;
+  --sidebar-bg: #202442;
+
+  /* Font & Other Colours */
+  --title-color: #ffffff;
+  --para-color: #fafaff;
+  --nav-color: #d7d8ff;
+  --hover-color: #f5317f;
+  --hover-secondary-color: #ff7c6e;
+  --user-title: #dae8ff;
+  --user-text: #a8b1d1;
+  --secondary-color: #ffc600;
+  --green-color: #198754;
+  --red-color: #dc3545;
+  --link-color: #0dcaf0;
+  --outline-color: #6342ff;
+  --gradient-color-primary: #242849;
+  --gradient-color-secondary: #202442;
+
+  /* Font Sizes */
+  --fs-base: 16px;
+  --fs-giga: 80px;
+  --fs-mega: 70px;
+  --fs-kilo: 60px;
+  --fs-h1: 40px;
+  --fs-h2: 35px;
+  --fs-h3: 26px;
+  --fs-h4: 20px;
+  --fs-h5: 18px;
+  --fs-h6: 14px;
+  --fs-max: 42px;
+  --fs-milli: 12px;
+  --fs-micro: 10px;
+  --fs-nano: 8px;
+
+  /* Font Weights */
+  --hairline-weight: 100;
+  --thin-weight: 200;
+  --light-weight: 300;
+  --normal-weight: 400;
+  --medium-weight: 500;
+  --semibold-weight: 600;
+  --bold-weight: 700;
+  --xbold-weight: 800;
+  --black-weight: 900;
+}
