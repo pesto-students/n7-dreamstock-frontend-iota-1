@@ -1,10 +1,7 @@
+import { Carousel as PrimeReactCarousel } from "primereact/carousel";
 import styled from "styled-components";
 import { compose, space, position, layout, typography } from "styled-system";
 
-const StyledAnchor = styled.a`
+const Carousel = styled(PrimeReactCarousel)`
   ${compose(space, position, layout, typography)}
-  cursor: pointer;
-  color: var(--link-color);
 `;
-
-export const A = (props) => <StyledAnchor {...props} />;

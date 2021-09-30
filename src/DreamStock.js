@@ -20,9 +20,13 @@ import {
 } from "./components/Button";
 import { Squash as Hamburger } from "hamburger-react";
 import FullLogo from "./assets/images/FullLogo.png";
-import { userCircle, wallet } from "./components/IconFonts";
+import { wallet } from "./components/IconFonts";
 import { Menubar } from "./components/Header";
-import { ALL_RIGHTS_RESERVED, COPYRIGHT_TEXT } from "./utils/Constants";
+import {
+  ALL_RIGHTS_RESERVED,
+  COPYRIGHT_TEXT,
+  USER_INFO,
+} from "./utils/Constants";
 import { SideBar as SideNav } from "./components/SideBar";
 import Transactions from "./pages/Transactions";
 import Passbook from "./pages/Passbook";
@@ -30,9 +34,11 @@ import Summary from "./pages/Summary";
 import Profile from "./pages/Profile";
 import Error from "./pages/Error";
 import LandingPage from "./pages/LandingPage";
+import { P } from "./components/Paragraph";
+import Logout from "./pages/google/Logout";
 
 export default function DreamStock() {
-  const [visibleLeft, setVisibleLeft] = useState(false);
+  const [visibleLeft, setVisibleLeft] = useState(true);
   const [userLoggedIn, setUserLoggedIn] = useState(false);
 
   const handleSideBarToggle = () => {
@@ -87,7 +93,7 @@ export default function DreamStock() {
       <SideNav
         modal={false}
         appendTo={"self"}
-        visible={true}
+        visible={visibleLeft}
         onHide={() => setVisibleLeft(false)}
         icons={
           <CardHorizontalTransparent pt={3}>
@@ -100,7 +106,8 @@ export default function DreamStock() {
         <hr />
         <CardContent m={3}>
           <Div flexCenter>
-            <Icon name={userCircle} size="5x" />
+            <Image src={USER_INFO.imageUrl} height="80" />
+            <P>{USER_INFO.name}</P>
           </Div>
         </CardContent>
         <hr />
@@ -168,11 +175,12 @@ export default function DreamStock() {
           mr={3}
           p={2}
         />
+        <Logout />
         <Div display={"inline-block"}>
-          <Icon name={userCircle} size="3x" />
+          {/* <Image src={USER_INFO.imageUrl} height="42" />
           <Span display={"inline-block"} ml={2} color={"title"}>
-            User Name
-          </Span>
+            {USER_INFO.name} */}
+          {/* </Span> */}
         </Div>
       </Div>
     );
@@ -180,6 +188,7 @@ export default function DreamStock() {
     return (
       <Div>
         <Menubar
+          className="header-menubar-test"
           minHeight={"8vh"}
           model={userLoggedIn ? itemsAfter : itemsBefore}
           start={userLoggedIn ? startAfter : startBefore}
@@ -217,37 +226,19 @@ export default function DreamStock() {
 
   const RouterComponent = () => {
     return (
-      <Div minHeight={"100%"} flexColumn>
+      <Div minHeight={"100vh"} flexColumn>
         <Header />
         <Router>
           <Switch>
-            <Route path="/login">
-              <Login />
-            </Route>
-            <Route path="/signup">
-              <Signup />
-            </Route>
-            <Route path="/dashboard">
-              <Dashboard />
-            </Route>
-            <Route path="/summary">
-              <Summary />
-            </Route>
-            <Route path="/passbook">
-              <Passbook />
-            </Route>
-            <Route path="/transactions">
-              <Transactions />
-            </Route>
-            <Route path="/profile">
-              <Profile />
-            </Route>
-            <Route path="/error">
-              <Error />
-            </Route>
-            <Route path="/">
-              <LandingPage />
-            </Route>
+            <Route exact path="/" component={LandingPage} />
+            <Route path="/signup" component={Signup} />
+            <Route path="/login" component={Login} />
+            <Route path="/dashboard" component={Dashboard} />
+            <Route path="/summary" component={Summary} />
+            <Route path="/passbook" component={Passbook} />
+            <Route path="/transactions" component={Transactions} />
+            <Route path="/profile" component={Profile} />
+            <Route component={Error} />
           </Switch>
         </Router>
         <Footer />
@@ -257,30 +248,48 @@ export default function DreamStock() {
 
   return (
     <Div>
-      <Div flexRow>
+      <Div
+        // backgroundImage={"url(" + banner + ")"}
+        // backgroundRepeat="no-repeat"
+        // backgroundSize="auto 100%"
+        // backgroundPosition="left top"
+        flexRow
+      >
+        {userLoggedIn ? (
+          <Div
+            width={[
+              visibleLeft ? "100%" : "0%",
+              visibleLeft ? "100%" : "0%",
+              "25%",
+              "20%",
+            ]}
+            zIndex={"999"}
+          >
+            <SideBar />
+          </Div>
+        ) : null}
+
         <Div
-          width={[
-            visibleLeft ? "100%" : "0%",
-            visibleLeft ? "100%" : "0%",
-            "25%",
-            "20%",
-          ]}
-        >
-          <SideBar />
-        </Div>
-        <Div
-          width={[
-            visibleLeft ? "0%" : "100%",
-            visibleLeft ? "0%" : "100%",
-            "75%",
-            "80%",
-          ]}
-          display={[
-            visibleLeft ? "none" : "block",
-            visibleLeft ? "none" : "block",
-            "block",
-            "block",
-          ]}
+          width={
+            userLoggedIn
+              ? [
+                  visibleLeft ? "0%" : "100%",
+                  visibleLeft ? "0%" : "100%",
+                  visibleLeft ? "75%" : "100%",
+                  visibleLeft ? "80%" : "100%",
+                ]
+              : "100%"
+          }
+          display={
+            userLoggedIn
+              ? [
+                  visibleLeft ? "none" : "block",
+                  visibleLeft ? "none" : "block",
+                  "block",
+                  "block",
+                ]
+              : "block"
+          }
         >
           <RouterComponent />
         </Div>

@@ -1,6 +1,7 @@
 import React from "react";
 import { GoogleLogin } from "react-google-login";
 import { ButtonTransparent } from "../../components/Button";
+import { SetLoggedInUserInfo } from "../../utils/CommonUtils";
 
 const clientId =
   "610233614673-jvsmjb0uhvppt0pqapelspsdibpvrd3c.apps.googleusercontent.com";
@@ -8,6 +9,7 @@ const clientId =
 const Login = () => {
   const onSuccess = (response) => {
     console.log("Login Success! CurrentUser: ", response.profileObj);
+    SetLoggedInUserInfo(response.profileObj);
   };
 
   const onFailure = (response) => {

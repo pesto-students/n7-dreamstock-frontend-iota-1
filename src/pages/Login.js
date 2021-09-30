@@ -11,7 +11,7 @@ import Login from "./google/Login";
 const Signup = (props) => {
   return (
     <Container flexCenter>
-      <CardContent width={[1, 2 / 3, 3 / 5, 1 / 3]}>
+      <CardContent width={[1, 2 / 3, 3 / 5, 1 / 3]} maxHeight={"60vh"}>
         <Div>
           <P fontSize={"var(--fs-h1)"} textAlign={"center"}>
             Log In
@@ -33,7 +33,8 @@ const Signup = (props) => {
           <P textAlign={"center"}>OR</P>
           <Login />
           <P textAlign={"center"}>
-            Don't Have an account? <A>Sign Up</A>
+            Don't Have an account?{" "}
+            <A onClick={(e) => (window.location.href = "/signup")}>Sign Up</A>
           </P>
         </Div>
       </CardContent>

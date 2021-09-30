@@ -33,7 +33,8 @@ const Signup = (props) => {
           <P textAlign={"center"}>OR</P>
           <ButtonTransparent label="Google" width={"100%"} />
           <P textAlign={"center"}>
-            Already have an account? <A>Log In</A>
+            Already have an account?{" "}
+            <A onClick={(e) => (window.location.href = "/login")}>Log In</A>
           </P>
         </Div>
       </CardContent>

@@ -8,6 +8,8 @@ const StyledSpan = styled.span`
       ? "var(--green-color)"
       : color === "red"
       ? "var(--red-color)"
+      : color === "yellow"
+      ? "var(--secondary-color)"
       : color === "title"
       ? "var(--title-color)"
       : "var(--user-text)"};

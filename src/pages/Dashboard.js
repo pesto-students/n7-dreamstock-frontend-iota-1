@@ -9,7 +9,6 @@ import { Column, Table } from "../components/Table";
 import {
   CardContent,
   CardHorizontal,
-  CardHorizontalTransparent,
 } from "../components/Card";
 import { Search } from "../components/Search";
 import * as Constants from "../utils/Constants";
@@ -42,14 +41,15 @@ const Dashboard = (props) => {
   useEffect(() => {
     // Set all the data from APIs here
     setSearchedStocks(Constants.STOCKS_RESPONSE.response.result);
-    setTodaysPortfolioList(Constants.TODAYS_PORTFOLIO_REAL_DATA.data);
+    setTodaysPortfolioList(Constants.TODAYS_PORTFOLIO_REAL_DATA.data.data);
   }, []);
 
   const stocksBodyTemplate = (rowData) => {
     return (
       <React.Fragment>
         <Span className="p-column-title">Stock</Span>
-        {rowData.stock_name} {rowData.stock_symbol}
+        <P m={0}>{rowData.stock_name}</P>
+        <Span color="yellow">{rowData.stock_symbol}</Span>
       </React.Fragment>
     );
   };
@@ -187,12 +187,12 @@ const Dashboard = (props) => {
   // };
 
   const handleRemoveStocksFromPortfolioDraft = (index) => {
-    // console.log("index => ", index);
+    console.log("index => ", index);
     let modifiedPortfolioDraftList = CommonUtils.RemoveElementFromArray(
       portfolioDraftList,
       index
     );
-    // console.log("after remove event => ", modifiedPortfolioDraftList);
+    console.log("after remove event => ", modifiedPortfolioDraftList);
     setPortfolioDraftList(modifiedPortfolioDraftList);
   };
 
@@ -233,6 +233,10 @@ const Dashboard = (props) => {
       todaysPortfolioObj.currentPrice = 5.0 + portfolioDraftObj.boughtAt;
       todaysPortfolioObj.investment = portfolioDraftObj.total;
       todaysPortfolioObj.investmentChange = 50.55;
+      todaysPortfolioObj.date = "1632631554809";
+      todaysPortfolioObj.stock_name = portfolioDraftObj.description;
+      todaysPortfolioObj.stock_symbol =  portfolioDraftObj.symbol
+      todaysPortfolioObj.order_price = portfolioDraftObj.boughtAt
       todaysPortfolioObj.investmentChangePercentage = "+11%";
       currentPortfolioList.push(todaysPortfolioObj);
     }
@@ -253,59 +257,68 @@ const Dashboard = (props) => {
           placeholder="Search Stocks"
           onChange={(e) => handleSelectStock(e)}
         />
-        <CardContent mt={4}>
+        <CardContent mt={4} flexCenter>
           {showChart ? (
             <Chart options={stockChartData} />
           ) : (
-            <P>Find stocks in the search bar and add them to your portfolio</P>
+            <P fontSize={"var(--fs-h3)"}>
+              Find stocks in the search bar and add them to your portfolio
+            </P>
           )}
         </CardContent>
         {showChart ? (
           <CardContent mt={4}>
-            <CardHorizontalTransparent>
-              <P>
-                {selectedStock.description} ({selectedStock.displaySymbol})
-              </P>
-              <P>
-                <Span fontSize={"var(--fs-milli)"} fontWeight={"light"}>
-                  Current Price
-                </Span>{" "}
-                {selectedStockInfo.response.c}
-              </P>
-              <P>
-                <Span fontSize={"var(--fs-milli)"} fontWeight={"light"}>
-                  Wallet Balance
-                </Span>{" "}
-                {walletBalance}
-              </P>
-              <P>
-                <Span fontSize={"var(--fs-milli)"} fontWeight={"light"}>
-                  Total
-                </Span>{" "}
-                {selectedStockCalculatedTotal}
-              </P>
-            </CardHorizontalTransparent>
-            <CardHorizontalTransparent>
-              <Input
-                width={"200px"}
-                placeholder={"Enter Quantity"}
-                value={selectedQuantity}
-                onChange={(e) => handleNumberOfStocksInput(e)}
-              />
-              <ButtonSecondary
-                width={"200px"}
-                label="Add Stocks"
-                disabled={selectedStockCalculatedTotal <= 0}
-                onClick={(e) => handleAddStocksToPortfolioDraft(e)}
-              />
-            </CardHorizontalTransparent>
+            <Div flexRow>
+              <Div width={[1, 1, 1 / 2]}>
+                <Div flexRow width={[1, 1, 1 / 2]}>
+                  <P ml={2}>
+                    {selectedStock.description} ({selectedStock.displaySymbol})
+                  </P>
+                  <P ml={2}>
+                    <Span fontSize={"var(--fs-milli)"} fontWeight={"light"}>
+                      Current Price
+                    </Span>{" "}
+                    {selectedStockInfo.response.c}
+                  </P>
+                </Div>
+                <Div flexRow width={[1, 1, 1 / 2]}>
+                  <P ml={2}>
+                    <Span fontSize={"var(--fs-milli)"} fontWeight={"light"}>
+                      Wallet Balance
+                    </Span>{" "}
+                    {walletBalance}
+                  </P>
+                  <P ml={2}>
+                    <Span fontSize={"var(--fs-milli)"} fontWeight={"light"}>
+                      Total
+                    </Span>{" "}
+                    {selectedStockCalculatedTotal}
+                  </P>
+                </Div>
+              </Div>
+              <Div flexCenter width={[1, 1, 1 / 2]}>
+                <Input
+                  width={"200px"}
+                  placeholder={"Enter Quantity"}
+                  value={selectedQuantity}
+                  onChange={(e) => handleNumberOfStocksInput(e)}
+                />
+                <ButtonSecondary
+                  mt={3}
+                  width={"200px"}
+                  label="Add Stocks"
+                  disabled={selectedStockCalculatedTotal <= 0}
+                  onClick={(e) => handleAddStocksToPortfolioDraft(e)}
+                />
+              </Div>
+            </Div>
           </CardContent>
         ) : null}
         {showTodaysPortfolio ? (
           <CardContent mt={4}>
-            <P>Today's Portfolio</P>
+            <P fontSize={"var(--fs-h3)"}>Today's Portfolio</P>
             <Div>
-              <Table value={todaysPortfolioList.data}>
+              <Table value={todaysPortfolioList}>
                 <Column
                   field="stockName"
                   header="Stock"

@@ -26,10 +26,12 @@ const Profile = (props) => {
           <P>Mobile Number</P>
           <Input placeholder="Mobile Number" type="text" p={3} />
         </Div>
-        <P>Bank Details</P>
+        <P fontSize={"var(--fs-h3)"} mt={3}>
+          Bank Details
+        </P>
         <Div>
-          <P>CardContent Number</P>
-          <Input placeholder="CardContent Number" type="text" p={3} />
+          <P>Card Number</P>
+          <Input placeholder="Card Number" type="text" p={3} />
         </Div>
         <Div>
           <P>Account Holder Name</P>
@@ -39,7 +41,7 @@ const Profile = (props) => {
           <P>Expiry Date</P>
           <Input placeholder="Expiry Date" type="text" p={3} />
         </Div>
-        <ButtonSecondary label="SAVE" mt={3} />
+        <ButtonSecondary label="SAVE" mt={3} pl={5} pr={5} />
       </Div>
     </Container>
   );
