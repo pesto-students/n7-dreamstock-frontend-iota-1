@@ -6,6 +6,7 @@ import { ButtonSecondary } from "../components/Button";
 import { Span } from "../components/Span";
 import { Toast } from "../components/Toast";
 import { Column, Table } from "../components/Table";
+import axios from 'axios';
 import {
   CardContent,
   CardHorizontal,
@@ -19,6 +20,8 @@ import { Chart } from "../components/Chart";
 import { Input } from "../components/Input";
 import { Icon } from "../components/Icon";
 import { close } from "../components/IconFonts";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchMyDashoardDetails,updateMyportfolio } from '../store/actions/dashboardAction'
 
 const Dashboard = (props) => {
   const [searchedStocks, setSearchedStocks] = useState([]);
@@ -31,18 +34,17 @@ const Dashboard = (props) => {
   const [selectedStockInfo, setSelectedStockInfo] = useState(null);
   const [selectedQuantity, setSelectedQuantity] = useState("");
   const [showTodaysPortfolio, setShowTodaysPortfolio] = useState(true);
-  const [todaysPortfolioList, setTodaysPortfolioList] = useState([]);
   const [
     selectedStockCalculatedTotal,
     setSelectedStockCalculatedTotal,
   ] = useState(0);
-
+  const todaysPortfolioList =  useSelector((state)=>state.dashboard.myCurrentPortfolio) || []
   const toast = useRef(null);
+  
+  const dispatch = useDispatch()
 
   useEffect(() => {
-    // Set all the data from APIs here
-    setSearchedStocks(Constants.STOCKS_RESPONSE.response.result);
-    setTodaysPortfolioList(Constants.TODAYS_PORTFOLIO_REAL_DATA.data);
+    dispatch(fetchMyDashoardDetails())
   }, []);
 
   const stocksBodyTemplate = (rowData) => {
@@ -108,6 +110,39 @@ const Dashboard = (props) => {
     );
   };
 
+  const handleStockSearch = (e) => {
+    console.log("handleStockSearch", e.query)
+    axios.get(`/api/stocks/search?name=${e.query}`)
+      .then((res) => {
+        setFilteredStocks(res.data.response.result)
+      })
+      .catch((err) => console.log('search err', err))
+  }
+
+  const handleStockSelection = (event) => {
+    const selectedStockObj = event.value;
+    setSelectedStock(selectedStockObj);
+    if (selectedStockObj.displaySymbol !== undefined) {
+      axios.get(`/api/stocks/getCurrentStockInfo?name=${selectedStockObj.displaySymbol}`)
+        .then((res) => {
+          setSelectedStockInfo(res.data)
+        })
+        .catch((err) => console.log('getCurrentStockInfo err', err))
+
+      axios.get(`/api/stocks/getStockInfo?name=${selectedStockObj.displaySymbol}`)
+        .then((res) => {
+          setStockChartData(
+            ObjectGenerator.GenerateStockGraphDataObj(
+              selectedStockObj.displaySymbol,
+              res.data.response.c
+            )
+          );
+          setShowChart(true);
+        })
+        .catch((err) => console.log('getCurrentStockInfo err', err))
+    }
+  }
+
   const handleSearchStock = (event) => {
     setTimeout(() => {
       let _filteredStocks;
@@ -167,6 +202,7 @@ const Dashboard = (props) => {
     portfolioDraftObj.symbol = selectedStock.symbol;
     portfolioDraftObj.description = selectedStock.description;
     portfolioDraftObj.boughtAt = selectedStockInfo.response.c;
+    portfolioDraftObj.open = selectedStockInfo.response.o;
     portfolioDraftObj.units = selectedQuantity;
     portfolioDraftObj.total = selectedStockCalculatedTotal;
 
@@ -199,7 +235,6 @@ const Dashboard = (props) => {
   const handleSubmitPortfolio = (event) => {
     let requestObj = {};
     let payload = [];
-    let currentPortfolioList = todaysPortfolioList;
     for (let i = 0; i < portfolioDraftList.length; i++) {
       let data = {};
       let portfolioDraftObj = portfolioDraftList[i];
@@ -207,13 +242,14 @@ const Dashboard = (props) => {
       data.stock_symbol = portfolioDraftObj.symbol;
       data.quantity = portfolioDraftObj.units;
       data.order_price = portfolioDraftObj.boughtAt;
+      data.current_price = portfolioDraftObj.boughtAt;
+      data.open = portfolioDraftObj.open;
       data.investment = portfolioDraftObj.total;
       payload.push(data);
     }
     requestObj.data = payload;
-    console.log("req => ", requestObj);
     // Create portfolio API call here
-
+    dispatch(updateMyportfolio(requestObj))
     // If success, show success toaster, reset page & show today's portfolio
     toast.current.show({
       severity: "success",
@@ -222,25 +258,25 @@ const Dashboard = (props) => {
       life: 3000,
     });
 
-    for (let i = 0; i < portfolioDraftList.length; i++) {
-      let todaysPortfolioObj = {};
-      let portfolioDraftObj = portfolioDraftList[i];
-      todaysPortfolioObj.stockName = portfolioDraftObj.description;
-      todaysPortfolioObj.description = portfolioDraftObj.description;
-      todaysPortfolioObj.symbol = portfolioDraftObj.symbol;
-      todaysPortfolioObj.quantity = portfolioDraftObj.units;
-      todaysPortfolioObj.boughtAt = portfolioDraftObj.boughtAt;
-      todaysPortfolioObj.currentPrice = 5.0 + portfolioDraftObj.boughtAt;
-      todaysPortfolioObj.investment = portfolioDraftObj.total;
-      todaysPortfolioObj.investmentChange = 50.55;
-      todaysPortfolioObj.investmentChangePercentage = "+11%";
-      currentPortfolioList.push(todaysPortfolioObj);
-    }
+    // for (let i = 0; i < portfolioDraftList.length; i++) {
+    //   let todaysPortfolioObj = {};
+    //   let portfolioDraftObj = portfolioDraftList[i];
+    //   todaysPortfolioObj.stockName = portfolioDraftObj.description;
+    //   todaysPortfolioObj.description = portfolioDraftObj.description;
+    //   todaysPortfolioObj.symbol = portfolioDraftObj.symbol;
+    //   todaysPortfolioObj.quantity = portfolioDraftObj.units;
+    //   todaysPortfolioObj.boughtAt = portfolioDraftObj.boughtAt;
+    //   todaysPortfolioObj.currentPrice = 5.0 + portfolioDraftObj.boughtAt;
+    //   todaysPortfolioObj.investment = portfolioDraftObj.total;
+    //   todaysPortfolioObj.investmentChange = 50.55;
+    //   todaysPortfolioObj.investmentChangePercentage = "+11%";
+    //   currentPortfolioList.push(todaysPortfolioObj);
+    // }
     setPortfolioDraftList([]);
-    setTodaysPortfolioList(currentPortfolioList);
     setShowTodaysPortfolio(true);
   };
 
+  console.log('todaysPortfolioList', todaysPortfolioList, showTodaysPortfolio)
   return (
     <Container flexRow minHeight={"80vh"}>
       <Div width={["100%", "100%", "60%", "70%"]} p={3}>
@@ -248,10 +284,10 @@ const Dashboard = (props) => {
           autoFocus={true}
           value={selectedStock}
           suggestions={filteredStocks}
-          completeMethod={handleSearchStock}
+          completeMethod={handleStockSearch}
           field="description"
           placeholder="Search Stocks"
-          onChange={(e) => handleSelectStock(e)}
+          onChange={(e) => handleStockSelection(e)}
         />
         <CardContent mt={4}>
           {showChart ? (
@@ -270,7 +306,7 @@ const Dashboard = (props) => {
                 <Span fontSize={"var(--fs-milli)"} fontWeight={"light"}>
                   Current Price
                 </Span>{" "}
-                {selectedStockInfo.response.c}
+                {selectedStockInfo?.response.c}
               </P>
               <P>
                 <Span fontSize={"var(--fs-milli)"} fontWeight={"light"}>
@@ -305,7 +341,7 @@ const Dashboard = (props) => {
           <CardContent mt={4}>
             <P>Today's Portfolio</P>
             <Div>
-              <Table value={todaysPortfolioList.data}>
+              <Table value={todaysPortfolioList}>
                 <Column
                   field="stockName"
                   header="Stock"

@@ -10,6 +10,7 @@
     "@testing-library/react": "^11.2.7",
     "@testing-library/user-event": "^12.8.3",
     "hamburger-react": "^2.4.1",
+    "axios": "^0.21.4",
     "highcharts": "^9.2.2",
     "highcharts-react-official": "^3.0.0",
     "joi": "^17.4.2",
@@ -72,5 +73,6 @@
     "@storybook/node-logger": "^6.3.8",
     "@storybook/preset-create-react-app": "^3.2.0",
     "@storybook/react": "^6.3.8"
-  }
+  },
+  "proxy": "http://localhost:5000"
 }
