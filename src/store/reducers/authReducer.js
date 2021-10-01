@@ -7,7 +7,7 @@ const initialState = {
 
 export default function (state = initialState, action) {
     switch (action.type) {
-        case actionTypes.LOG_IN_USER:
+        case actionTypes.SET_USER_DATA:
             return {
                 ...state,
                 isAuthenticated: true,

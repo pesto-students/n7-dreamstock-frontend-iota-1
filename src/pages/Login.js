@@ -7,8 +7,15 @@ import { Input } from "../components/Input";
 import { P } from "../components/Paragraph";
 import { A } from "../components/Link";
 import Login from "./google/Login";
+import { useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
 
 const Signup = (props) => {
+  const {isAuthenticated} = useSelector((state)=>state.auth)
+  const history = useHistory()
+  if(isAuthenticated){
+    history.push('/dashboard')
+  }
   return (
     <Container flexCenter>
       <CardContent width={[1, 2 / 3, 3 / 5, 1 / 3]} maxHeight={"60vh"}>

@@ -74,11 +74,11 @@ const Summary = (props) => {
   const earningsBodyTemplate = (rowData) => {
     const {order_price} = rowData;
 
-    const change = liveStockData[rowData.stock_symbol] - order_price
+    // const change = liveStockData[rowData.stock_symbol] - order_price
     return (
       <React.Fragment>
         <Span className="p-column-title">Earnings</Span>
-        {change ? change : "-"}
+        {rowData.investmentChange ? rowData.investmentChange : "-"}
       </React.Fragment>
     );
   };
