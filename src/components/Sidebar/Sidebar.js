@@ -56,13 +56,13 @@ const items = [
 ];
 
 const SideNavBar = (props) => {
-    const [visibleLeft, setVisibleLeft] = useState(false);
+    // const [visibleLeft, setVisibleLeft] = useState(false);
     return (
         <SideNav
             modal={false}
             appendTo={"self"}
-            visible={true}
-            onHide={() => setVisibleLeft(false)}
+            visible={props.visibleLeft}
+            onHide={() => props.handleSideBarToggle()}
             icons={
                 <CardHorizontalTransparent pt={3}>
                     <Image src={FullLogo} height="42" />

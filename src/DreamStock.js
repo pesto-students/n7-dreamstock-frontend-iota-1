@@ -14,9 +14,21 @@ import Header from "./components/Header/Header";
 import SideNavBar from "./components/Sidebar/Sidebar"
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import PrivateRoute from './utils/PrivateRoute';
+import { useSelector } from "react-redux";
+
 
 export default function DreamStock() {
-  const [visibleLeft, setVisibleLeft] = useState(false);
+  const {isAuthenticated} = useSelector((state)=>state.auth)
+  const [visibleLeft, setVisibleLeft] = useState(isAuthenticated);
+
+  // console.log("isAuthenticated => ", isAuthenticated);
+  // console.log("visibleLeft => ", visibleLeft);
+
+
+  const handleSideBarToggle = () => {
+    setVisibleLeft(!visibleLeft);
+  };
+
   const SideNavigationMenu = () => (
     <Div
       width={[
@@ -26,30 +38,38 @@ export default function DreamStock() {
         "20%",
       ]}
     >
-      <SideNavBar />
+      <SideNavBar handleSideBarToggle={handleSideBarToggle} visibleLeft={visibleLeft}/>
     </Div>
   )
   return (
     <Router>
       <Div>
-        <Div flexRow>
+        <Div flexRow minHeight={"100vh"}>
           <PrivateRoute path="/" component={SideNavigationMenu} />
           <Div
-            width={[
-              visibleLeft ? "0%" : "100%",
-              visibleLeft ? "0%" : "100%",
-              "75%",
-              "80%",
-            ]}
-            display={[
-              visibleLeft ? "none" : "block",
-              visibleLeft ? "none" : "block",
-              "block",
-              "block",
-            ]}
-          >
+          width={
+            isAuthenticated
+              ? [
+                  visibleLeft ? "0%" : "100%",
+                  visibleLeft ? "0%" : "100%",
+                  visibleLeft ? "75%" : "100%",
+                  visibleLeft ? "80%" : "100%",
+                ]
+              : "100%"
+          }
+          display={
+            isAuthenticated
+              ? [
+                  visibleLeft ? "none" : "block",
+                  visibleLeft ? "none" : "block",
+                  "block",
+                  "block",
+                ]
+              : "block"
+          }
+        >
             <Div minHeight={"100%"} flexColumn>
-              <Header />
+              <Header handleSideBarToggle={handleSideBarToggle} visibleLeft={visibleLeft}/>
               <Router>
                 <Switch>
                   <Route path="/" exact component={LandingPage} />

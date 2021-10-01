@@ -15,13 +15,9 @@ import { useDispatch, useSelector } from "react-redux";
 
 import FullLogo from "../../assets/images/FullLogo.png";
 import { logoutUser } from "../../store/actions/authAction";
-const Header = () => {
-    const [visibleLeft, setVisibleLeft] = useState(false);
+const Header = (props) => {
     const {isAuthenticated} = useSelector((state)=>state.auth)
     const dispatch = useDispatch()
-    const handleSideBarToggle = () => {
-        setVisibleLeft(!visibleLeft);
-      };
 
     const itemsBefore = [
         {
@@ -47,8 +43,8 @@ const Header = () => {
         <Span>
             <Hamburger
                 duration={0.8}
-                toggled={visibleLeft}
-                toggle={() => handleSideBarToggle()}
+                toggled={props.visibleLeft}
+                toggle={() => props.handleSideBarToggle()}
             />
             {/* <Image src={FullLogo} height="40" /> */}
         </Span>
