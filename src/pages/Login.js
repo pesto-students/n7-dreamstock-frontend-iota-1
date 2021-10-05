@@ -18,7 +18,7 @@ const Signup = (props) => {
   }
   return (
     <Container flexCenter>
-      <CardContent width={[1, 2 / 3, 3 / 5, 1 / 3]} maxHeight={"60vh"}>
+      <CardContent width={[1, 2 / 3, 3 / 5, 1 / 3]}>
         <Div>
           <P fontSize={"var(--fs-h1)"} textAlign={"center"}>
             Log In
