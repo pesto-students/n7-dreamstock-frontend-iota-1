@@ -6,20 +6,32 @@ import { Span } from "../components/Span";
 import { Column, Table } from "../components/Table";
 import * as Constants from "../utils/Constants";
 import * as CommonUtils from "../utils/CommonUtils";
+import axios from "axios";
 
 const Passbook = (props) => {
   const [passbookData, setPassbookData] = useState([]);
 
   useEffect(() => {
     // Call the PASSBOOK API here and set the response data
-    setPassbookData(Constants.PASSBOOK_DATA.data);
+    axios.get('/api/passbook/data')
+    .then((res)=>{
+      const data = res.data.map((el) => {
+        let date = el.date.split('T')[0]
+        el.date = date
+        return el
+      })
+      console.log('setPassbookData',data)
+      setPassbookData(data)
+    })
+    .catch((err)=>console.log('passbook err',err))
+    // setPassbookData(Constants.PASSBOOK_DATA.data);
   }, []);
 
   const dateBodyTemplate = (rowData) => {
     return (
       <React.Fragment>
         <Span className="p-column-title">Date</Span>
-        {CommonUtils.ConvertMillisIntoDate(parseInt(rowData.date))}
+        {(rowData.date)}
       </React.Fragment>
     );
   };

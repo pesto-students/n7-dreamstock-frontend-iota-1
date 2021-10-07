@@ -372,7 +372,7 @@ export const STOCK_CHART_RESPONSE = {
 };
 
 export const CURRENT_STOCK_INFO_RESPONSE = {
-  msg: "getCurrentStockInfo Works",
+  msg: "getLiveStockInfo Works",
   response: {
     c: 52.11,
     d: 4.01,

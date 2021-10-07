@@ -18,7 +18,7 @@ import { logoutUser } from "../../store/actions/authAction";
 const Header = (props) => {
     const {isAuthenticated} = useSelector((state)=>state.auth)
     const dispatch = useDispatch()
-
+    const {wallet_balance} = useSelector((state)=>state.auth.user)
     const itemsBefore = [
         {
             label: "Home",
@@ -63,7 +63,7 @@ const Header = (props) => {
     const endAfter = (
         <Div>
             <ButtonTransparent
-                label="1000.00 INR"
+                label={wallet_balance +" INR"}
                 mr={3}
             />
             <ButtonTransparent

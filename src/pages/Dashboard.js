@@ -33,6 +33,7 @@ const Dashboard = (props) => {
   const [selectedStockInfo, setSelectedStockInfo] = useState(null);
   const [selectedQuantity, setSelectedQuantity] = useState("");
   const [showTodaysPortfolio, setShowTodaysPortfolio] = useState(true);
+  const {wallet_balance}= useSelector((state)=>state.auth.user)
   const [
     selectedStockCalculatedTotal,
     setSelectedStockCalculatedTotal,
@@ -40,6 +41,9 @@ const Dashboard = (props) => {
   const todaysPortfolioList =  useSelector((state)=>state.dashboard.myCurrentPortfolio) || []
   const liveStockData = useSelector(state=>state.dashboard.liveStockData) || {}
 
+  useEffect(()=>{
+    setWalletBalance(wallet_balance)
+  },[wallet_balance])
   const toast = useRef(null);
   let pollingTimer = {}
   const dispatch = useDispatch()
@@ -132,11 +136,13 @@ const Dashboard = (props) => {
     const selectedStockObj = event.value;
     setSelectedStock(selectedStockObj);
     if (selectedStockObj.displaySymbol !== undefined) {
-      axios.get(`/api/stocks/getCurrentStockInfo?name=${selectedStockObj.displaySymbol}`)
+      axios.get(`/api/stocks/getLiveStockInfo?name=${selectedStockObj.displaySymbol}`)
         .then((res) => {
           setSelectedStockInfo(res.data)
+          setShowChart(true);
+
         })
-        .catch((err) => console.log('getCurrentStockInfo err', err))
+        .catch((err) => console.log('getLiveStockInfo err', err))
 
       axios.get(`/api/stocks/getStockInfo?name=${selectedStockObj.displaySymbol}`)
         .then((res) => {
@@ -148,7 +154,7 @@ const Dashboard = (props) => {
           );
           setShowChart(true);
         })
-        .catch((err) => console.log('getCurrentStockInfo err', err))
+        .catch((err) => console.log('getLiveStockInfo err', err))
     }
   }
 
@@ -317,13 +323,13 @@ const Dashboard = (props) => {
               <Div width={[1, 1, 1 / 2]}>
                 <Div flexRow width={[1, 1, 1 / 2]}>
                   <P ml={2}>
-                    {selectedStock.description} ({selectedStock.displaySymbol})
+                    {selectedStock?.description} ({selectedStock?.displaySymbol})
                   </P>
                   <P ml={2}>
                     <Span fontSize={"var(--fs-milli)"} fontWeight={"light"}>
                       Current Price
                     </Span>{" "}
-                    {selectedStockInfo.response.c}
+                    {selectedStockInfo?.response?.c}
                   </P>
                 </Div>
                 <Div flexRow width={[1, 1, 1 / 2]}>
