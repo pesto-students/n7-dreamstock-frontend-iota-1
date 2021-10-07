@@ -6,11 +6,12 @@ import { CardContent } from "../components/Card";
 import { Input } from "../components/Input";
 import { P } from "../components/Paragraph";
 import { A } from "../components/Link";
-import Login from "./google/Login";
+import GLogin from "./google/Login";
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
+import { LogError } from "../utils/SentryUtils";
 
-const Signup = (props) => {
+const Login = (props) => {
   const {isAuthenticated} = useSelector((state)=>state.auth)
   const history = useHistory()
   if(isAuthenticated){
@@ -38,7 +39,7 @@ const Signup = (props) => {
         <Div mt={4}>
           <ButtonSecondary label="Log In" width={"100%"} />
           <P textAlign={"center"}>OR</P>
-          <Login />
+          <GLogin />
           <P textAlign={"center"}>
             Don't Have an account?{" "}
             <A onClick={(e) => (window.location.href = "/signup")}>Sign Up</A>
@@ -49,4 +50,4 @@ const Signup = (props) => {
   );
 };
 
-export default Signup;
+export default Login;

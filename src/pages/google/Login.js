@@ -2,19 +2,20 @@ import React from "react";
 import { GoogleLogin } from "react-google-login";
 import { useDispatch } from "react-redux";
 import { ButtonTransparent } from "../../components/Button";
-import { initiateUserLogin } from '../../store/actions/authAction'
+import { initiateUserLogin } from "../../store/actions/authAction";
 const clientId =
   "610233614673-jvsmjb0uhvppt0pqapelspsdibpvrd3c.apps.googleusercontent.com";
 
-const Login = () => {
-  const dispatch = useDispatch()
+const GLogin = () => {
+  const dispatch = useDispatch();
   const onSuccess = (response) => {
-    dispatch(initiateUserLogin(response.profileObj))
+    console.log("success! initiateUserLogin");
+    dispatch(initiateUserLogin(response.profileObj));
   };
 
   const onFailure = (response) => {
     console.log("Login Failed! response: ", response);
-    alert('Login Failed!')
+    alert("Login Failed!");
   };
 
   return (
@@ -32,4 +33,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default GLogin;

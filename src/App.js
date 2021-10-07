@@ -6,6 +6,12 @@ import store from './store/store';
 import setAuthToken from './utils/setAuthToken';
 import jwt_decode from 'jwt-decode';
 import {setCurrentUser} from './store/actions/authAction'
+import { InitSentry } from "./utils/SentryUtils";
+import { InitFirebase } from "./utils/FirebaseUtils";
+
+InitFirebase();
+InitSentry();
+
 // Check for token
 if (localStorage.jwtToken) {
   // Set auth token header auth
