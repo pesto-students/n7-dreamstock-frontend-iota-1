@@ -61,30 +61,30 @@ const Header = (props) => {
         </Div>
     );
     const endAfter = (
-        <Div>
-            <ButtonTransparent
-                label={wallet_balance +" INR"}
-                mr={3}
-            />
-            <ButtonTransparent
-                label={<Icon name={wallet} size="2x" />}
-                mr={3}
-                p={2}
-                onClick={()=>dispatch(logoutUser())}
-            />
-            <Div display={"inline-block"}>
-                <Icon name={userCircle} size="3x" />
-                <Span display={"inline-block"} ml={2} color={"title"}>
-                    User Name
-          </Span>
-            </Div>
-        </Div>
+      <Div>
+        <ButtonTransparent
+          label={
+            <Span>
+              <Icon name={wallet} />{" "}
+              <Span color={"title"}>{wallet_balance + " INR"}</Span>
+            </Span>
+          }
+          mr={3}
+          p={3}
+        />
+        <ButtonSecondary
+          label="Log Out"
+          p={3}
+          onClick={() => dispatch(logoutUser())}
+        />
+      </Div>
     );
 
     return (
         <Div>
             <Menubar
                 minHeight={"8vh"}
+                hideBurger={isAuthenticated}
                 model={isAuthenticated ? itemsAfter : itemsBefore}
                 start={isAuthenticated ? startAfter : startBefore}
                 end={isAuthenticated ? endAfter : endBefore}

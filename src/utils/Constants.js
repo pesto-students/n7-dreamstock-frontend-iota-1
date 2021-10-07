@@ -4,7 +4,7 @@ export const MODAL_ACTION_CONFIRMATION =
   "Do you want to go ahead with this action?";
 
 export const BACKEND_URL =
-  "https://dreamstock-backend-service-5vag4zydla-el.a.run.app";
+  "https://dreamstock-backend-5vag4zydla-el.a.run.app";
 
 
 export const USER_INFO = {

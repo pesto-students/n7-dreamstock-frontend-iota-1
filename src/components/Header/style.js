@@ -7,6 +7,10 @@ export const Menubar = styled(PrimeMenubar)`
   color: var(--title-color);
   background: var(--secondary-bg);
 
+  .p-menubar-button {
+    display: ${({ hideBurger }) => (hideBurger === true ? "none" : "flex")};
+  }
+
   .p-menubar-root-list {
     background: var(--secondary-bg);
   }
