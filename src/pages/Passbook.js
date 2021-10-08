@@ -6,11 +6,11 @@ import { Span } from "../components/Span";
 import { Column, Table } from "../components/Table";
 import * as CommonUtils from "../utils/CommonUtils";
 import axios from "axios";
+import { color } from "highcharts";
 
 const Passbook = (props) => {
   const [passbookData, setPassbookData] = useState([]);
   useEffect(() => {
-    // Call the PASSBOOK API here and set the response data
     axios.get('/api/passbook/data')
     .then((res)=>{
       console.log('/api/passbook/data',res)
@@ -52,16 +52,24 @@ const Passbook = (props) => {
   };
 
   const profitLossBodyTemplate = (rowData) => {
+    let color = 'title'
+    if(rowData.action.includes('PROFIT')){
+      color = 'green'
+    }
+    else if(rowData.action.includes('LOSS')){
+      color='red'
+    }
+    else{
+      color='title'
+    }
     return (
       <>
         <Span className="p-column-title">Profit/Loss</Span>
         {rowData.profit_loss ? (
           <Span
-            color={CommonUtils.ReturnColorBasedOnProfitLoss(
-              rowData.profit_loss
-            )}
+            color={color}
           >
-            {rowData.profit_loss}
+            {color=='title'? rowData.profit_loss:Number(rowData.profit_loss).toFixed(2)}
           </Span>
         ) : (
           "-"

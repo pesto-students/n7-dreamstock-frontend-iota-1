@@ -54,10 +54,14 @@ const Summary = (props) => {
   };
 
   const changeBodyTemplate = (rowData) => {
+    const currentPrice=Number(rowData.current_price) 
+    const orderPrice=Number(rowData.order_price) 
+    const decideColor = currentPrice > orderPrice ? 'green' : 'red';
+    const sign = orderPrice > currentPrice ?'-' :'+'
     return (
       <>
         <Span className="p-column-title">Change</Span>
-        {rowData.change ? rowData.change : "-"}
+        <Span color={decideColor} >{sign}{rowData.change ? Number(rowData.change).toFixed(2) : "-"}</Span>
       </>
     );
   };
@@ -73,12 +77,15 @@ const Summary = (props) => {
 
   const earningsBodyTemplate = (rowData) => {
     const { order_price } = rowData;
-
+    const currentPrice=Number(rowData.current_price) 
+    const orderPrice=Number(rowData.order_price) 
+    const decideColor = currentPrice > orderPrice ? 'green' : 'red';
+    const sign = orderPrice > currentPrice ?'-' :'+'
     // const change = liveStockData[rowData.stock_symbol] - order_price
     return (
       <>
         <Span className="p-column-title">Earnings</Span>
-        {rowData.investmentChange ? rowData.investmentChange : "-"}
+        <Span color={decideColor} >{sign}{rowData.earnings ? Number(rowData.earnings).toFixed(2) : "-"}</Span>
       </>
     );
   };
@@ -177,7 +184,7 @@ const Summary = (props) => {
   const renderMessage = () => {
     return (
       <CardContent mt={4} flexCenter>
-      <P fontSize={"var(--fs-h3)"}>Please go on Dashboard and create a portfolio</P>
+        <P fontSize={"var(--fs-h3)"}>Please go on Dashboard and create a portfolio</P>
       </CardContent>
     )
   }

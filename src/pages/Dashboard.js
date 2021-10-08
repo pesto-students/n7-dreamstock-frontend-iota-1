@@ -33,7 +33,7 @@ const Dashboard = (props) => {
   const [selectedStockInfo, setSelectedStockInfo] = useState(null);
   const [selectedQuantity, setSelectedQuantity] = useState("");
   const [showTodaysPortfolio, setShowTodaysPortfolio] = useState(true);
-  const [isMarketOpen, setMarketOpen] = useState(false)
+  const [isMarketOpen, setMarketOpen] = useState(false);
   const { wallet_balance } = useSelector((state) => state.auth.user)
   const [
     selectedStockCalculatedTotal,
@@ -53,14 +53,17 @@ const Dashboard = (props) => {
 
   useEffect(() => {
     const currentTime = moment().format('H')
-    console.log('currentTime',currentTime)
-    if(currentTime<=16){
+    if(currentTime>=9 && currentTime<16){
       setMarketOpen(true)
-    }
-    dispatch(fetchLiveStockPrice())
-    pollingTimer = setInterval(() => {
+      pollingTimer = setInterval(() => {
+        dispatch(fetchLiveStockPrice())
+      }, 1000 * 5 * 2)
       dispatch(fetchLiveStockPrice())
-    }, 1000 * 60 * 2)
+    }
+    else{
+      setMarketOpen(false)
+    }
+    
     dispatch(fetchMyDashoardDetails())
     return () => {
       clearInterval(pollingTimer)
@@ -96,10 +99,14 @@ const Dashboard = (props) => {
   };
 
   const changeBodyTemplate = (rowData) => {
+    const currentPrice=Number(rowData.current_price) 
+    const orderPrice=Number(rowData.order_price) 
+    const decideColor = currentPrice > orderPrice ? 'green' : 'red';
+    const sign = orderPrice > currentPrice ?'-' :'+'
     return (
       <>
         <Span className="p-column-title">Change</Span>
-        {rowData.change ? rowData.change : "-"}
+        <Span color={decideColor} >{sign}{rowData.change ? Number(rowData.change).toFixed(2) : "-"}</Span>
       </>
     );
   };
@@ -114,10 +121,15 @@ const Dashboard = (props) => {
   };
 
   const earningsBodyTemplate = (rowData) => {
+    const { order_price } = rowData;
+    const currentPrice=Number(rowData.current_price) 
+    const orderPrice=Number(rowData.order_price) 
+    const decideColor = currentPrice > orderPrice ? 'green' : 'red';
+    const sign = orderPrice > currentPrice ?'-' :'+'
     return (
       <>
         <Span className="p-column-title">Earnings</Span>
-        {rowData.investmentChange ? rowData.investmentChange : "-"}
+        <Span color={decideColor} >{sign}{rowData.earnings ? Number(rowData.earnings).toFixed(2) : "-"}</Span>
       </>
     );
   };
@@ -326,7 +338,7 @@ const Dashboard = (props) => {
         ) : null}
         {showTodaysPortfolio ? (
           <CardContent mt={4}>
-            <P fontSize={"var(--fs-h3)"}>{isMarketOpen ? "Today's Portfolio" : "Portfolio for next Market Session"}</P>
+            <P fontSize={"var(--fs-h3)"}>{moment().format('H')<16 ? "Today's Portfolio" : "Portfolio for next Market Session"}</P>
             <Div>
               <Table value={todaysPortfolioList}>
                 <Column

@@ -25,7 +25,7 @@ export default function (state = initialState, action) {
                 ...state,
                 user:{
                     ...state.user,
-                    wallet_balance :action.payload
+                    wallet_balance :Number(action.payload).toFixed(2)
                 }
             }
         default:
