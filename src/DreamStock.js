@@ -17,6 +17,7 @@ import PrivateRoute from './utils/PrivateRoute';
 import { useSelector, useDispatch } from "react-redux";
 import { walletUpdate } from './store/actions/dashboardAction'
 import axios from 'axios';
+import request from './utils/interceptor'
 import ErrorBoundary from './components/ErrorBoundary'
 import moment from 'moment-timezone';
 
@@ -28,7 +29,7 @@ export default function DreamStock() {
   useEffect(() => {
     moment.tz.setDefault("Asia/Mumbai");
     console.log('time',moment())
-    axios.get('/api/wallet/info')
+    request.get('/api/wallet/info')
       .then((res) => {
         dispatch(walletUpdate(res.data.wallet_balance))
       })

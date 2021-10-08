@@ -1,8 +1,9 @@
 import * as actionTypes from '../actionTypes/dashboardActionTypes';
 import axios from 'axios';
+import request from '../../utils/interceptor'
 
 export const fetchMyDashoardDetails = () => dispatch => {
-  axios.get('/api/dashboard/myDashboard')
+  request.get('/api/dashboard/myDashboard')
     .then((res) => {
       dispatch({ type: actionTypes.FETCH_MY_DASHBOARD_DETAILS, payload: res.data.order })
     })
@@ -10,7 +11,7 @@ export const fetchMyDashoardDetails = () => dispatch => {
 }
 
 export const updateMyportfolio = (requestObj) => dispatch => {
-  axios.post('/api/dashboard/create_order', requestObj)
+  request.post('/api/dashboard/create_order', requestObj)
     .then((res) => {
       console.log('response', res.data,requestObj)
       dispatch(walletUpdate(res.data.newBalance))
@@ -25,7 +26,7 @@ export const walletUpdate = (newBalance) => {
 }
 
 export const fetchLiveStockPrice = () => dispatch => {
-  axios.get('/api/stocks/livePrices')
+  request.get('/api/stocks/livePrices')
     .then((res) => {
       console.log("fetchLiveStockPrice", res.data.liveStocksData)
       dispatch({ type: actionTypes.UPDATE_LIVE_STOCK_DATA, payload: res.data.liveStocksData })

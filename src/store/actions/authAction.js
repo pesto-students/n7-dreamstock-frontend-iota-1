@@ -1,10 +1,12 @@
 import * as actionTypes from '../actionTypes/authActionTypes';
 import axios from 'axios';
+import request from '../../utils/interceptor'
+
 import setAuthToken from '../../utils/setAuthToken';
 import jwt_decode from 'jwt-decode';
 
 export const initiateUserLogin = (payload) => dispatch => {
-    axios.post('/api/users/login', payload)
+    request.post('/api/users/login', payload)
         .then((res) => {
             // Save to localStorage
             const { token } = res.data;
