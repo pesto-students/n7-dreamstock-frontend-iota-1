@@ -52,7 +52,7 @@ export default function DreamStock() {
         <ErrorBoundary>
           <Div>
             <Div flexRow minHeight={"100vh"}>
-              <PrivateRoute path="/" component={SideNavigationMenu} />
+            {isAuthenticated && <PrivateRoute path="/"  component={SideNavigationMenu} />}
               <Div
                 width={
                   isAuthenticated
@@ -76,7 +76,7 @@ export default function DreamStock() {
                 <Div minHeight={"100%"} flexColumn>
                   <Header handleSideBarToggle={handleSideBarToggle} visibleLeft={visibleLeft} />
                   <Switch>
-                    {!isAuthenticated && <Route path="/" exact component={LandingPage} />}
+                    <Route path="/landing" exact component={LandingPage} />
                     <Route path="/login" exact component={Login} />
                     <Route path="/signup" exact component={Signup} />
                     <PrivateRoute path="/dashboard" exact component={Dashboard} />
