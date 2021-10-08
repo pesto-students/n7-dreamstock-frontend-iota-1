@@ -49,4 +49,8 @@ export const NavMenu = styled(Menu)`
       var(--gradient-color-secondary) 100%
     );
   }
+
+  .p-menuitem-link:focus {
+    box-shadow: none;
+  }
 `;

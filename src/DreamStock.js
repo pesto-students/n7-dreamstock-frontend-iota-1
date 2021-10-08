@@ -46,8 +46,7 @@ export default function DreamStock() {
       width={[
         visibleLeft ? "100%" : "0%",
         visibleLeft ? "100%" : "0%",
-        "30%",
-        "20%",
+        "250px",
       ]}
     >
       <SideNavBar handleSideBarToggle={handleSideBarToggle} visibleLeft={visibleLeft} />
@@ -66,8 +65,7 @@ export default function DreamStock() {
                     ? [
                       visibleLeft ? "0%" : "100%",
                       visibleLeft ? "0%" : "100%",
-                      visibleLeft ? "75%" : "100%",
-                      visibleLeft ? "80%" : "100%",
+                      visibleLeft ? "calc(100% - 250px)" : "100%",
                     ]
                     : "100%"
                 }
@@ -76,7 +74,6 @@ export default function DreamStock() {
                     ? [
                       visibleLeft ? "none" : "block",
                       visibleLeft ? "none" : "block",
-                      "block",
                       "block",
                     ]
                     : "block"

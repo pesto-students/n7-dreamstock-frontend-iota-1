@@ -82,3 +82,8 @@
 .product-item-content {
   margin: 0 10px;
 }
+
+/* Sidebar*/
+.p-sidebar .p-sidebar-header {
+  padding: 20px 10px 0px 10px;
+}
