@@ -28,7 +28,7 @@ export default function DreamStock() {
 
   useEffect(() => {
     moment.tz.setDefault("Asia/Mumbai");
-    console.log('time',moment())
+    console.log('time', moment())
     request.get('/api/wallet/info')
       .then((res) => {
         dispatch(walletUpdate(res.data.wallet_balance))
@@ -55,37 +55,37 @@ export default function DreamStock() {
   )
   return (
     <Router>
-      <ErrorBoundary>
-        <Div>
-          <Div flexRow minHeight={"100vh"}>
-            <PrivateRoute path="/" component={SideNavigationMenu} />
-            <Div
-              width={
-                isAuthenticated
-                  ? [
-                    visibleLeft ? "0%" : "100%",
-                    visibleLeft ? "0%" : "100%",
-                    visibleLeft ? "70%" : "100%",
-                    visibleLeft ? "80%" : "100%",
-                  ]
-                  : "100%"
-              }
-              display={
-                isAuthenticated
-                  ? [
-                    visibleLeft ? "none" : "block",
-                    visibleLeft ? "none" : "block",
-                    "block",
-                    "block",
-                  ]
-                  : "block"
-              }
-            >
-              <Div minHeight={"100%"} flexColumn>
-                <Header handleSideBarToggle={handleSideBarToggle} visibleLeft={visibleLeft} />
-                <Router>
+      <Router>
+        <ErrorBoundary>
+          <Div>
+            <Div flexRow minHeight={"100vh"}>
+              <PrivateRoute path="/" component={SideNavigationMenu} />
+              <Div
+                width={
+                  isAuthenticated
+                    ? [
+                      visibleLeft ? "0%" : "100%",
+                      visibleLeft ? "0%" : "100%",
+                      visibleLeft ? "75%" : "100%",
+                      visibleLeft ? "80%" : "100%",
+                    ]
+                    : "100%"
+                }
+                display={
+                  isAuthenticated
+                    ? [
+                      visibleLeft ? "none" : "block",
+                      visibleLeft ? "none" : "block",
+                      "block",
+                      "block",
+                    ]
+                    : "block"
+                }
+              >
+                <Div minHeight={"100%"} flexColumn>
+                  <Header handleSideBarToggle={handleSideBarToggle} visibleLeft={visibleLeft} />
                   <Switch>
-                    <Route path="/" exact component={LandingPage} />
+                    {!isAuthenticated && <Route path="/" exact component={LandingPage} />}
                     <Route path="/login" exact component={Login} />
                     <Route path="/signup" exact component={Signup} />
                     <PrivateRoute path="/dashboard" exact component={Dashboard} />
@@ -95,13 +95,13 @@ export default function DreamStock() {
                     <PrivateRoute path="/profile" exact component={Profile} />
                     <Route path="/*" exact component={Error} />
                   </Switch>
-                </Router>
-                <Footer />
+                  <Footer />
+                </Div>
               </Div>
             </Div>
           </Div>
-        </Div>
-      </ErrorBoundary>
+        </ErrorBoundary>
+      </Router>
     </Router>
 
   );

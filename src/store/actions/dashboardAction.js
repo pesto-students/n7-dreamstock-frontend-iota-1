@@ -30,6 +30,7 @@ export const fetchLiveStockPrice = () => dispatch => {
     .then((res) => {
       console.log("fetchLiveStockPrice", res.data.liveStocksData)
       dispatch({ type: actionTypes.UPDATE_LIVE_STOCK_DATA, payload: res.data.liveStocksData })
+      dispatch({ type: actionTypes.UPDATE_MY_PORTFOLIO_CURRENT_PRICE, payload: res.data.liveStocksData })
     })
     .catch((err) => console.log('myDashboard err', err))
 }

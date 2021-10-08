@@ -29,6 +29,20 @@ export default function (state = initialState, action) {
                 ...state,
                 selectedStockInfo: action.payload
             }
+        case actionTypes.UPDATE_MY_PORTFOLIO_CURRENT_PRICE:
+            const updatePortfolio = state.myCurrentPortfolio.map((el)=>{
+                const {order_price,current_price,quantity} = el;
+                const change = (current_price-order_price)/order_price
+                const earnings = (current_price-order_price)*quantity
+                el.current_price = action.payload[el.stock_symbol]
+                el.change = change
+                el.earnings=earnings
+                return el
+            })
+            return{
+                ...state,
+                myCurrentPortfolio:updatePortfolio
+            }
         
         default:
             return state;

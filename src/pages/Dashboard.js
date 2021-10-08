@@ -22,6 +22,7 @@ import { close } from "../components/IconFonts";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchMyDashoardDetails, updateMyportfolio, fetchLiveStockPrice } from '../store/actions/dashboardAction'
 import moment from 'moment'
+import { useHistory } from "react-router";
 
 const Dashboard = (props) => {
   const [filteredStocks, setFilteredStocks] = useState(null);
@@ -41,9 +42,9 @@ const Dashboard = (props) => {
     setSelectedStockCalculatedTotal,
   ] = useState(0);
   const todaysPortfolioList = useSelector((state) => state.dashboard.myCurrentPortfolio) || []
-  const liveStockData = useSelector(state => state.dashboard.liveStockData) || {}
   const { user } = useSelector((state) => state.auth);
 
+  const history = useHistory()
   const toast = useRef(null);
   let pollingTimer = {}
   const dispatch = useDispatch()
@@ -55,17 +56,17 @@ const Dashboard = (props) => {
 
   useEffect(() => {
     const currentTime = moment().format('H')
-    if(currentTime>=9 && currentTime<16){
+    if (currentTime >= 9 && currentTime < 16) {
       setMarketOpen(true)
       pollingTimer = setInterval(() => {
         dispatch(fetchLiveStockPrice())
-      }, 1000 * 5 * 2)
+      }, 1000 * 1 * 2)
       dispatch(fetchLiveStockPrice())
     }
-    else{
+    else {
       setMarketOpen(false)
     }
-    
+
     dispatch(fetchMyDashoardDetails())
     return () => {
       clearInterval(pollingTimer)
@@ -101,14 +102,14 @@ const Dashboard = (props) => {
   };
 
   const changeBodyTemplate = (rowData) => {
-    const currentPrice=Number(rowData.current_price) 
-    const orderPrice=Number(rowData.order_price) 
+    const currentPrice = Number(rowData.current_price)
+    const orderPrice = Number(rowData.order_price)
     const decideColor = currentPrice > orderPrice ? 'green' : 'red';
-    const sign = orderPrice > currentPrice ?'' :'+'
+    const sign = orderPrice > currentPrice ? '+' : ''
     return (
       <>
         <Span className="p-column-title">Change</Span>
-        <Span color={decideColor} >{rowData.change ?sign+Number(rowData.change).toFixed(2) : "-"}</Span>
+        <Span color={decideColor} >{rowData.change ? sign + Number(rowData.change).toFixed(2) : "-"}</Span>
       </>
     );
   };
@@ -124,14 +125,14 @@ const Dashboard = (props) => {
 
   const earningsBodyTemplate = (rowData) => {
     const { order_price } = rowData;
-    const currentPrice=Number(rowData.current_price) 
-    const orderPrice=Number(rowData.order_price) 
+    const currentPrice = Number(rowData.current_price)
+    const orderPrice = Number(rowData.order_price)
     const decideColor = currentPrice > orderPrice ? 'green' : 'red';
-    const sign = orderPrice > currentPrice ?'' :'+'
+    const sign = orderPrice > currentPrice ? '' : '+'
     return (
       <>
         <Span className="p-column-title">Earnings</Span>
-        <Span color={decideColor} >{rowData.earnings ? sign+Number(rowData.earnings).toFixed(2) : "-"}</Span>
+        <Span color={decideColor} >{rowData.earnings ? sign + Number(rowData.earnings).toFixed(2) : "-"}</Span>
       </>
     );
   };
@@ -339,7 +340,7 @@ const Dashboard = (props) => {
                   mt={3}
                   width={"200px"}
                   label="Add Stocks"
-                  {...(!isMarketOpen ? {tooltip: 'You can add stocks when market opens'} : {})}
+                  {...(!isMarketOpen ? { tooltip: 'You can add stocks when market opens' } : {})}
                   // disabled={selectedStockCalculatedTotal <= 0}
                   onClick={(e) => handleAddStocksToPortfolioDraft(e)}
                 />

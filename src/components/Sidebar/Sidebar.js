@@ -10,52 +10,61 @@ import { userCircle } from "../IconFonts";
 import { SideBar as SideNav } from "./style";
 import { useSelector } from "react-redux";
 import { P } from "../Paragraph";
+import { useHistory } from "react-router";
 
-const items = [
-  {
-    label: "",
-    items: [
-      {
-        label: "Dashboard",
-        icon: "pi pi-fw pi-briefcase",
-        command: (e) => {
-          window.location.href = "/dashboard";
-        },
-      },
-      {
-        label: "Summary",
-        icon: "pi pi-fw pi-th-large",
-        command: (e) => {
-          window.location.href = "/summary";
-        },
-      },
-      {
-        label: "Passbook",
-        icon: "pi pi-fw pi-book",
-        command: (e) => {
-          window.location.href = "/passbook";
-        },
-      },
-      {
-        label: "Transactions",
-        icon: "pi pi-fw pi-money-bill",
-        command: (e) => {
-          window.location.href = "/transactions";
-        },
-      },
-      {
-        label: "Profile",
-        icon: "pi pi-fw pi-user-edit",
-        command: (e) => {
-          window.location.href = "/profile";
-        },
-      },
-    ],
-  },
-];
+
 
 const SideNavBar = (props) => {
   const { user } = useSelector((state) => state.auth);
+  const history = useHistory()
+  const sidNaveClick = (link)=>{
+    console.log('sidNaveClick',link)
+    history.push(link)
+  }
+
+  const items = [
+    {
+      label: "",
+      items: [
+        {
+          label: "Dashboard",
+          icon: "pi pi-fw pi-briefcase",
+          command: (e) => {
+            sidNaveClick("/dashboard")
+            // window.location.href = "/dashboard";
+          },
+        },
+        {
+          label: "Summary",
+          icon: "pi pi-fw pi-th-large",
+          command: (e) => {
+            sidNaveClick("/summary")
+          },
+        },
+        {
+          label: "Passbook",
+          icon: "pi pi-fw pi-book",
+          command: (e) => {
+            sidNaveClick("/passbook")
+          },
+        },
+        {
+          label: "Transactions",
+          icon: "pi pi-fw pi-money-bill",
+          command: (e) => {
+            sidNaveClick("/transactions")
+          },
+        },
+        {
+          label: "Profile",
+          icon: "pi pi-fw pi-user-edit",
+          command: (e) => {
+            sidNaveClick("/profile")
+          },
+        },
+      ],
+    },
+  ];
   return (
     <SideNav
       modal={false}
