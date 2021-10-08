@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { Container } from "../components/Container";
 import { Div } from "../components/Div";
 import { P } from "../components/Paragraph";
@@ -10,7 +10,7 @@ import * as Constants from "../utils/Constants";
 import { Dialog } from "../components/Dialog";
 import { Toast } from "../components/Toast";
 import { useDispatch, useSelector } from "react-redux";
-import { walletUpdate } from '../store/actions/dashboardAction';
+import { walletUpdate,fetchWalletUpdate } from '../store/actions/dashboardAction';
 import request from '../utils/interceptor'
 const Transactions = (props) => {
   const toast = useRef(null);
@@ -20,6 +20,10 @@ const Transactions = (props) => {
   const [showModal, setShowModal] = useState(false);
   const { wallet_balance } = useSelector((state) => state.auth.user)
   const dispatch = useDispatch()
+
+  useEffect(()=>{
+    dispatch(fetchWalletUpdate())
+  },[])
   const makeTransaction = () => {
     const transactionAmount = actionType === 'recharge' ? rechargeAmount : withDrawlAmount
     request
@@ -71,7 +75,7 @@ const Transactions = (props) => {
       </Div>
     );
   };
-
+  const withdrawlPercentage = (Number(wallet_balance) / 10000).toFixed(2) * 100
   return (
     <Container minHeight={"80vh"}>
       <Div width={[1, 2 / 3, 3 / 4, 3 / 5]}>
@@ -90,9 +94,8 @@ const Transactions = (props) => {
         />
 
         <hr style={{ width: "100%" }} />
-        <p>{wallet_balance}</p>
         <P>WITHDRAWAL ELIGIBILITY</P>
-        <ProgressBar value={(Number(wallet_balance) / 10000) * 100} mt={3} />
+        <ProgressBar value={withdrawlPercentage>100 ? 100:withdrawlPercentage} mt={3} />
         <Input
           placeholder="Enter the amount you want to withdraw"
           type="text"

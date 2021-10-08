@@ -15,25 +15,15 @@ import SideNavBar from "./components/Sidebar/Sidebar"
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import PrivateRoute from './utils/PrivateRoute';
 import { useSelector, useDispatch } from "react-redux";
-import { walletUpdate } from './store/actions/dashboardAction'
-import axios from 'axios';
-import request from './utils/interceptor'
 import ErrorBoundary from './components/ErrorBoundary'
 import moment from 'moment-timezone';
 
 export default function DreamStock() {
   const { isAuthenticated } = useSelector((state) => state.auth)
   const [visibleLeft, setVisibleLeft] = useState(true);
-  const dispatch = useDispatch();
 
   useEffect(() => {
     moment.tz.setDefault("Asia/Mumbai");
-    console.log('time', moment())
-    request.get('/api/wallet/info')
-      .then((res) => {
-        dispatch(walletUpdate(res.data.wallet_balance))
-      })
-      .catch((err) => console.log('info api err', err))
   }, [])
 
 

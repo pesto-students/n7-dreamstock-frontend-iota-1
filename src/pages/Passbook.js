@@ -4,12 +4,16 @@ import { Div } from "../components/Div";
 import { P } from "../components/Paragraph";
 import { Span } from "../components/Span";
 import { Column, Table } from "../components/Table";
-import axios from "axios";
 import request from '../utils/interceptor'
+import { useDispatch } from "react-redux";
+import { fetchWalletUpdate } from '../store/actions/dashboardAction';
 
 const Passbook = (props) => {
   const [passbookData, setPassbookData] = useState([]);
+  const dispatch = useDispatch()
+
   useEffect(() => {
+    dispatch(fetchWalletUpdate())
     request.get('/api/passbook/data')
     .then((res)=>{
       const data = res.data.order.map((el) => {

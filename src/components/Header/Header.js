@@ -14,10 +14,13 @@ import {Span} from '../Span';
 import { useDispatch, useSelector } from "react-redux";
 import FullLogo from "../../assets/images/FullLogo.png";
 import { logoutUser } from "../../store/actions/authAction";
+import { useHistory } from "react-router";
+
 const Header = (props) => {
     const {isAuthenticated} = useSelector((state)=>state.auth)
     const dispatch = useDispatch()
     const {wallet_balance} = useSelector((state)=>state.auth.user)
+    const history = useHistory()
     const itemsBefore = [
         {
             label: "Home",
@@ -64,14 +67,14 @@ const Header = (props) => {
           mr={3}
           p={[2,3]}
           onClick={() => {
-            window.location.href = "/login";
+            history.push('/login')
           }}
         />
         <ButtonSecondary
           label="Sign Up"
           p={[2,3]}
           onClick={() => {
-            window.location.href = "/signup";
+            history.push('/signup')
           }}
         />
       </Div>
@@ -82,7 +85,7 @@ const Header = (props) => {
           label={
             <Span>
               <Icon name={wallet} />{" "}
-              <Span color={"title"}>{wallet_balance + " INR"}</Span>
+              <Span color={"title"}>{Number(wallet_balance).toFixed(2) + " INR"}</Span>
             </Span>
           }
           mr={3}

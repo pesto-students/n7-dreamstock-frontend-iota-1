@@ -4,7 +4,6 @@ import { Div } from "../components/Div";
 import { P } from "../components/Paragraph";
 import { ButtonSecondary } from "../components/Button";
 import { Input } from "../components/Input";
-import axios from "axios";
 import request from '../utils/interceptor'
 
 const Profile = (props) => {
@@ -18,7 +17,7 @@ const Profile = (props) => {
     .catch((err)=>console.log('passbook err',err))
   }, []);
   
-  const {first_name,last_name,email}=userData
+  const {first_name,last_name,email,mobile_number,account_name,expiry_date,card_number}=userData
   
   return (
     <Container pb={3}>
@@ -38,24 +37,24 @@ const Profile = (props) => {
         </Div>
         <Div>
           <P>Mobile Number</P>
-          <Input placeholder="Mobile Number"  disabled={true} type="text" p={3} />
+          <Input placeholder="Mobile Number"  disabled={true} value={mobile_number} type="text" p={3} />
         </Div>
         <P fontSize={"var(--fs-h3)"} mt={3}>
           Bank Details
         </P>
         <Div>
           <P>Card Number</P>
-          <Input placeholder="Card Number" type="text" p={3} />
+          <Input placeholder="Card Number"  disabled={true} value={card_number}  type="text" p={3} />
         </Div>
         <Div>
           <P>Account Holder Name</P>
-          <Input placeholder="Account Holder Name" type="text" p={3} />
+          <Input placeholder="Account Holder Name"  disabled={true} value={account_name}  type="text" p={3} />
         </Div>
         <Div>
           <P>Expiry Date</P>
-          <Input placeholder="Expiry Date" type="text" p={3} />
+          <Input placeholder="Expiry Date"  disabled={true} value={expiry_date}  type="text" p={3} />
         </Div>
-        <ButtonSecondary label="SAVE" mt={3} pl={5} pr={5} />
+        {/* <ButtonSecondary label="SAVE" mt={3} pl={5} pr={5} /> */}
       </Div>
     </Container>
   );
