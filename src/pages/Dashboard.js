@@ -42,6 +42,7 @@ const Dashboard = (props) => {
   ] = useState(0);
   const todaysPortfolioList = useSelector((state) => state.dashboard.myCurrentPortfolio) || []
   const liveStockData = useSelector(state => state.dashboard.liveStockData) || {}
+  const { user } = useSelector((state) => state.auth);
 
   const toast = useRef(null);
   let pollingTimer = {}
@@ -270,7 +271,7 @@ const Dashboard = (props) => {
     toast.current.show({
       severity: "success",
       summary: "Success",
-      detail: "Your Portfolio has been created",
+      detail: "The selected Stocks have been added to your Portfolio",
       life: 3000,
     });
     setPortfolioDraftList([]);
@@ -292,8 +293,8 @@ const Dashboard = (props) => {
           {showChart ? (
             <Chart options={stockChartData} />
           ) : (
-            <P fontSize={"var(--fs-h3)"}>
-              Find stocks in the search bar and add them to your portfolio
+            <P>
+               Welcome to DreamStock,{" "}{user && user.first_name ? user.first_name : "User"}{". "}Find stocks in the search bar and add them to your Portfolio.
             </P>
           )}
         </CardContent>
@@ -306,7 +307,7 @@ const Dashboard = (props) => {
                     {selectedStock?.description} ({selectedStock?.displaySymbol})
                   </P>
                   <P ml={2}>
-                    <Span fontSize={"var(--fs-milli)"} fontWeight={"light"}>
+                    <Span fontWeight={"light"}>
                       Current Price
                     </Span>{" "}
                     {selectedStockInfo?.response?.c}
@@ -314,13 +315,13 @@ const Dashboard = (props) => {
                 </Div>
                 <Div flexRow width={[1, 1, 1 / 2]}>
                   <P ml={2}>
-                    <Span fontSize={"var(--fs-milli)"} fontWeight={"light"}>
+                    <Span fontWeight={"light"}>
                       Wallet Balance
                     </Span>{" "}
                     {walletBalance}
                   </P>
                   <P ml={2}>
-                    <Span fontSize={"var(--fs-milli)"} fontWeight={"light"}>
+                    <Span fontWeight={"light"}>
                       Total
                     </Span>{" "}
                     {selectedStockCalculatedTotal}
@@ -348,7 +349,7 @@ const Dashboard = (props) => {
         ) : null}
         {showTodaysPortfolio ? (
           <CardContent mt={4}>
-            <P fontSize={"var(--fs-h3)"}>{moment().format('H')<16 ? "Today's Portfolio" : "Portfolio for next Market Session"}</P>
+            <P>{moment().format('H')<16 ? "TODAY'S PORTFOLIO" : "PORTFOLIO FOR NEXT MARKET SESSION"}</P>
             <Div>
               <Table value={todaysPortfolioList}>
                 <Column
@@ -394,8 +395,8 @@ const Dashboard = (props) => {
 
       <Div width={["100%", "100%", "100%", "25%"]} p={3}>
         <CardHorizontal flexCenter p={2}>
-          <Span color="title" fontSize={"var(--fs-h3)"}>
-            Portfolio Draft
+          <Span color="title">
+            PORTFOLIO DRAFT
           </Span>
         </CardHorizontal>
         <Div>
@@ -413,19 +414,19 @@ const Dashboard = (props) => {
                   <P>{stockName}</P>
                 </Div>
                 <P>
-                  <Span fontSize={"var(--fs-milli)"} fontWeight={"light"}>
+                  <Span fontWeight={"light"}>
                     Bought At
                   </Span>{" "}
                   {boughtAt}
                 </P>
                 <P>
-                  <Span fontSize={"var(--fs-milli)"} fontWeight={"light"}>
+                  <Span fontWeight={"light"}>
                     Units
                   </Span>{" "}
                   {units}
                 </P>
                 <P>
-                  <Span fontSize={"var(--fs-milli)"} fontWeight={"light"}>
+                  <Span fontWeight={"light"}>
                     Total
                   </Span>{" "}
                   {total}

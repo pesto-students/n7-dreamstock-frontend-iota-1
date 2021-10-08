@@ -37,16 +37,24 @@ const Header = (props) => {
     ];
     const itemsAfter = [];
 
-    const startBefore = <Image src={FullLogo} height="40" />;
+    const startBefore = (
+      <Image
+        src={FullLogo}
+        height={["30", "40"]}
+        onClick={() => {
+          window.location.href = "/";
+        }}
+      />
+    );
     const startAfter = (
-        <Span>
-            <Hamburger
-                duration={0.8}
-                toggled={props.visibleLeft}
-                toggle={() => props.handleSideBarToggle()}
-            />
-            {/* <Image src={FullLogo} height="40" /> */}
-        </Span>
+      <Span display={props.visibleLeft ? "none" : "block"}>
+        <Hamburger
+          duration={0.8}
+          toggled={props.visibleLeft}
+          toggle={() => props.handleSideBarToggle()}
+        />
+        {/* <Image src={FullLogo} height="40" /> */}
+      </Span>
     );
 
     const endBefore = (
@@ -54,14 +62,14 @@ const Header = (props) => {
         <ButtonPrimary
           label="Log In"
           mr={3}
-          p={3}
+          p={[2,3]}
           onClick={() => {
             window.location.href = "/login";
           }}
         />
         <ButtonSecondary
           label="Sign Up"
-          p={3}
+          p={[2,3]}
           onClick={() => {
             window.location.href = "/signup";
           }}
@@ -78,11 +86,11 @@ const Header = (props) => {
             </Span>
           }
           mr={3}
-          p={3}
+          p={[2,3]}
         />
         <ButtonSecondary
           label="Log Out"
-          p={3}
+          p={[2,3]}
           onClick={() => dispatch(logoutUser())}
         />
       </Div>
@@ -91,7 +99,6 @@ const Header = (props) => {
     return (
         <Div>
             <Menubar
-                minHeight={"8vh"}
                 hideBurger={isAuthenticated}
                 model={isAuthenticated ? itemsAfter : itemsBefore}
                 start={isAuthenticated ? startAfter : startBefore}

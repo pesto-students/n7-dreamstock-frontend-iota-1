@@ -86,7 +86,7 @@ const Passbook = (props) => {
   };
 
   return (
-    <Container minHeight={"80vh"} mb={4}>
+    <Container minHeight={"80vh"}>
       <Div>
         <P fontSize={"var(--fs-h2)"}>PASSBOOK</P>
         <Table value={passbookData} paginator rows={5}>

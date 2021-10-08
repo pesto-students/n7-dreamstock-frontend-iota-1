@@ -38,10 +38,11 @@ export const Table = styled(DataTable)`
   }
 
   .p-datatable-tbody > tr > td {
-    border: solid var(--outline-color);
-    border-width: 1px 0 1px 0;
+    // border: solid var(--outline-color);
+    // border-width: 1px 0 1px 0;
     outline-color: var(--outline-color);
     font-weight: var(--light-weight);
+    background-color: var(--primary-bg);
   }
 
   .p-datatable-tfoot {
@@ -85,15 +86,13 @@ export const Table = styled(DataTable)`
     display: none;
   }
 
-  tr th:first-child,
-  tr td:first-child {
+  tr th:first-child {
     border: solid var(--outline-color);
     border-width: 1px 0 1px 1px;
     border-radius: 5px 0 0 5px;
   }
 
-  tr th:last-child,
-  tr td:last-child {
+  tr th:last-child {
     border: solid var(--outline-color);
     border-width: 1px 1px 1px 0;
     border-radius: 0 5px 5px 0;

@@ -1,7 +1,5 @@
 import { Div } from "../Div";
-import {
-  CardFooter,
-} from "../Card";
+import { CardFooter } from "../Card";
 import { Menubar } from "../Header/style";
 import { ALL_RIGHTS_RESERVED, COPYRIGHT_TEXT } from "../../utils/Constants";
 
@@ -21,7 +19,7 @@ const Footer = () => {
   return (
     <Div>
       <Div>
-        <Menubar minHeight={"8vh"} model={items} />
+        <Menubar minHeight={"4vh"} model={items} />
       </Div>
       <CardFooter minHeight={"4vh"} pl={4} pr={4}>
         <Div>{COPYRIGHT_TEXT}</Div>
@@ -31,4 +29,4 @@ const Footer = () => {
   );
 };
 
-export default Footer
+export default Footer;

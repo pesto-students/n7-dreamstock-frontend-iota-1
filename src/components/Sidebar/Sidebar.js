@@ -64,7 +64,7 @@ const SideNavBar = (props) => {
       onHide={() => props.handleSideBarToggle()}
       icons={
         <CardHorizontalTransparent pt={3}>
-          <Image src={FullLogo} height="42" />
+          <Image src={FullLogo} height="35" />
         </CardHorizontalTransparent>
       }
       showCloseIcon={true}
@@ -78,7 +78,10 @@ const SideNavBar = (props) => {
           ) : (
             <Icon name={userCircle} size="5x" />
           )}
-          <P>{user && user.first_name ? user.first_name : "DreamStock User"}</P>
+          <P>
+            {user && user.first_name ? user.first_name : "DreamStock User"}{" "}
+            {user && user.last_name ? user.last_name : ""}
+          </P>
         </Div>
       </CardContent>
       <hr />

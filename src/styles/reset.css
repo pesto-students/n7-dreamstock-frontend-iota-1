@@ -71,7 +71,7 @@ video {
   padding: 0;
   border: 0;
   outline: 0;
-  font-size: 100%;
+  font-size: var(--fs-base);
   vertical-align: baseline;
   background: transparent;
 }
@@ -162,7 +162,7 @@ hr {
   display: block;
   height: 1px;
   border: 0;
-  border-top: 1px solid var(--nav-color);
+  border-top: 1px solid var(--card-bg);
   margin: 1em 0;
   padding: 0;
 }

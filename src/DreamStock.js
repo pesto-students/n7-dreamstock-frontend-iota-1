@@ -23,7 +23,7 @@ import moment from 'moment-timezone';
 
 export default function DreamStock() {
   const { isAuthenticated } = useSelector((state) => state.auth)
-  const [visibleLeft, setVisibleLeft] = useState(isAuthenticated);
+  const [visibleLeft, setVisibleLeft] = useState(true);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -46,7 +46,7 @@ export default function DreamStock() {
       width={[
         visibleLeft ? "100%" : "0%",
         visibleLeft ? "100%" : "0%",
-        "25%",
+        "30%",
         "20%",
       ]}
     >
@@ -65,7 +65,7 @@ export default function DreamStock() {
                   ? [
                     visibleLeft ? "0%" : "100%",
                     visibleLeft ? "0%" : "100%",
-                    visibleLeft ? "75%" : "100%",
+                    visibleLeft ? "70%" : "100%",
                     visibleLeft ? "80%" : "100%",
                   ]
                   : "100%"

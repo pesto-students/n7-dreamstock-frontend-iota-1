@@ -189,7 +189,7 @@ const Summary = (props) => {
   const renderMessage = () => {
     return (
       <CardContent mt={4} flexCenter>
-        <P fontSize={"var(--fs-h3)"}>Please go on Dashboard and create a portfolio</P>
+        <P>Please go to the Dashboard and create a Portfolio</P>
       </CardContent>
     )
   }
