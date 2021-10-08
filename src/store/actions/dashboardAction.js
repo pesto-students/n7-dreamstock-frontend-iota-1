@@ -13,7 +13,6 @@ export const fetchMyDashoardDetails = () => dispatch => {
 export const updateMyportfolio = (requestObj) => dispatch => {
   request.post('/api/dashboard/create_order', requestObj)
     .then((res) => {
-      console.log('response', res.data,requestObj)
       dispatch(walletUpdate(res.data.newBalance))
       dispatch({ type: actionTypes.ADD_TO_MY_PORTFOLIO, payload: requestObj.data })
 
@@ -21,8 +20,16 @@ export const updateMyportfolio = (requestObj) => dispatch => {
     .catch((err) => console.log('create_order err', err))
 }
 
+export const fetchWalletUpdate = () => dispatch => {
+  request.get('/api/wallet/info')
+    .then((res) => {
+      dispatch(walletUpdate(res.data.wallet_balance))
+    })
+    .catch((err) => console.log('info api err', err))
+}
+
 export const walletUpdate = (newBalance) => {
-  return { type: actionTypes.UPDATE_WALLET, payload:newBalance }
+  return { type: actionTypes.UPDATE_WALLET, payload: newBalance }
 }
 
 export const fetchLiveStockPrice = () => dispatch => {

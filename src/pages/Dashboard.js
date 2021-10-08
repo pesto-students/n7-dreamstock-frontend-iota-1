@@ -20,9 +20,8 @@ import { Input } from "../components/Input";
 import { Icon } from "../components/Icon";
 import { close } from "../components/IconFonts";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchMyDashoardDetails, updateMyportfolio, fetchLiveStockPrice } from '../store/actions/dashboardAction'
+import { fetchMyDashoardDetails, updateMyportfolio, fetchLiveStockPrice,fetchWalletUpdate } from '../store/actions/dashboardAction'
 import moment from 'moment'
-import { useHistory } from "react-router";
 
 const Dashboard = (props) => {
   const [filteredStocks, setFilteredStocks] = useState(null);
@@ -44,7 +43,6 @@ const Dashboard = (props) => {
   const todaysPortfolioList = useSelector((state) => state.dashboard.myCurrentPortfolio) || []
   const { user } = useSelector((state) => state.auth);
 
-  const history = useHistory()
   const toast = useRef(null);
   let pollingTimer = {}
   const dispatch = useDispatch()
@@ -56,17 +54,17 @@ const Dashboard = (props) => {
 
   useEffect(() => {
     const currentTime = moment().format('H')
-    if (currentTime >= 9 && currentTime < 16) {
+    if (currentTime >= 9 && currentTime < 16 || true) {
       setMarketOpen(true)
       pollingTimer = setInterval(() => {
         dispatch(fetchLiveStockPrice())
-      }, 1000 * 1 * 2)
+      }, 1000 * 10 * 2)
       dispatch(fetchLiveStockPrice())
     }
     else {
       setMarketOpen(false)
     }
-
+    dispatch(fetchWalletUpdate())
     dispatch(fetchMyDashoardDetails())
     return () => {
       clearInterval(pollingTimer)
@@ -96,20 +94,19 @@ const Dashboard = (props) => {
     return (
       <>
         <Span className="p-column-title">Current Price</Span>
-        {rowData.current_price ? Number(rowData.current_price).toFixed(2) : "-"}
+        {rowData.current_price ? (rowData.current_price).toFixed(2) : "-"}
       </>
     );
   };
 
   const changeBodyTemplate = (rowData) => {
-    const currentPrice = Number(rowData.current_price)
-    const orderPrice = Number(rowData.order_price)
-    const decideColor = currentPrice > orderPrice ? 'green' : 'red';
-    const sign = orderPrice > currentPrice ? '+' : ''
+    const { order_price ,current_price} = rowData;
+    const decideColor = current_price > order_price ? 'green' : 'red';
+    const sign = order_price > current_price ? '' : '+'
     return (
       <>
         <Span className="p-column-title">Change</Span>
-        <Span color={decideColor} >{rowData.change ? sign + Number(rowData.change).toFixed(2) : "-"}</Span>
+        <Span color={decideColor} >{rowData.change ? sign + ((rowData.change)*100).toFixed(2) : "-"}</Span>
       </>
     );
   };
@@ -124,15 +121,13 @@ const Dashboard = (props) => {
   };
 
   const earningsBodyTemplate = (rowData) => {
-    const { order_price } = rowData;
-    const currentPrice = Number(rowData.current_price)
-    const orderPrice = Number(rowData.order_price)
-    const decideColor = currentPrice > orderPrice ? 'green' : 'red';
-    const sign = orderPrice > currentPrice ? '' : '+'
+    const { order_price ,current_price} = rowData;
+    const decideColor = current_price > order_price ? 'green' : 'red';
+    const sign = order_price > current_price ? '' : '+'
     return (
       <>
         <Span className="p-column-title">Earnings</Span>
-        <Span color={decideColor} >{rowData.earnings ? sign + Number(rowData.earnings).toFixed(2) : "-"}</Span>
+        <Span color={decideColor} >{rowData.earnings ? sign + (rowData.earnings).toFixed(2) : "-"}</Span>
       </>
     );
   };
@@ -147,6 +142,9 @@ const Dashboard = (props) => {
   };
 
   const handleStockSearch = (e) => {
+    setShowChart(false)
+    setShowTodaysPortfolio(false);
+    setStockData(false)
     console.log("handleStockSearch", e.query)
     request.get(`/api/stocks/search?name=${e.query}`)
       .then((res) => {
@@ -199,7 +197,7 @@ const Dashboard = (props) => {
     }
   }
 
-  const handleNumberOfStocksInput = (event) => {
+  const handleOfStocksInput = (event) => {
     const quantity = event.target.value.replace(/\D/, "");
     setSelectedQuantity(quantity);
     setSelectedStockCalculatedTotal(
@@ -290,15 +288,20 @@ const Dashboard = (props) => {
           placeholder="Search Stocks"
           onChange={(e) => handleStockSelection(e)}
         />
-        <CardContent mt={4} flexCenter>
-          {showChart ? (
+        {showChart && (
+          <CardContent mt={4} flexCenter>
             <Chart options={stockChartData} />
-          ) : (
-            <P>
-               Welcome to DreamStock,{" "}{user && user.first_name ? user.first_name : "User"}{". "}Find stocks in the search bar and add them to your Portfolio.
-            </P>
-          )}
-        </CardContent>
+          </CardContent>
+        )}
+        {
+          !showChart && !showStockData && (
+            <CardContent mt={4} flexCenter>
+              <P>
+                Welcome to DreamStock,{" "}{user && user.first_name ? user.first_name : "User"}{". "}Find stocks in the search bar and add them to your Portfolio.
+             </P>
+            </CardContent>
+          )
+        }
         {showStockData ? (
           <CardContent mt={4}>
             <Div flexRow>
@@ -334,10 +337,11 @@ const Dashboard = (props) => {
                   width={"200px"}
                   placeholder={"Enter Quantity"}
                   value={selectedQuantity}
-                  onChange={(e) => handleNumberOfStocksInput(e)}
+                  onChange={(e) => handleOfStocksInput(e)}
                 />
                 <ButtonSecondary
                   mt={3}
+                  disabled={isMarketOpen}
                   width={"200px"}
                   label="Add Stocks"
                   {...(!isMarketOpen ? { tooltip: 'You can add stocks when market opens' } : {})}
@@ -350,7 +354,7 @@ const Dashboard = (props) => {
         ) : null}
         {showTodaysPortfolio ? (
           <CardContent mt={4}>
-            <P>{moment().format('H')<16 ? "TODAY'S PORTFOLIO" : "PORTFOLIO FOR NEXT MARKET SESSION"}</P>
+            <P>{moment().format('H') < 16 ? "TODAY'S PORTFOLIO" : "PORTFOLIO FOR NEXT MARKET SESSION"}</P>
             <Div>
               <Table value={todaysPortfolioList}>
                 <Column

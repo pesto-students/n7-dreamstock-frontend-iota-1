@@ -18,7 +18,6 @@ const SideNavBar = (props) => {
   const { user } = useSelector((state) => state.auth);
   const history = useHistory()
   const sidNaveClick = (link)=>{
-    console.log('sidNaveClick',link)
     history.push(link)
   }
 
@@ -31,7 +30,7 @@ const SideNavBar = (props) => {
           icon: "pi pi-fw pi-briefcase",
           command: (e) => {
             sidNaveClick("/dashboard")
-            // window.location.href = "/dashboard";
+            props.handleSideBarToggle()
           },
         },
         {
@@ -39,6 +38,7 @@ const SideNavBar = (props) => {
           icon: "pi pi-fw pi-th-large",
           command: (e) => {
             sidNaveClick("/summary")
+            props.handleSideBarToggle()
           },
         },
         {
@@ -46,6 +46,7 @@ const SideNavBar = (props) => {
           icon: "pi pi-fw pi-book",
           command: (e) => {
             sidNaveClick("/passbook")
+            props.handleSideBarToggle()
           },
         },
         {
@@ -53,6 +54,7 @@ const SideNavBar = (props) => {
           icon: "pi pi-fw pi-money-bill",
           command: (e) => {
             sidNaveClick("/transactions")
+            props.handleSideBarToggle()
           },
         },
         {
@@ -60,6 +62,7 @@ const SideNavBar = (props) => {
           icon: "pi pi-fw pi-user-edit",
           command: (e) => {
             sidNaveClick("/profile")
+            props.handleSideBarToggle()
           },
         },
       ],

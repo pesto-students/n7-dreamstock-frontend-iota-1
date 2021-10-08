@@ -6,25 +6,25 @@ import { Span } from "../components/Span";
 import { CardHorizontalTransparent } from "../components/Card";
 import { AccordionTab } from "primereact/accordion";
 import { Accordion } from "../components/Accordion";
-import * as CommonUtils from "../utils/CommonUtils";
 import { Column, Table } from "../components/Table";
-import axios from "axios";
+import { fetchWalletUpdate } from '../store/actions/dashboardAction';
 import request from '../utils/interceptor'
-
-import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import {
   CardContent,
 } from "../components/Card";
+
 const Summary = (props) => {
   const [summaryData, setSummaryData] = useState([]);
-  const liveStockData = useSelector(state => state.dashboard.liveStockData)
+  const dispatch = useDispatch()
   useEffect(() => {
     // Call the Summary API here and set the response data
+    dispatch(fetchWalletUpdate())
     request.get('/api/dashboard/summary')
       .then((res) => {
         const calculatedData = res.data.finalData.map((el)=>{
           const {portfolioCurrentValue,total_cost} = el
-          el['profit_loss']=((portfolioCurrentValue-total_cost)/total_cost).toFixed(2)
+          el['profit_loss']=(((portfolioCurrentValue-total_cost)/total_cost) * 100).toFixed(2)
           el['status'] = portfolioCurrentValue>total_cost?'green':'red'
           el['sign']= portfolioCurrentValue>total_cost?'+':''
           return el
@@ -56,20 +56,19 @@ const Summary = (props) => {
     return (
       <>
         <Span className="p-column-title">Current Price</Span>
-        {rowData.current_price ? Number(rowData.current_price).toFixed(2) : "-"}
+        {rowData.current_price ? (rowData.current_price).toFixed(2) : "-"}
       </>
     );
   };
 
   const changeBodyTemplate = (rowData) => {
-    const currentPrice=Number(rowData.current_price) 
-    const orderPrice=Number(rowData.order_price) 
-    const decideColor = currentPrice > orderPrice ? 'green' : 'red';
-    const sign = orderPrice > currentPrice ?'' :'+'
+    const { order_price ,current_price} = rowData;
+    const decideColor = current_price > order_price ? 'green' : 'red';
+    const sign = order_price > current_price ? '' : '+'
     return (
       <>
         <Span className="p-column-title">Change</Span>
-        <Span color={decideColor} >{sign}{rowData.change ? Number(rowData.change).toFixed(2) : "-"}</Span>
+        <Span color={decideColor} >{sign}{rowData.change ? ((rowData.change)*100).toFixed(2) : "-"}</Span>
       </>
     );
   };
@@ -84,16 +83,13 @@ const Summary = (props) => {
   };
 
   const earningsBodyTemplate = (rowData) => {
-    const { order_price } = rowData;
-    const currentPrice=Number(rowData.current_price) 
-    const orderPrice=Number(rowData.order_price) 
-    const decideColor = currentPrice > orderPrice ? 'green' : 'red';
-    const sign = orderPrice > currentPrice ?'' :'+'
-    // const change = liveStockData[rowData.stock_symbol] - order_price
+    const { order_price ,current_price} = rowData;
+    const decideColor = current_price > order_price ? 'green' : 'red';
+    const sign = order_price > current_price ? '' : '+'
     return (
       <>
         <Span className="p-column-title">Earnings</Span>
-        <Span color={decideColor} >{sign}{rowData.earnings ? Number(rowData.earnings).toFixed(2) : "-"}</Span>
+        <Span color={decideColor} >{sign}{rowData.earnings ? (rowData.earnings).toFixed(2) : "-"}</Span>
       </>
     );
   };
@@ -123,7 +119,7 @@ const Summary = (props) => {
                 <Span fontSize={"var(--fs-milli)"} fontWeight={"light"}>
                   TOTAL COST
           </Span>{" "}
-                {Number(summaryOfCurrentRecord.total_cost).toFixed(2)}
+                {(summaryOfCurrentRecord.total_cost).toFixed(2)}
               </P>
               <P>
                 <Span fontSize={"var(--fs-milli)"} fontWeight={"light"}>
