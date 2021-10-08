@@ -38,6 +38,14 @@
   fill: var(--nav-color) !important;
 }
 
+.p-tooltip .p-tooltip-text {
+  background-color: var(--secondary-bg);
+}
+
+.p-tooltip.p-tooltip-right .p-tooltip-arrow {
+  border-right-color: var(--secondary-bg) !important;
+}
+
 .App {
   background-color: var(--primary-bg);
   color: var(--title-color);

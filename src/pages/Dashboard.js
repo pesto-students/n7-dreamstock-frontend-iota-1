@@ -205,7 +205,15 @@ const Dashboard = (props) => {
   };
 
   const handleAddStocksToPortfolioDraft = (event) => {
-    if (walletBalance - selectedStockCalculatedTotal < 0) {
+    if (selectedStockCalculatedTotal <= 0) {
+      toast.current.show({
+        severity: "error",
+        summary: "Quantity missing",
+        detail: "Please enter the quantity of Stock",
+        life: 3000,
+      });
+      return;
+    } else if (walletBalance - selectedStockCalculatedTotal < 0) {
       toast.current.show({
         severity: "error",
         summary: "Balance Insufficient",
@@ -329,7 +337,8 @@ const Dashboard = (props) => {
                   mt={3}
                   width={"200px"}
                   label="Add Stocks"
-                  disabled={selectedStockCalculatedTotal <= 0}
+                  {...(!isMarketOpen ? {tooltip: 'You can add stocks when market opens'} : {})}
+                  // disabled={selectedStockCalculatedTotal <= 0}
                   onClick={(e) => handleAddStocksToPortfolioDraft(e)}
                 />
               </Div>
