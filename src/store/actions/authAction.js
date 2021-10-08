@@ -2,10 +2,9 @@ import * as actionTypes from '../actionTypes/authActionTypes';
 import axios from 'axios';
 import setAuthToken from '../../utils/setAuthToken';
 import jwt_decode from 'jwt-decode';
-import { BACKEND_URL } from '../../utils/Constants';
 
 export const initiateUserLogin = (payload) => dispatch => {
-    axios.post(BACKEND_URL + '/api/users/login', payload)
+    axios.post('/api/users/login', payload)
         .then((res) => {
             // Save to localStorage
             const { token } = res.data;

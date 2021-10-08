@@ -1,32 +1,31 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useState, useRef } from "react";
 import { Container } from "../components/Container";
 import { Div } from "../components/Div";
 import { P } from "../components/Paragraph";
 import { ButtonPrimary, ButtonSecondary, ButtonTertiary } from "../components/Button";
 import { ProgressBar } from "../components/ProgressBar";
-import { Span } from "../components/Span";
 import { Input } from "../components/Input";
 import axios from "axios";
 import * as Constants from "../utils/Constants";
 import { Dialog } from "../components/Dialog";
 import { Toast } from "../components/Toast";
+import { useDispatch, useSelector } from "react-redux";
+import { walletUpdate } from '../store/actions/dashboardAction';
 
 const Transactions = (props) => {
-  let walletBalance = 100;
   const toast = useRef(null);
-  const [amount ,setRechargeAmount]= useState("")
+  const [rechargeAmount, setRechargeAmount] = useState("")
+  const [withDrawlAmount, setWithDrawlAmount] = useState("")
+  const [actionType, setActionType] = useState("")
   const [showModal, setShowModal] = useState(false);
-  useEffect(()=>{
-    
-  },[])
-
-  const rechargeWallet = () => {
+  const { wallet_balance } = useSelector((state) => state.auth.user)
+  const dispatch = useDispatch()
+  const makeTransaction = () => {
+    const transactionAmount = actionType === 'recharge' ? rechargeAmount : withDrawlAmount
     axios
-      .post(Constants.BACKEND_URL + "/api/wallet/recharge", {
-        rechargeAmount: amount,
-      })
+      .post(`/api/wallet/${actionType}`, { transactionAmount })
       .then((res) => {
-        console.log("recharge status", res.data);
+        dispatch(walletUpdate(res.data.wallet_balance))
         // show success toast
         toast.current.show({
           severity: "success",
@@ -47,11 +46,15 @@ const Transactions = (props) => {
     onHideModal();
   };
 
-  const onShowModal = () => {
+  const onShowModal = (actionType) => {
+    setActionType(actionType)
+    if(actionType==='withdrawl' && withDrawlAmount===""){return}
+    if(actionType==='recharge' && rechargeAmount===""){return}
     setShowModal(true);
   };
 
   const onHideModal = () => {
+    setActionType('')
     setShowModal(false);
   };
 
@@ -61,7 +64,7 @@ const Transactions = (props) => {
         <ButtonPrimary label="Cancel" onClick={() => onHideModal()} />
         <ButtonTertiary
           label="Confirm"
-          onClick={() => rechargeWallet()}
+          onClick={() => makeTransaction()}
           autoFocus
         />
       </Div>
@@ -72,9 +75,6 @@ const Transactions = (props) => {
     <Container minHeight={"80vh"}>
       <Div width={[1, 2 / 3, 3 / 4, 3 / 5]}>
         <P fontSize={"var(--fs-h2)"}>TRANSACTIONS</P>
-        <P>
-          <Span>WALLET BALANCE</Span> {walletBalance} INR
-        </P>
         <Input
           placeholder="Enter the amount you want to recharge"
           type="text"
@@ -83,25 +83,23 @@ const Transactions = (props) => {
           onChange={(e) => setRechargeAmount(e.target.value)}
         />
         <ButtonSecondary
-          onClick={() => onShowModal()}
+          onClick={() => onShowModal('recharge')}
           label="PROCEED TO RECHARGE"
           mt={3}
         />
 
         <hr style={{ width: "100%" }} />
-
+        <p>{wallet_balance}</p>
         <P>WITHDRAWAL ELIGIBILITY</P>
-        <P>
-          <Span>WALLET BALANCE</Span>
-        </P>
-        <ProgressBar value={30} mt={3} />
+        <ProgressBar value={(Number(wallet_balance) / 10000) * 100} mt={3} />
         <Input
           placeholder="Enter the amount you want to withdraw"
           type="text"
           mt={3}
+          onChange={(e) => setWithDrawlAmount(e.target.value)}
           p={3}
         />
-        <ButtonSecondary label="PROCEED TO WITHDRAW" mt={3} />
+        <ButtonSecondary onClick={() => onShowModal('withdrawl')} label="PROCEED TO WITHDRAW" mt={3} />
       </Div>
       <Dialog
         header="Confirm Action"

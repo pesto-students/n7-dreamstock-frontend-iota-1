@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Dashboard from "./pages/Dashboard";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
@@ -14,12 +14,27 @@ import Header from "./components/Header/Header";
 import SideNavBar from "./components/Sidebar/Sidebar"
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import PrivateRoute from './utils/PrivateRoute';
-import { useSelector } from "react-redux";
-
+import { useSelector, useDispatch } from "react-redux";
+import { walletUpdate } from './store/actions/dashboardAction'
+import axios from 'axios';
+import ErrorBoundary from './components/ErrorBoundary'
+import moment from 'moment-timezone';
 
 export default function DreamStock() {
-  const {isAuthenticated} = useSelector((state)=>state.auth)
-  const [visibleLeft, setVisibleLeft] = useState(true);
+  const { isAuthenticated } = useSelector((state) => state.auth)
+  const [visibleLeft, setVisibleLeft] = useState(isAuthenticated);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    moment.tz.setDefault("Asia/Mumbai");
+    console.log('time',moment())
+    axios.get('/api/wallet/info')
+      .then((res) => {
+        dispatch(walletUpdate(res.data.wallet_balance))
+      })
+      .catch((err) => console.log('info api err', err))
+  }, [])
+
 
   const handleSideBarToggle = () => {
     setVisibleLeft(!visibleLeft);
@@ -34,56 +49,58 @@ export default function DreamStock() {
         "20%",
       ]}
     >
-      <SideNavBar handleSideBarToggle={handleSideBarToggle} visibleLeft={visibleLeft}/>
+      <SideNavBar handleSideBarToggle={handleSideBarToggle} visibleLeft={visibleLeft} />
     </Div>
   )
   return (
     <Router>
-      <Div>
-        <Div flexRow minHeight={"100vh"}>
-          <PrivateRoute path="/" component={SideNavigationMenu} />
-          <Div
-          width={
-            isAuthenticated
-              ? [
-                  visibleLeft ? "0%" : "100%",
-                  visibleLeft ? "0%" : "100%",
-                  visibleLeft ? "75%" : "100%",
-                  visibleLeft ? "80%" : "100%",
-                ]
-              : "100%"
-          }
-          display={
-            isAuthenticated
-              ? [
-                  visibleLeft ? "none" : "block",
-                  visibleLeft ? "none" : "block",
-                  "block",
-                  "block",
-                ]
-              : "block"
-          }
-        >
-            <Div minHeight={"100%"} flexColumn>
-              <Header handleSideBarToggle={handleSideBarToggle} visibleLeft={visibleLeft}/>
-              <Router>
-                <Switch>
-                  <Route path="/" exact component={LandingPage} />
-                  <Route path="/login" exact component={Login} />
-                  <Route path="/signup" exact component={Signup} />
-                  <PrivateRoute path="/dashboard" exact component={Dashboard} />
-                  <PrivateRoute path="/summary" exact component={Summary} />
-                  <PrivateRoute path="/passbook" exact component={Passbook} />
-                  <PrivateRoute path="/transactions" exact component={Transactions} />
-                  <PrivateRoute path="/profile" exact component={Profile} />
-                  <Route path="/*" exact component={Error} />
-                </Switch>
-              </Router>
-              <Footer />
+      <ErrorBoundary>
+        <Div>
+          <Div flexRow minHeight={"100vh"}>
+            <PrivateRoute path="/" component={SideNavigationMenu} />
+            <Div
+              width={
+                isAuthenticated
+                  ? [
+                    visibleLeft ? "0%" : "100%",
+                    visibleLeft ? "0%" : "100%",
+                    visibleLeft ? "75%" : "100%",
+                    visibleLeft ? "80%" : "100%",
+                  ]
+                  : "100%"
+              }
+              display={
+                isAuthenticated
+                  ? [
+                    visibleLeft ? "none" : "block",
+                    visibleLeft ? "none" : "block",
+                    "block",
+                    "block",
+                  ]
+                  : "block"
+              }
+            >
+              <Div minHeight={"100%"} flexColumn>
+                <Header handleSideBarToggle={handleSideBarToggle} visibleLeft={visibleLeft} />
+                <Router>
+                  <Switch>
+                    <Route path="/" exact component={LandingPage} />
+                    <Route path="/login" exact component={Login} />
+                    <Route path="/signup" exact component={Signup} />
+                    <PrivateRoute path="/dashboard" exact component={Dashboard} />
+                    <PrivateRoute path="/summary" exact component={Summary} />
+                    <PrivateRoute path="/passbook" exact component={Passbook} />
+                    <PrivateRoute path="/transactions" exact component={Transactions} />
+                    <PrivateRoute path="/profile" exact component={Profile} />
+                    <Route path="/*" exact component={Error} />
+                  </Switch>
+                </Router>
+                <Footer />
+              </Div>
             </Div>
           </Div>
         </Div>
-      </Div>
+      </ErrorBoundary>
     </Router>
 
   );

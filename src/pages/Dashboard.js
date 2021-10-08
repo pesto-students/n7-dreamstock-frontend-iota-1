@@ -12,7 +12,6 @@ import {
   CardHorizontal,
 } from "../components/Card";
 import { Search } from "../components/Search";
-import * as Constants from "../utils/Constants";
 import * as ObjectGenerator from "../utils/ObjectGenerator";
 import * as CommonUtils from "../utils/CommonUtils";
 import { Chart } from "../components/Chart";
@@ -20,112 +19,121 @@ import { Input } from "../components/Input";
 import { Icon } from "../components/Icon";
 import { close } from "../components/IconFonts";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchMyDashoardDetails,updateMyportfolio,fetchLiveStockPrice } from '../store/actions/dashboardAction'
+import { fetchMyDashoardDetails, updateMyportfolio, fetchLiveStockPrice } from '../store/actions/dashboardAction'
+import moment from 'moment'
 
 const Dashboard = (props) => {
-  const [searchedStocks, setSearchedStocks] = useState([]);
   const [filteredStocks, setFilteredStocks] = useState(null);
   const [selectedStock, setSelectedStock] = useState(null);
   const [stockChartData, setStockChartData] = useState(null);
   const [showChart, setShowChart] = useState(false);
+  const [showStockData, setStockData] = useState(false);
   const [portfolioDraftList, setPortfolioDraftList] = useState([]);
   const [walletBalance, setWalletBalance] = useState(1000.0);
   const [selectedStockInfo, setSelectedStockInfo] = useState(null);
   const [selectedQuantity, setSelectedQuantity] = useState("");
   const [showTodaysPortfolio, setShowTodaysPortfolio] = useState(true);
-  const {wallet_balance}= useSelector((state)=>state.auth.user)
+  const [isMarketOpen, setMarketOpen] = useState(false)
+  const { wallet_balance } = useSelector((state) => state.auth.user)
   const [
     selectedStockCalculatedTotal,
     setSelectedStockCalculatedTotal,
   ] = useState(0);
-  const todaysPortfolioList =  useSelector((state)=>state.dashboard.myCurrentPortfolio) || []
-  const liveStockData = useSelector(state=>state.dashboard.liveStockData) || {}
+  const todaysPortfolioList = useSelector((state) => state.dashboard.myCurrentPortfolio) || []
+  const liveStockData = useSelector(state => state.dashboard.liveStockData) || {}
 
-  useEffect(()=>{
-    setWalletBalance(wallet_balance)
-  },[wallet_balance])
   const toast = useRef(null);
   let pollingTimer = {}
   const dispatch = useDispatch()
 
   useEffect(() => {
+    setWalletBalance(wallet_balance)
+  }, [wallet_balance])
+
+
+  useEffect(() => {
+    const currentTime = moment().format('H')
+    console.log('currentTime',currentTime)
+    if(currentTime<=16){
+      setMarketOpen(true)
+    }
     dispatch(fetchLiveStockPrice())
-    pollingTimer = setInterval(()=>{
+    pollingTimer = setInterval(() => {
       dispatch(fetchLiveStockPrice())
-    },1000*60*2)
+    }, 1000 * 60 * 2)
     dispatch(fetchMyDashoardDetails())
-    return ()=>{
+    return () => {
       clearInterval(pollingTimer)
     }
   }, []);
 
   const stocksBodyTemplate = (rowData) => {
     return (
-      <React.Fragment>
+      <>
         <Span className="p-column-title">Stock</Span>
         <P m={0}>{rowData.stock_name}</P>
         <Span color="yellow">{rowData.stock_symbol}</Span>
-      </React.Fragment>
+      </>
     );
   };
 
   const boughtAtBodyTemplate = (rowData) => {
     return (
-      <React.Fragment>
+      <>
         <Span className="p-column-title">Bought At</Span>
         {rowData.order_price ? rowData.order_price : "-"}
-      </React.Fragment>
+      </>
     );
   };
 
   const currentPriceBodyTemplate = (rowData) => {
     return (
-      <React.Fragment>
+      <>
         <Span className="p-column-title">Current Price</Span>
         {rowData.current_price ? rowData.current_price : "-"}
-      </React.Fragment>
+      </>
     );
   };
 
   const changeBodyTemplate = (rowData) => {
     return (
-      <React.Fragment>
+      <>
         <Span className="p-column-title">Change</Span>
         {rowData.change ? rowData.change : "-"}
-      </React.Fragment>
+      </>
     );
   };
 
   const mySharesBodyTemplate = (rowData) => {
     return (
-      <React.Fragment>
+      <>
         <Span className="p-column-title">My Shares</Span>
         {rowData.quantity}
-      </React.Fragment>
+      </>
     );
   };
 
   const earningsBodyTemplate = (rowData) => {
     return (
-      <React.Fragment>
+      <>
         <Span className="p-column-title">Earnings</Span>
         {rowData.investmentChange ? rowData.investmentChange : "-"}
-      </React.Fragment>
+      </>
     );
   };
 
   const investmentBodyTemplate = (rowData) => {
     return (
-      <React.Fragment>
+      <>
         <Span className="p-column-title">Total Investment</Span>
         {rowData.investment}
-      </React.Fragment>
+      </>
     );
   };
 
   const handleStockSearch = (e) => {
     console.log("handleStockSearch", e.query)
-    axios.get(Constants.BACKEND_URL + `/api/stocks/search?name=${e.query}`)
+    axios.get(`/api/stocks/search?name=${e.query}`)
       .then((res) => {
         setFilteredStocks(res.data.response.result)
       })
@@ -136,61 +144,45 @@ const Dashboard = (props) => {
     const selectedStockObj = event.value;
     setSelectedStock(selectedStockObj);
     if (selectedStockObj.displaySymbol !== undefined) {
-      axios.get(Constants.BACKEND_URL +`/api/stocks/getLiveStockInfo?name=${selectedStockObj.displaySymbol}`)
+      axios.get(`/api/stocks/getLiveStockInfo?name=${selectedStockObj.displaySymbol}`)
         .then((res) => {
           setSelectedStockInfo(res.data)
-          setShowChart(true);
-
+          setStockData(true);
         })
-        .catch((err) => console.log('getLiveStockInfo err', err))
+        .catch((err) => {
+          toast.current.show({
+            severity: "error",
+            summary: "Stock Unlisted from Market",
+            detail: "Please choose another stock",
+            life: 3000,
+          });
+          setStockData(false);
+          console.log('getLiveStockInfo err', err)
+        })
 
-      axios.get(Constants.BACKEND_URL +`/api/stocks/getStockInfo?name=${selectedStockObj.displaySymbol}`)
+      axios.get(`/api/stocks/getStockDetails?name=${selectedStockObj.displaySymbol}`)
         .then((res) => {
-          setStockChartData(
-            ObjectGenerator.GenerateStockGraphDataObj(
-              selectedStockObj.displaySymbol,
-              CommonUtils.ConvertChartData(res.data.response)
-            )
-          );
+          if (!res.data.response.error && res.data.response.s == 'ok')
+            setStockChartData(
+              ObjectGenerator.GenerateStockGraphDataObj(
+                selectedStockObj.displaySymbol,
+                CommonUtils.ConvertChartData(res.data.response)
+              )
+            );
           setShowChart(true);
         })
-        .catch((err) => console.log('getLiveStockInfo err', err))
+        .catch((err) => {
+          toast.current.show({
+            severity: "error",
+            summary: "Chart not available",
+            detail: "Stock data unavailable",
+            life: 3000,
+          });
+          setShowChart(false);
+          console.log('getLiveStockInfo err', err)
+        })
     }
   }
-
-  const handleSearchStock = (event) => {
-    setTimeout(() => {
-      let _filteredStocks;
-      if (!event.query.trim().length) {
-        _filteredStocks = [...searchedStocks];
-      } else {
-        _filteredStocks = searchedStocks.filter((stock) => {
-          return stock.description
-            .toLowerCase()
-            .startsWith(event.query.toLowerCase());
-        });
-      }
-
-      setFilteredStocks(_filteredStocks);
-    }, 250);
-  };
-
-  const handleSelectStock = (event) => {
-    const selectedStockObj = event.value;
-    setSelectedStock(selectedStockObj);
-    if (selectedStockObj.displaySymbol !== undefined) {
-      // Chart API comes here
-      setStockChartData(
-        ObjectGenerator.GenerateStockGraphDataObj(
-          selectedStockObj.displaySymbol,
-          CommonUtils.ConvertChartData(Constants.STOCK_CHART_RESPONSE.response)
-        )
-      );
-      setShowChart(true);
-      // Get Current chart info API comes here
-      setSelectedStockInfo(Constants.CURRENT_STOCK_INFO_RESPONSE);
-    }
-  };
 
   const handleNumberOfStocksInput = (event) => {
     const quantity = event.target.value.replace(/\D/, "");
@@ -228,24 +220,10 @@ const Dashboard = (props) => {
     setPortfolioDraftList(currentPortfolioDraftList);
     setSelectedQuantity(0);
     setSelectedStockCalculatedTotal(0);
-    // resetDashboard();
   };
 
-  // const resetDashboard = () => {
-  //   setShowChart(false);
-  //   setSelectedStock(null);
-  //   setStockChartData(null);
-  //   setSelectedStockInfo(null);
-  //   setSelectedQuantity(0);
-  // };
-
   const handleRemoveStocksFromPortfolioDraft = (index) => {
-    console.log("index => ", index);
-    let modifiedPortfolioDraftList = CommonUtils.RemoveElementFromArray(
-      portfolioDraftList,
-      index
-    );
-    console.log("after remove event => ", modifiedPortfolioDraftList);
+    const modifiedPortfolioDraftList = portfolioDraftList.filter((el, i) => i !== index)
     setPortfolioDraftList(modifiedPortfolioDraftList);
   };
 
@@ -274,30 +252,9 @@ const Dashboard = (props) => {
       detail: "Your Portfolio has been created",
       life: 3000,
     });
-
-    // for (let i = 0; i < portfolioDraftList.length; i++) {
-    //   let todaysPortfolioObj = {};
-    //   let portfolioDraftObj = portfolioDraftList[i];
-    //   todaysPortfolioObj.stockName = portfolioDraftObj.description;
-    //   todaysPortfolioObj.description = portfolioDraftObj.description;
-    //   todaysPortfolioObj.symbol = portfolioDraftObj.symbol;
-    //   todaysPortfolioObj.quantity = portfolioDraftObj.units;
-    //   todaysPortfolioObj.boughtAt = portfolioDraftObj.boughtAt;
-    //   todaysPortfolioObj.currentPrice = 5.0 + portfolioDraftObj.boughtAt;
-    //   todaysPortfolioObj.investment = portfolioDraftObj.total;
-    //   todaysPortfolioObj.investmentChange = 50.55;
-    //   todaysPortfolioObj.date = "1632631554809";
-    //   todaysPortfolioObj.stock_name = portfolioDraftObj.description;
-    //   todaysPortfolioObj.stock_symbol =  portfolioDraftObj.symbol
-    //   todaysPortfolioObj.order_price = portfolioDraftObj.boughtAt
-    //   todaysPortfolioObj.investmentChangePercentage = "+11%";
-    //   currentPortfolioList.push(todaysPortfolioObj);
-    // }
     setPortfolioDraftList([]);
     setShowTodaysPortfolio(true);
   };
-
-  console.log('todaysPortfolioList', todaysPortfolioList, showTodaysPortfolio)
   return (
     <Container flexRow minHeight={"80vh"}>
       <Div width={["100%", "100%", "60%", "70%"]} p={3}>
@@ -319,7 +276,7 @@ const Dashboard = (props) => {
             </P>
           )}
         </CardContent>
-        {showChart ? (
+        {showStockData ? (
           <CardContent mt={4}>
             <Div flexRow>
               <Div width={[1, 1, 1 / 2]}>
@@ -369,7 +326,7 @@ const Dashboard = (props) => {
         ) : null}
         {showTodaysPortfolio ? (
           <CardContent mt={4}>
-            <P fontSize={"var(--fs-h3)"}>Today's Portfolio</P>
+            <P fontSize={"var(--fs-h3)"}>{isMarketOpen ? "Today's Portfolio" : "Portfolio for next Market Session"}</P>
             <Div>
               <Table value={todaysPortfolioList}>
                 <Column
@@ -421,6 +378,7 @@ const Dashboard = (props) => {
         </CardHorizontal>
         <Div>
           {portfolioDraftList.map((portfolioDraftObj, index) => {
+            const { stockName, boughtAt, units, total } = portfolioDraftObj
             return (
               <CardContent mt={3} key={index}>
                 <Icon
@@ -430,25 +388,25 @@ const Dashboard = (props) => {
                   onClick={() => handleRemoveStocksFromPortfolioDraft(index)}
                 />
                 <Div>
-                  <P>{portfolioDraftObj.stockName}</P>
+                  <P>{stockName}</P>
                 </Div>
                 <P>
                   <Span fontSize={"var(--fs-milli)"} fontWeight={"light"}>
                     Bought At
                   </Span>{" "}
-                  {portfolioDraftObj.boughtAt}
+                  {boughtAt}
                 </P>
                 <P>
                   <Span fontSize={"var(--fs-milli)"} fontWeight={"light"}>
                     Units
                   </Span>{" "}
-                  {portfolioDraftObj.units}
+                  {units}
                 </P>
                 <P>
                   <Span fontSize={"var(--fs-milli)"} fontWeight={"light"}>
                     Total
                   </Span>{" "}
-                  {portfolioDraftObj.total}
+                  {total}
                 </P>
               </CardContent>
             );

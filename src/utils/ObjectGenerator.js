@@ -4,28 +4,6 @@ const options = { style: "currency", currency: "INR" };
 const numberFormat = new Intl.NumberFormat("en-US", options);
 
 export const GenerateStockGraphDataObj = (stockName, chartData) => {
-  console.log(stockName, " stockName");
-  console.log(chartData, " chartData");
-  const stockObj = {
-    rangeSelector: {
-      selected: 1,
-    },
-
-    title: {
-      text: stockName + " Stock Price",
-    },
-
-    series: [
-      {
-        name: stockName,
-        data: chartData,
-        tooltip: {
-          valueDecimals: 2,
-        },
-      },
-    ],
-  };
-
   const configPrice = {
     yAxis: [
       {

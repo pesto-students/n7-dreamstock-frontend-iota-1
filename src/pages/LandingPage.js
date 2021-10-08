@@ -6,7 +6,6 @@ import { P } from "../components/Paragraph";
 import { ButtonSecondary } from "../components/Button";
 import BannerImage from "../assets/images/Banner.png";
 import StockImage from "../assets/images/stock1.jpg";
-import { CardContent } from "../components/Card";
 import CarouselDemo from "./CarouselDemo";
 import { Image } from "../components/Image";
 

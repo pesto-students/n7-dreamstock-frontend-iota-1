@@ -4,59 +4,56 @@ import { Div } from "../components/Div";
 import { P } from "../components/Paragraph";
 import { Span } from "../components/Span";
 import { Column, Table } from "../components/Table";
-import * as Constants from "../utils/Constants";
 import * as CommonUtils from "../utils/CommonUtils";
 import axios from "axios";
 
 const Passbook = (props) => {
   const [passbookData, setPassbookData] = useState([]);
-
   useEffect(() => {
     // Call the PASSBOOK API here and set the response data
-    axios.get(Constants.BACKEND_URL +'/api/passbook/data')
+    axios.get('/api/passbook/data')
     .then((res)=>{
-      const data = res.data.map((el) => {
+      console.log('/api/passbook/data',res)
+      const data = res.data.order.map((el) => {
         let date = el.date.split('T')[0]
         el.date = date
         return el
       })
-      console.log('setPassbookData',data)
       setPassbookData(data)
     })
     .catch((err)=>console.log('passbook err',err))
-    // setPassbookData(Constants.PASSBOOK_DATA.data);
   }, []);
 
   const dateBodyTemplate = (rowData) => {
     return (
-      <React.Fragment>
+      <>
         <Span className="p-column-title">Date</Span>
         {(rowData.date)}
-      </React.Fragment>
+      </>
     );
   };
 
   const amountBodyTemplate = (rowData) => {
     return (
-      <React.Fragment>
+      <>
         <Span className="p-column-title">Amount</Span>
         {rowData.amount ? rowData.amount : "-"}
-      </React.Fragment>
+      </>
     );
   };
 
   const actionBodyTemplate = (rowData) => {
     return (
-      <React.Fragment>
+      <>
         <Span className="p-column-title">Action</Span>
         {rowData.action}
-      </React.Fragment>
+      </>
     );
   };
 
   const profitLossBodyTemplate = (rowData) => {
     return (
-      <React.Fragment>
+      <>
         <Span className="p-column-title">Profit/Loss</Span>
         {rowData.profit_loss ? (
           <Span
@@ -69,16 +66,16 @@ const Passbook = (props) => {
         ) : (
           "-"
         )}
-      </React.Fragment>
+      </>
     );
   };
 
   const finalBalanceBodyTemplate = (rowData) => {
     return (
-      <React.Fragment>
+      <>
         <Span className="p-column-title">Final Balance</Span>
         {rowData.final_balance}
-      </React.Fragment>
+      </>
     );
   };
 
@@ -86,7 +83,7 @@ const Passbook = (props) => {
     <Container minHeight={"80vh"} mb={4}>
       <Div>
         <P fontSize={"var(--fs-h2)"}>PASSBOOK</P>
-        <Table value={passbookData} paginator rows={10}>
+        <Table value={passbookData} paginator rows={5}>
           <Column field="date" header="DATE" body={dateBodyTemplate} />
           <Column field="amount" header="AMOUNT" body={amountBodyTemplate} />
           <Column field="action" header="ACTION" body={actionBodyTemplate} />

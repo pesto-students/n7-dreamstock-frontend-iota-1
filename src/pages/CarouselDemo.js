@@ -1,8 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { Carousel } from "primereact/carousel";
-import * as Constants from "../utils/Constants";
-import * as ObjectGenerator from "../utils/ObjectGenerator";
-import { Chart } from "../components/Chart";
 import STOCK from "../assets/images/stock-graph.png";
 import { Image } from "../components/Image";
 

@@ -29,6 +29,7 @@ export default function (state = initialState, action) {
                 ...state,
                 selectedStockInfo: action.payload
             }
+        
         default:
             return state;
     }

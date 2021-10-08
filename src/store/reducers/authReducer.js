@@ -20,7 +20,14 @@ export default function (state = initialState, action) {
                 user: {},
                 isAuthenticated: false
             };
-
+        case actionTypes.UPDATE_WALLET:
+            return {
+                ...state,
+                user:{
+                    ...state.user,
+                    wallet_balance :action.payload
+                }
+            }
         default:
             return state;
     }
