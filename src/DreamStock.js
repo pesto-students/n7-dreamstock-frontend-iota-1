@@ -48,10 +48,14 @@ export default function DreamStock() {
         visibleLeft ? "100%" : "0%",
         "250px",
       ]}
+      display={visibleLeft ? "block" : "none"}
     >
-      <SideNavBar handleSideBarToggle={handleSideBarToggle} visibleLeft={visibleLeft} />
+      <SideNavBar
+        handleSideBarToggle={handleSideBarToggle}
+        visibleLeft={visibleLeft}
+      />
     </Div>
-  )
+  );
   return (
     <Router>
       <Router>
