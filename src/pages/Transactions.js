@@ -11,7 +11,7 @@ import { Dialog } from "../components/Dialog";
 import { Toast } from "../components/Toast";
 import { useDispatch, useSelector } from "react-redux";
 import { walletUpdate } from '../store/actions/dashboardAction';
-
+import request from '../utils/interceptor'
 const Transactions = (props) => {
   const toast = useRef(null);
   const [rechargeAmount, setRechargeAmount] = useState("")
@@ -22,9 +22,10 @@ const Transactions = (props) => {
   const dispatch = useDispatch()
   const makeTransaction = () => {
     const transactionAmount = actionType === 'recharge' ? rechargeAmount : withDrawlAmount
-    axios
+    request
       .post(`/api/wallet/${actionType}`, { transactionAmount })
       .then((res) => {
+        console.log('recharge',res)
         dispatch(walletUpdate(res.data.wallet_balance))
         // show success toast
         toast.current.show({
