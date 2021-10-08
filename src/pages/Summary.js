@@ -18,7 +18,7 @@ const Summary = (props) => {
   useEffect(() => {
     // Call the Summary API here and set the response data
     setSummaryData(Constants.SUMMARY_REAL_DATA.data);
-    axios.get('/api/dashboard/summary')
+    axios.get(Constants.BACKEND_URL +'/api/dashboard/summary')
     .then((res)=>{
       console.log('summary',res.data.finalData);
       setSummaryData(res.data.finalData)

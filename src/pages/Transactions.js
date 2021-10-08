@@ -22,7 +22,7 @@ const Transactions = (props) => {
 
   const rechargeWallet = () => {
     axios
-      .post("/api/wallet/recharge", {
+      .post(Constants.BACKEND_URL + "/api/wallet/recharge", {
         rechargeAmount: amount,
       })
       .then((res) => {

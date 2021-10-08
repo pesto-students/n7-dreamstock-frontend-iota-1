@@ -13,7 +13,7 @@ const Passbook = (props) => {
 
   useEffect(() => {
     // Call the PASSBOOK API here and set the response data
-    axios.get('/api/passbook/data')
+    axios.get(Constants.BACKEND_URL +'/api/passbook/data')
     .then((res)=>{
       const data = res.data.map((el) => {
         let date = el.date.split('T')[0]

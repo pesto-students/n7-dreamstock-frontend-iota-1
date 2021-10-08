@@ -19,11 +19,7 @@ import { useSelector } from "react-redux";
 
 export default function DreamStock() {
   const {isAuthenticated} = useSelector((state)=>state.auth)
-  const [visibleLeft, setVisibleLeft] = useState(isAuthenticated);
-
-  // console.log("isAuthenticated => ", isAuthenticated);
-  // console.log("visibleLeft => ", visibleLeft);
-
+  const [visibleLeft, setVisibleLeft] = useState(true);
 
   const handleSideBarToggle = () => {
     setVisibleLeft(!visibleLeft);

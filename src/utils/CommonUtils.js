@@ -66,3 +66,19 @@ export const SetLoggedInUserInfo = (userObj) => {
     ? userObj.userWalletAmount
     : "";
 };
+
+export const ConvertChartData = (chartData) => {
+  let response = [];
+  for (let i = 0; i < chartData.c.length; i++) {
+    let individualItemArray = [
+      // chartData.t[i],
+      // chartData.o[i],
+      // chartData.h[i],
+      // chartData.l[i],
+      chartData.t[i],
+      chartData.c[i],
+    ];
+    response.push(individualItemArray);
+  }
+  return response;
+};

@@ -5,8 +5,10 @@ import { Section } from "../components/Section";
 import { P } from "../components/Paragraph";
 import { ButtonSecondary } from "../components/Button";
 import BannerImage from "../assets/images/Banner.png";
+import StockImage from "../assets/images/stock1.jpg";
 import { CardContent } from "../components/Card";
 import CarouselDemo from "./CarouselDemo";
+import { Image } from "../components/Image";
 
 const LandingPage = () => {
   return (
@@ -21,16 +23,21 @@ const LandingPage = () => {
       >
         <Container>
           <Div minHeight={"20vh"} flexRow mt={5} pr={5} pl={5}>
-            <Div width={["100%", "100%", "40%", "30%"]} height="100%" mt={5}>
+            <Div width={["100%", "100%", "50%", "50%"]} height="100%" mt={5}>
               <P fontSize={"var(--fs-h2)"}>The New Way to Invest In Stocks</P>
               <P>
                 A fancy stock exchange game where users can buy/sell shares of
                 U.S. companies as if they were trading in the real world.
               </P>
-              <ButtonSecondary label="START TRADING" />
+              <ButtonSecondary
+                label="START TRADING"
+                onClick={() => {
+                  window.location.href = "/login";
+                }}
+              />
             </Div>
-            <Div width={["100%", "100%", "60%", "70%"]}>
-              <CardContent height="400px"></CardContent>
+            <Div flexCenter width={["100%", "100%", "50%", "50%"]}>
+              <Image src={StockImage} height="400px"/>
             </Div>
           </Div>
         </Container>

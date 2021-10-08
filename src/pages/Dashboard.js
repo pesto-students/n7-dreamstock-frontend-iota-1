@@ -125,7 +125,7 @@ const Dashboard = (props) => {
 
   const handleStockSearch = (e) => {
     console.log("handleStockSearch", e.query)
-    axios.get(`/api/stocks/search?name=${e.query}`)
+    axios.get(Constants.BACKEND_URL + `/api/stocks/search?name=${e.query}`)
       .then((res) => {
         setFilteredStocks(res.data.response.result)
       })
@@ -136,7 +136,7 @@ const Dashboard = (props) => {
     const selectedStockObj = event.value;
     setSelectedStock(selectedStockObj);
     if (selectedStockObj.displaySymbol !== undefined) {
-      axios.get(`/api/stocks/getLiveStockInfo?name=${selectedStockObj.displaySymbol}`)
+      axios.get(Constants.BACKEND_URL +`/api/stocks/getLiveStockInfo?name=${selectedStockObj.displaySymbol}`)
         .then((res) => {
           setSelectedStockInfo(res.data)
           setShowChart(true);
@@ -144,12 +144,12 @@ const Dashboard = (props) => {
         })
         .catch((err) => console.log('getLiveStockInfo err', err))
 
-      axios.get(`/api/stocks/getStockInfo?name=${selectedStockObj.displaySymbol}`)
+      axios.get(Constants.BACKEND_URL +`/api/stocks/getStockInfo?name=${selectedStockObj.displaySymbol}`)
         .then((res) => {
           setStockChartData(
             ObjectGenerator.GenerateStockGraphDataObj(
               selectedStockObj.displaySymbol,
-              res.data.response.c
+              CommonUtils.ConvertChartData(res.data.response)
             )
           );
           setShowChart(true);
@@ -183,7 +183,7 @@ const Dashboard = (props) => {
       setStockChartData(
         ObjectGenerator.GenerateStockGraphDataObj(
           selectedStockObj.displaySymbol,
-          Constants.STOCK_CHART_RESPONSE.response.c
+          CommonUtils.ConvertChartData(Constants.STOCK_CHART_RESPONSE.response)
         )
       );
       setShowChart(true);
@@ -226,6 +226,8 @@ const Dashboard = (props) => {
     const currentPortfolioDraftList = portfolioDraftList;
     currentPortfolioDraftList.push(portfolioDraftObj);
     setPortfolioDraftList(currentPortfolioDraftList);
+    setSelectedQuantity(0);
+    setSelectedStockCalculatedTotal(0);
     // resetDashboard();
   };
 

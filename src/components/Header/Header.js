@@ -1,18 +1,17 @@
-import React, { useState } from "react";
+import React from "react";
 import { Squash as Hamburger } from "hamburger-react";
 import {
     ButtonPrimary,
     ButtonSecondary,
     ButtonTransparent,
 } from "../Button";
-import { userCircle, wallet } from "../IconFonts";
+import { wallet } from "../IconFonts";
 import { Menubar} from './style'
 import { Div } from "../Div";
 import { Image } from "../Image";
 import { Icon } from "../Icon";
 import {Span} from '../Span';
 import { useDispatch, useSelector } from "react-redux";
-
 import FullLogo from "../../assets/images/FullLogo.png";
 import { logoutUser } from "../../store/actions/authAction";
 const Header = (props) => {
@@ -51,14 +50,23 @@ const Header = (props) => {
     );
 
     const endBefore = (
-        <Div>
-            <ButtonPrimary
-                label="Log In"
-                mr={3}
-                p={3}
-            />
-            <ButtonSecondary label="Sign Up" p={3} />
-        </Div>
+      <Div>
+        <ButtonPrimary
+          label="Log In"
+          mr={3}
+          p={3}
+          onClick={() => {
+            window.location.href = "/login";
+          }}
+        />
+        <ButtonSecondary
+          label="Sign Up"
+          p={3}
+          onClick={() => {
+            window.location.href = "/signup";
+          }}
+        />
+      </Div>
     );
     const endAfter = (
       <Div>
