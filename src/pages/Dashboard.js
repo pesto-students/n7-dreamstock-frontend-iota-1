@@ -93,7 +93,7 @@ const Dashboard = (props) => {
     return (
       <>
         <Span className="p-column-title">Current Price</Span>
-        {rowData.current_price ? rowData.current_price : "-"}
+        {rowData.current_price ? Number(rowData.current_price).toFixed(2) : "-"}
       </>
     );
   };
@@ -102,11 +102,11 @@ const Dashboard = (props) => {
     const currentPrice=Number(rowData.current_price) 
     const orderPrice=Number(rowData.order_price) 
     const decideColor = currentPrice > orderPrice ? 'green' : 'red';
-    const sign = orderPrice > currentPrice ?'-' :'+'
+    const sign = orderPrice > currentPrice ?'' :'+'
     return (
       <>
         <Span className="p-column-title">Change</Span>
-        <Span color={decideColor} >{sign}{rowData.change ? Number(rowData.change).toFixed(2) : "-"}</Span>
+        <Span color={decideColor} >{rowData.change ?sign+Number(rowData.change).toFixed(2) : "-"}</Span>
       </>
     );
   };
@@ -125,11 +125,11 @@ const Dashboard = (props) => {
     const currentPrice=Number(rowData.current_price) 
     const orderPrice=Number(rowData.order_price) 
     const decideColor = currentPrice > orderPrice ? 'green' : 'red';
-    const sign = orderPrice > currentPrice ?'-' :'+'
+    const sign = orderPrice > currentPrice ?'' :'+'
     return (
       <>
         <Span className="p-column-title">Earnings</Span>
-        <Span color={decideColor} >{sign}{rowData.earnings ? Number(rowData.earnings).toFixed(2) : "-"}</Span>
+        <Span color={decideColor} >{rowData.earnings ? sign+Number(rowData.earnings).toFixed(2) : "-"}</Span>
       </>
     );
   };

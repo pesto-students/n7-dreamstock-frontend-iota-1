@@ -24,7 +24,7 @@ const Summary = (props) => {
           const {portfolioCurrentValue,total_cost} = el
           el['profit_loss']=((portfolioCurrentValue-total_cost)/total_cost).toFixed(2)
           el['status'] = portfolioCurrentValue>total_cost?'green':'red'
-          el['sign']= portfolioCurrentValue>total_cost?'+':'-'
+          el['sign']= portfolioCurrentValue>total_cost?'+':''
           return el
         })
         setSummaryData(calculatedData)
@@ -54,7 +54,7 @@ const Summary = (props) => {
     return (
       <>
         <Span className="p-column-title">Current Price</Span>
-        {rowData.current_price ? rowData.current_price : "-"}
+        {rowData.current_price ? Number(rowData.current_price).toFixed(2) : "-"}
       </>
     );
   };
@@ -63,7 +63,7 @@ const Summary = (props) => {
     const currentPrice=Number(rowData.current_price) 
     const orderPrice=Number(rowData.order_price) 
     const decideColor = currentPrice > orderPrice ? 'green' : 'red';
-    const sign = orderPrice > currentPrice ?'-' :'+'
+    const sign = orderPrice > currentPrice ?'' :'+'
     return (
       <>
         <Span className="p-column-title">Change</Span>
@@ -86,7 +86,7 @@ const Summary = (props) => {
     const currentPrice=Number(rowData.current_price) 
     const orderPrice=Number(rowData.order_price) 
     const decideColor = currentPrice > orderPrice ? 'green' : 'red';
-    const sign = orderPrice > currentPrice ?'-' :'+'
+    const sign = orderPrice > currentPrice ?'' :'+'
     // const change = liveStockData[rowData.stock_symbol] - order_price
     return (
       <>
@@ -121,7 +121,7 @@ const Summary = (props) => {
                 <Span fontSize={"var(--fs-milli)"} fontWeight={"light"}>
                   TOTAL COST
           </Span>{" "}
-                {summaryOfCurrentRecord.total_cost}
+                {Number(summaryOfCurrentRecord.total_cost).toFixed(2)}
               </P>
               <P>
                 <Span fontSize={"var(--fs-milli)"} fontWeight={"light"}>
