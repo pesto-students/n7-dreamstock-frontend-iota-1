@@ -277,7 +277,7 @@ const Dashboard = (props) => {
   };
   return (
     <Container flexRow minHeight={"80vh"}>
-      <Div width={["100%", "100%", "60%", "70%"]} p={3}>
+      <Div width={["100%", "100%", "100%", "75%"]} p={3}>
         <Search
           autoFocus={true}
           value={selectedStock}
@@ -391,7 +391,7 @@ const Dashboard = (props) => {
         ) : null}
       </Div>
 
-      <Div width={["100%", "100%", "40%", "30%"]} p={3}>
+      <Div width={["100%", "100%", "100%", "25%"]} p={3}>
         <CardHorizontal flexCenter p={2}>
           <Span color="title" fontSize={"var(--fs-h3)"}>
             Portfolio Draft
