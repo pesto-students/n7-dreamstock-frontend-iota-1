@@ -5,11 +5,12 @@ import { P } from "../components/Paragraph";
 import { Span } from "../components/Span";
 import { Column, Table } from "../components/Table";
 import axios from "axios";
+import request from '../utils/interceptor'
 
 const Passbook = (props) => {
   const [passbookData, setPassbookData] = useState([]);
   useEffect(() => {
-    axios.get('/api/passbook/data')
+    request.get('/api/passbook/data')
     .then((res)=>{
       const data = res.data.order.map((el) => {
         let date = el.date.split('T')[0]

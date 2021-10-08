@@ -7,6 +7,7 @@ import { Span } from "../components/Span";
 import { Toast } from "../components/Toast";
 import { Column, Table } from "../components/Table";
 import axios from 'axios';
+import request from '../utils/interceptor'
 import {
   CardContent,
   CardHorizontal,
@@ -145,7 +146,7 @@ const Dashboard = (props) => {
 
   const handleStockSearch = (e) => {
     console.log("handleStockSearch", e.query)
-    axios.get(`/api/stocks/search?name=${e.query}`)
+    request.get(`/api/stocks/search?name=${e.query}`)
       .then((res) => {
         setFilteredStocks(res.data.response.result)
       })
@@ -156,7 +157,7 @@ const Dashboard = (props) => {
     const selectedStockObj = event.value;
     setSelectedStock(selectedStockObj);
     if (selectedStockObj.displaySymbol !== undefined) {
-      axios.get(`/api/stocks/getLiveStockInfo?name=${selectedStockObj.displaySymbol}`)
+      request.get(`/api/stocks/getLiveStockInfo?name=${selectedStockObj.displaySymbol}`)
         .then((res) => {
           setSelectedStockInfo(res.data)
           setStockData(true);
@@ -172,7 +173,7 @@ const Dashboard = (props) => {
           console.log('getLiveStockInfo err', err)
         })
 
-      axios.get(`/api/stocks/getStockDetails?name=${selectedStockObj.displaySymbol}`)
+      request.get(`/api/stocks/getStockDetails?name=${selectedStockObj.displaySymbol}`)
         .then((res) => {
           if (!res.data.response.error && res.data.response.s == 'ok')
             setStockChartData(

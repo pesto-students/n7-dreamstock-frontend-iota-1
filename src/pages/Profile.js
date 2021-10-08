@@ -5,12 +5,13 @@ import { P } from "../components/Paragraph";
 import { ButtonSecondary } from "../components/Button";
 import { Input } from "../components/Input";
 import axios from "axios";
+import request from '../utils/interceptor'
 
 const Profile = (props) => {
 
   const [userData, setuserData] = useState({});
   useEffect(() => {
-    axios.get('/api/profile/myprofile')
+    request.get('/api/profile/myprofile')
     .then((res)=>{
       setuserData(res.data.user)
     })

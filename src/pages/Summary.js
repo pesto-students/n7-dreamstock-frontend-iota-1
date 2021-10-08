@@ -9,6 +9,8 @@ import { Accordion } from "../components/Accordion";
 import * as CommonUtils from "../utils/CommonUtils";
 import { Column, Table } from "../components/Table";
 import axios from "axios";
+import request from '../utils/interceptor'
+
 import { useSelector } from "react-redux";
 import {
   CardContent,
@@ -18,7 +20,7 @@ const Summary = (props) => {
   const liveStockData = useSelector(state => state.dashboard.liveStockData)
   useEffect(() => {
     // Call the Summary API here and set the response data
-    axios.get('/api/dashboard/summary')
+    request.get('/api/dashboard/summary')
       .then((res) => {
         const calculatedData = res.data.finalData.map((el)=>{
           const {portfolioCurrentValue,total_cost} = el
