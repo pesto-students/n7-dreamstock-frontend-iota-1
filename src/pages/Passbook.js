@@ -4,16 +4,13 @@ import { Div } from "../components/Div";
 import { P } from "../components/Paragraph";
 import { Span } from "../components/Span";
 import { Column, Table } from "../components/Table";
-import * as CommonUtils from "../utils/CommonUtils";
 import axios from "axios";
-import { color } from "highcharts";
 
 const Passbook = (props) => {
   const [passbookData, setPassbookData] = useState([]);
   useEffect(() => {
     axios.get('/api/passbook/data')
     .then((res)=>{
-      console.log('/api/passbook/data',res)
       const data = res.data.order.map((el) => {
         let date = el.date.split('T')[0]
         el.date = date

@@ -20,8 +20,14 @@ const Summary = (props) => {
     // Call the Summary API here and set the response data
     axios.get('/api/dashboard/summary')
       .then((res) => {
-        console.log('summary', res.data.finalData);
-        setSummaryData(res.data.finalData)
+        const calculatedData = res.data.finalData.map((el)=>{
+          const {portfolioCurrentValue,total_cost} = el
+          el['profit_loss']=((portfolioCurrentValue-total_cost)/total_cost).toFixed(2)
+          el['status'] = portfolioCurrentValue>total_cost?'green':'red'
+          el['sign']= portfolioCurrentValue>total_cost?'+':'-'
+          return el
+        })
+        setSummaryData(calculatedData)
       })
       .catch((res) => console.log('err'))
   }, []);
@@ -121,12 +127,9 @@ const Summary = (props) => {
                 <Span fontSize={"var(--fs-milli)"} fontWeight={"light"}>
                   PROFIT
           </Span>{" "}
-                <Span
-                  color={CommonUtils.ReturnColorBasedOnProfitLoss(
-                    summaryOfCurrentRecord.profit_loss
-                  )}
+                <Span color={summaryOfCurrentRecord.status}
                 >
-                  {summaryOfCurrentRecord.profit_loss}
+                 {summaryOfCurrentRecord.sign}{summaryOfCurrentRecord.profit_loss}
                 </Span>{" "}
               </P>
             </CardHorizontalTransparent>
