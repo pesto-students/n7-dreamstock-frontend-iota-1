@@ -51,7 +51,7 @@ const Transactions = () => {
           life: 3000,
         });
       })
-      .catch((err) => {
+      .catch(() => {
         toast.current.show({
           severity: "error",
           summary: "Transaction Failed",

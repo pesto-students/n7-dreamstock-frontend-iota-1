@@ -66,17 +66,18 @@ const Dashboard = () => {
   useEffect(() => {
     let pollingTimer = {};
     const currentTime = moment().format("H");
-    const day = moment().format("d")
-    if (currentTime >= 13 && currentTime < 20 && day > 0 && day < 6 || true) {// or trues Added to enable demo cuz market will be close
+    const day = moment().format("d");
+    if (currentTime >= 13 && currentTime < 20 && day > 0 && day < 6) {
+      // or trues Added to enable demo cuz market will be close
       setMarketOpen(true);
       pollingTimer = setInterval(() => {
         dispatch(fetchLiveStockPrice());
       }, 1000 * 10 * 2);
       dispatch(fetchLiveStockPrice());
     }
-    else {
-      setMarketOpen(false);
-    }
+    // else {
+    //   setMarketOpen(false);
+    // }
     dispatch(fetchWalletUpdate());
     dispatch(fetchMyDashoardDetails());
     return () => {
@@ -218,7 +219,7 @@ const Dashboard = () => {
             );
           setShowChart(true);
         })
-        .catch((err) => {
+        .catch(() => {
           toast.current.show({
             severity: "error",
             summary: "Chart not available",

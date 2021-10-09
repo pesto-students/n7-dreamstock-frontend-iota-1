@@ -1,5 +1,5 @@
 import React from "react";
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
 import { Div } from "../Div";
 import { NavMenu } from "../NavMenu";
 import { CardContent, CardHorizontalTransparent } from "../Card";
@@ -28,7 +28,7 @@ const SideNavBar = (props) => {
           icon: "pi pi-fw pi-briefcase",
           command: () => {
             sidNaveClick("/dashboard");
-            props.handleSideBarToggle();
+            // props.handleSideBarToggle();
           },
         },
         {
@@ -36,7 +36,7 @@ const SideNavBar = (props) => {
           icon: "pi pi-fw pi-th-large",
           command: () => {
             sidNaveClick("/summary");
-            props.handleSideBarToggle();
+            // props.handleSideBarToggle();
           },
         },
         {
@@ -44,7 +44,7 @@ const SideNavBar = (props) => {
           icon: "pi pi-fw pi-book",
           command: () => {
             sidNaveClick("/passbook");
-            props.handleSideBarToggle();
+            // props.handleSideBarToggle();
           },
         },
         {
@@ -52,7 +52,7 @@ const SideNavBar = (props) => {
           icon: "pi pi-fw pi-money-bill",
           command: () => {
             sidNaveClick("/transactions");
-            props.handleSideBarToggle();
+            // props.handleSideBarToggle();
           },
         },
         {
@@ -60,7 +60,7 @@ const SideNavBar = (props) => {
           icon: "pi pi-fw pi-user-edit",
           command: () => {
             sidNaveClick("/profile");
-            props.handleSideBarToggle();
+            // props.handleSideBarToggle();
           },
         },
       ],

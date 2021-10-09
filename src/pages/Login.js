@@ -40,7 +40,7 @@ const Login = () => {
           <P textAlign={"center"}>OR</P>
           <GLogin />
           <P textAlign={"center"}>
-            Don`&apos;`t Have an account?{" "}
+            Do not have an account?{" "}
             <A onClick={() => (window.location.href = "/signup")}>Sign Up</A>
           </P>
         </Div>
