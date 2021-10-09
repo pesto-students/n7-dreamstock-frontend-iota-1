@@ -26,17 +26,21 @@ const Login = () => {
         </Div>
         <Div>
           <P>Email</P>
-          <Input placeholder="Enter Your Email" type="text" p={3} />
+          <Input placeholder="Enter Your Email" disabled type="text" p={3} />
         </Div>
         <Div>
           <P>Password</P>
-          <Input placeholder="Enter Your Password" type="text" p={3} />
+          <Input placeholder="Enter Your Password" disabled type="text" p={3} />
           <P>
             <A>Forgot Password?</A>
           </P>
         </Div>
         <Div mt={4}>
-          <ButtonSecondary label="Log In" width={"100%"} />
+          <ButtonSecondary
+            label="Log In"
+            width={"100%"}
+            tooltip={"Please use Google Login"}
+          />
           <P textAlign={"center"}>OR</P>
           <GLogin />
           <P textAlign={"center"}>

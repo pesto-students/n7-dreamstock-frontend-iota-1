@@ -1,11 +1,11 @@
 import * as Sentry from "@sentry/react";
 import { Integrations } from "@sentry/tracing";
+import config from "../config.json";
 
 export const InitSentry = () => {
   //Sentry Integration
   Sentry.init({
-    dsn:
-      "https://224e05c536964f438a14ba68877822c8@o1021977.ingest.sentry.io/5988150",
+    dsn: config.SENTRY_DSN,
     integrations: [new Integrations.BrowserTracing()],
     tracesSampleRate: 0,
   });

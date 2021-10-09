@@ -8,9 +8,10 @@ import { AccordionTab } from "primereact/accordion";
 import { Accordion } from "../components/Accordion";
 import { Column, Table } from "../components/Table";
 import { fetchWalletUpdate } from "../store/actions/dashboardAction";
-import request from "../utils/interceptor";
+import request from "../utils/Interceptor";
 import { useDispatch } from "react-redux";
 import { CardContent } from "../components/Card";
+import { LogError } from "../utils/SentryUtils";
 
 const Summary = () => {
   const [summaryData, setSummaryData] = useState([]);
@@ -37,7 +38,7 @@ const Summary = () => {
         });
         setSummaryData(calculatedData);
       })
-      .catch(() => console.log("err"));
+      .catch((err) => LogError(err));
   }, [dispatch]);
 
   const stocksBodyTemplate = (rowData) => {
@@ -72,7 +73,7 @@ const Summary = () => {
   const changeBodyTemplate = (rowData) => {
     const { order_price, current_price } = rowData;
     const decideColor = current_price > order_price ? "green" : "red";
-    const sign = current_price>order_price  ? "+" : "";
+    const sign = current_price > order_price ? "+" : "";
     return (
       <>
         <Span className="p-column-title">Change</Span>
@@ -96,7 +97,7 @@ const Summary = () => {
   const earningsBodyTemplate = (rowData) => {
     const { order_price, current_price } = rowData;
     const decideColor = current_price > order_price ? "green" : "red";
-    const sign = current_price>order_price  ? "+" : "";
+    const sign = current_price > order_price ? "+" : "";
     return (
       <>
         <Span className="p-column-title">Earnings</Span>
@@ -124,21 +125,15 @@ const Summary = () => {
           const accordionHeader = (
             <CardHorizontalTransparent>
               <P>
-                <Span fontWeight={"light"}>
-                  DATE
-                </Span>{" "}
+                <Span fontWeight={"light"}>DATE</Span>{" "}
                 {summaryOfCurrentRecord.date}
               </P>
               <P>
-                <Span fontWeight={"light"}>
-                  TOTAL COST
-                </Span>{" "}
+                <Span fontWeight={"light"}>TOTAL COST</Span>{" "}
                 {summaryOfCurrentRecord.total_cost.toFixed(2)}
               </P>
               <P>
-                <Span fontWeight={"light"}>
-                  PROFIT
-                </Span>{" "}
+                <Span fontWeight={"light"}>PROFIT</Span>{" "}
                 <Span color={summaryOfCurrentRecord.status}>
                   {summaryOfCurrentRecord.sign}
                   {summaryOfCurrentRecord.profit_loss}

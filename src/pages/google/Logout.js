@@ -2,9 +2,9 @@ import React from "react";
 import { GoogleLogout } from "react-google-login";
 import { ButtonTransparent } from "../../components/Button";
 import { ClearLoggedInUserInfo } from "../../utils/CommonUtils";
+import config from "../../config.json";
 
-const clientId =
-  "610233614673-jvsmjb0uhvppt0pqapelspsdibpvrd3c.apps.googleusercontent.com";
+const clientId = config.OAUTH_CLIENT_ID;
 
 const Logout = () => {
   const onSuccess = () => {

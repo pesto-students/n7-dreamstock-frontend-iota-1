@@ -1,5 +1,6 @@
 import * as actionTypes from "../actionTypes/dashboardActionTypes";
-import request from "../../utils/interceptor";
+import request from "../../utils/Interceptor";
+import { LogError } from "../../utils/SentryUtils";
 
 export const fetchMyDashoardDetails = () => (dispatch) => {
   request
@@ -10,7 +11,7 @@ export const fetchMyDashoardDetails = () => (dispatch) => {
         payload: res.data.order,
       });
     })
-    .catch((err) => console.log("myDashboard err", err));
+    .catch((err) => LogError(err));
 };
 
 export const updateMyportfolio = (requestObj) => (dispatch) => {
@@ -23,7 +24,7 @@ export const updateMyportfolio = (requestObj) => (dispatch) => {
         payload: requestObj.data,
       });
     })
-    .catch((err) => console.log("create_order err", err));
+    .catch((err) => LogError(err));
 };
 
 export const fetchWalletUpdate = () => (dispatch) => {
@@ -32,7 +33,7 @@ export const fetchWalletUpdate = () => (dispatch) => {
     .then((res) => {
       dispatch(walletUpdate(res.data.wallet_balance));
     })
-    .catch((err) => console.log("info api err", err));
+    .catch((err) => LogError(err));
 };
 
 export const walletUpdate = (newBalance) => {
@@ -43,7 +44,6 @@ export const fetchLiveStockPrice = () => (dispatch) => {
   request
     .get("/api/stocks/livePrices")
     .then((res) => {
-      console.log("fetchLiveStockPrice", res.data.liveStocksData);
       dispatch({
         type: actionTypes.UPDATE_LIVE_STOCK_DATA,
         payload: res.data.liveStocksData,
@@ -53,5 +53,5 @@ export const fetchLiveStockPrice = () => (dispatch) => {
         payload: res.data.liveStocksData,
       });
     })
-    .catch((err) => console.log("myDashboard err", err));
+    .catch((err) => LogError(err));
 };
