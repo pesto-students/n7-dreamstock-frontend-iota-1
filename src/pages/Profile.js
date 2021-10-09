@@ -3,7 +3,7 @@ import { Container } from "../components/Container";
 import { Div } from "../components/Div";
 import { P } from "../components/Paragraph";
 import { Input } from "../components/Input";
-import request from "../utils/interceptor";
+import request from "../utils/Interceptor";
 import { ButtonSecondary } from "../components/Button";
 import { LogError } from "../utils/SentryUtils";
 

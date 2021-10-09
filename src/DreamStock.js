@@ -76,7 +76,7 @@ export default function DreamStock() {
                 <Div minHeight={"100%"} flexColumn>
                   <Header handleSideBarToggle={handleSideBarToggle} visibleLeft={visibleLeft} />
                   <Switch>
-                    <Route path="/landing" exact component={LandingPage} />
+                    <Route path="/" exact component={LandingPage} />
                     <Route path="/login" exact component={Login} />
                     <Route path="/signup" exact component={Signup} />
                     <PrivateRoute path="/dashboard" exact component={Dashboard} />

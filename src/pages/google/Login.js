@@ -3,8 +3,9 @@ import { GoogleLogin } from "react-google-login";
 import { useDispatch } from "react-redux";
 import { ButtonTransparent } from "../../components/Button";
 import { initiateUserLogin } from "../../store/actions/authAction";
-const clientId =
-  "610233614673-jvsmjb0uhvppt0pqapelspsdibpvrd3c.apps.googleusercontent.com";
+import config from "../../config.json";
+
+const clientId = config.OAUTH_CLIENT_ID;
 
 const GLogin = () => {
   const dispatch = useDispatch();
