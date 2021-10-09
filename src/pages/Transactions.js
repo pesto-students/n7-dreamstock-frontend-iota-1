@@ -111,7 +111,8 @@ const Transactions = () => {
         <P fontSize={"var(--fs-h2)"}>TRANSACTIONS</P>
         <Input
           placeholder="Enter the amount you want to recharge"
-          type="text"
+          type="number"
+          value={rechargeAmount}
           mt={2}
           p={3}
           onChange={(e) => setRechargeAmount(e.target.value)}
@@ -131,7 +132,8 @@ const Transactions = () => {
         />
         <Input
           placeholder="Enter the amount you want to withdraw"
-          type="text"
+          type="number"
+          value={withDrawlAmount}
           mt={3}
           onChange={(e) => setWithDrawlAmount(e.target.value)}
           p={3}

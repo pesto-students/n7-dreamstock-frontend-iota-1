@@ -65,16 +65,16 @@ const Dashboard = () => {
    */
   useEffect(() => {
     let pollingTimer = {};
-    const currentTime = moment().format("H");
-    const day = moment().format("d");
-    if (currentTime >= 13 && currentTime < 20 && day > 0 && day < 6) {
+    // const currentTime = moment().format("H");
+    // const day = moment().format("d");
+    // if (currentTime >= 13 && currentTime < 20 && day > 0 && day < 6) {
       // or trues Added to enable demo cuz market will be close
       setMarketOpen(true);
       pollingTimer = setInterval(() => {
         dispatch(fetchLiveStockPrice());
       }, 1000 * 5 * 2);
       dispatch(fetchLiveStockPrice());
-    }
+    // }
     // else {
     //   setMarketOpen(false);
     // }
@@ -121,7 +121,7 @@ const Dashboard = () => {
       <>
         <Span className="p-column-title">Change</Span>
         <Span color={decideColor}>
-          {rowData.change ? sign + (rowData.change * 100).toFixed(2) : "-"}
+          {rowData.change ? sign + (rowData.change * 100).toFixed(2)+" %" : "-"}
         </Span>
       </>
     );
@@ -144,7 +144,7 @@ const Dashboard = () => {
       <>
         <Span className="p-column-title">Earnings</Span>
         <Span color={decideColor}>
-          {rowData.earnings ? sign + rowData.earnings.toFixed(2) : "-"}
+          {rowData.earnings ? sign + rowData.earnings.toFixed(2)+" INR" : "-"}
         </Span>
       </>
     );
@@ -166,7 +166,6 @@ const Dashboard = () => {
    */
   const handleStockSearch = (e) => {
     setShowChart(false);
-    setShowTodaysPortfolio(false);
     setStockData(false);
     request
       .get(`/api/stocks/search?name=${e.query}`)
@@ -330,7 +329,7 @@ const Dashboard = () => {
         severity: "success",
         summary: "Success",
         detail: "For Demo purposes we will close your trade in 1min.",
-        life: 3000,
+        life: 10000,
       });
     }, 4000);
     setPortfolioDraftList([]);
@@ -413,9 +412,7 @@ const Dashboard = () => {
         {showTodaysPortfolio ? (
           <CardContent mt={4}>
             <P>
-              {moment().format("H") < 16
-                ? "TODAY'S PORTFOLIO"
-                : "PORTFOLIO FOR NEXT MARKET SESSION"}
+              {"PORTFOLIO FOR NEXT MARKET SESSION"}
             </P>
             <Div>
               <Table value={todaysPortfolioList}>

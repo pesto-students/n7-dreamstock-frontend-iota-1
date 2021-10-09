@@ -31,7 +31,7 @@ const Summary = () => {
           el["profit_loss"] = (
             ((portfolioCurrentValue - total_cost) / total_cost) *
             100
-          ).toFixed(2);
+          ).toFixed(2)+" %";
           el["status"] = portfolioCurrentValue > total_cost ? "green" : "red";
           el["sign"] = portfolioCurrentValue > total_cost ? "+" : "";
           return el;
@@ -79,7 +79,7 @@ const Summary = () => {
         <Span className="p-column-title">Change</Span>
         <Span color={decideColor}>
           {sign}
-          {rowData.change ? (rowData.change * 100).toFixed(2) : "-"}
+          {rowData.change ? (rowData.change * 100).toFixed(2)+" %" : "-"}
         </Span>
       </>
     );
@@ -103,7 +103,7 @@ const Summary = () => {
         <Span className="p-column-title">Earnings</Span>
         <Span color={decideColor}>
           {sign}
-          {rowData.earnings ? rowData.earnings.toFixed(2) : "-"}
+          {rowData.earnings ? rowData.earnings.toFixed(2)+" INR" : "-"}
         </Span>
       </>
     );
@@ -125,12 +125,12 @@ const Summary = () => {
           const accordionHeader = (
             <CardHorizontalTransparent>
               <P>
-                <Span fontWeight={"light"}>DATE</Span>{" "}
+                <Span fontWeight={"light"}>DATE</Span>{" : "}
                 {summaryOfCurrentRecord.date}
               </P>
               <P>
-                <Span fontWeight={"light"}>TOTAL COST</Span>{" "}
-                {summaryOfCurrentRecord.total_cost.toFixed(2)}
+                <Span fontWeight={"light"}>TOTAL COST</Span>{" : "}
+                {summaryOfCurrentRecord.total_cost.toFixed(2) +" INR"}
               </P>
               <P>
                 <Span fontWeight={"light"}>PROFIT</Span>{" "}
@@ -167,7 +167,7 @@ const Summary = () => {
           />
           <Column
             field="currentPrice"
-            header="Current Price"
+            header="Closing Price"
             body={currentPriceBodyTemplate}
           />
           <Column
