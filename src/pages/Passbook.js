@@ -4,33 +4,34 @@ import { Div } from "../components/Div";
 import { P } from "../components/Paragraph";
 import { Span } from "../components/Span";
 import { Column, Table } from "../components/Table";
-import request from '../utils/interceptor'
+import request from "../utils/interceptor";
 import { useDispatch } from "react-redux";
-import { fetchWalletUpdate } from '../store/actions/dashboardAction';
+import { fetchWalletUpdate } from "../store/actions/dashboardAction";
 
-const Passbook = (props) => {
+const Passbook = () => {
   const [passbookData, setPassbookData] = useState([]);
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(fetchWalletUpdate())
-    request.get('/api/passbook/data')
-    .then((res)=>{
-      const data = res.data.order.map((el) => {
-        let date = el.date.split('T')[0]
-        el.date = date
-        return el
+    dispatch(fetchWalletUpdate());
+    request
+      .get("/api/passbook/data")
+      .then((res) => {
+        const data = res.data.order.map((el) => {
+          let date = el.date.split("T")[0];
+          el.date = date;
+          return el;
+        });
+        setPassbookData(data);
       })
-      setPassbookData(data)
-    })
-    .catch((err)=>console.log('passbook err',err))
-  }, []);
+      .catch((err) => console.log("passbook err", err));
+  }, [dispatch]);
 
   const dateBodyTemplate = (rowData) => {
     return (
       <>
         <Span className="p-column-title">Date</Span>
-        {(rowData.date)}
+        {rowData.date}
       </>
     );
   };
@@ -54,24 +55,22 @@ const Passbook = (props) => {
   };
 
   const profitLossBodyTemplate = (rowData) => {
-    let color = 'title'
-    if(rowData.action.includes('PROFIT')){
-      color = 'green'
-    }
-    else if(rowData.action.includes('LOSS')){
-      color='red'
-    }
-    else{
-      color='title'
+    let color = "title";
+    if (rowData.action.includes("PROFIT")) {
+      color = "green";
+    } else if (rowData.action.includes("LOSS")) {
+      color = "red";
+    } else {
+      color = "title";
     }
     return (
       <>
         <Span className="p-column-title">Profit/Loss</Span>
         {rowData.profit_loss ? (
-          <Span
-            color={color}
-          >
-            {color=='title'? rowData.profit_loss:Number(rowData.profit_loss).toFixed(2)}
+          <Span color={color}>
+            {color === "title"
+              ? rowData.profit_loss
+              : Number(rowData.profit_loss).toFixed(2)}
           </Span>
         ) : (
           "-"

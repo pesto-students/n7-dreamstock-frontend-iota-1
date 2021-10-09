@@ -9,13 +9,12 @@ import { A } from "../components/Link";
 import GLogin from "./google/Login";
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
-import { LogError } from "../utils/SentryUtils";
 
-const Login = (props) => {
-  const {isAuthenticated} = useSelector((state)=>state.auth)
-  const history = useHistory()
-  if(isAuthenticated){
-    history.push('/dashboard')
+const Login = () => {
+  const { isAuthenticated } = useSelector((state) => state.auth);
+  const history = useHistory();
+  if (isAuthenticated) {
+    history.push("/dashboard");
   }
   return (
     <Container flexCenter>
@@ -41,8 +40,8 @@ const Login = (props) => {
           <P textAlign={"center"}>OR</P>
           <GLogin />
           <P textAlign={"center"}>
-            Don't Have an account?{" "}
-            <A onClick={(e) => (window.location.href = "/signup")}>Sign Up</A>
+            Don`&apos;`t Have an account?{" "}
+            <A onClick={() => (window.location.href = "/signup")}>Sign Up</A>
           </P>
         </Div>
       </CardContent>

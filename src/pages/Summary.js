@@ -7,32 +7,34 @@ import { CardHorizontalTransparent } from "../components/Card";
 import { AccordionTab } from "primereact/accordion";
 import { Accordion } from "../components/Accordion";
 import { Column, Table } from "../components/Table";
-import { fetchWalletUpdate } from '../store/actions/dashboardAction';
-import request from '../utils/interceptor'
+import { fetchWalletUpdate } from "../store/actions/dashboardAction";
+import request from "../utils/interceptor";
 import { useDispatch } from "react-redux";
-import {
-  CardContent,
-} from "../components/Card";
+import { CardContent } from "../components/Card";
 
-const Summary = (props) => {
+const Summary = () => {
   const [summaryData, setSummaryData] = useState([]);
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   useEffect(() => {
     // Call the Summary API here and set the response data
-    dispatch(fetchWalletUpdate())
-    request.get('/api/dashboard/summary')
+    dispatch(fetchWalletUpdate());
+    request
+      .get("/api/dashboard/summary")
       .then((res) => {
-        const calculatedData = res.data.finalData.map((el)=>{
-          const {portfolioCurrentValue,total_cost} = el
-          el['profit_loss']=(((portfolioCurrentValue-total_cost)/total_cost) * 100).toFixed(2)
-          el['status'] = portfolioCurrentValue>total_cost?'green':'red'
-          el['sign']= portfolioCurrentValue>total_cost?'+':''
-          return el
-        })
-        setSummaryData(calculatedData)
+        const calculatedData = res.data.finalData.map((el) => {
+          const { portfolioCurrentValue, total_cost } = el;
+          el["profit_loss"] = (
+            ((portfolioCurrentValue - total_cost) / total_cost) *
+            100
+          ).toFixed(2);
+          el["status"] = portfolioCurrentValue > total_cost ? "green" : "red";
+          el["sign"] = portfolioCurrentValue > total_cost ? "+" : "";
+          return el;
+        });
+        setSummaryData(calculatedData);
       })
-      .catch((res) => console.log('err'))
-  }, []);
+      .catch(() => console.log("err"));
+  }, [dispatch]);
 
   const stocksBodyTemplate = (rowData) => {
     return (
@@ -56,19 +58,24 @@ const Summary = (props) => {
     return (
       <>
         <Span className="p-column-title">Current Price</Span>
-        {rowData.current_price ? (rowData.current_price).toFixed(2) : "-"}
+        {rowData.current_price
+          ? parseFloat(rowData.current_price).toFixed(2)
+          : "-"}
       </>
     );
   };
 
   const changeBodyTemplate = (rowData) => {
-    const { order_price ,current_price} = rowData;
-    const decideColor = current_price > order_price ? 'green' : 'red';
-    const sign = order_price > current_price ? '' : '+'
+    const { order_price, current_price } = rowData;
+    const decideColor = current_price > order_price ? "green" : "red";
+    const sign = order_price > current_price ? "" : "+";
     return (
       <>
         <Span className="p-column-title">Change</Span>
-        <Span color={decideColor} >{sign}{rowData.change ? ((rowData.change)*100).toFixed(2) : "-"}</Span>
+        <Span color={decideColor}>
+          {sign}
+          {rowData.change ? (rowData.change * 100).toFixed(2) : "-"}
+        </Span>
       </>
     );
   };
@@ -83,13 +90,16 @@ const Summary = (props) => {
   };
 
   const earningsBodyTemplate = (rowData) => {
-    const { order_price ,current_price} = rowData;
-    const decideColor = current_price > order_price ? 'green' : 'red';
-    const sign = order_price > current_price ? '' : '+'
+    const { order_price, current_price } = rowData;
+    const decideColor = current_price > order_price ? "green" : "red";
+    const sign = order_price > current_price ? "" : "+";
     return (
       <>
         <Span className="p-column-title">Earnings</Span>
-        <Span color={decideColor} >{sign}{rowData.earnings ? (rowData.earnings).toFixed(2) : "-"}</Span>
+        <Span color={decideColor}>
+          {sign}
+          {rowData.earnings ? rowData.earnings.toFixed(2) : "-"}
+        </Span>
       </>
     );
   };
@@ -111,42 +121,45 @@ const Summary = (props) => {
               <P>
                 <Span fontSize={"var(--fs-milli)"} fontWeight={"light"}>
                   DATE
-          </Span>{" "}
-                {(summaryOfCurrentRecord.date)
-                }
+                </Span>{" "}
+                {summaryOfCurrentRecord.date}
               </P>
               <P>
                 <Span fontSize={"var(--fs-milli)"} fontWeight={"light"}>
                   TOTAL COST
-          </Span>{" "}
-                {(summaryOfCurrentRecord.total_cost).toFixed(2)}
+                </Span>{" "}
+                {summaryOfCurrentRecord.total_cost.toFixed(2)}
               </P>
               <P>
                 <Span fontSize={"var(--fs-milli)"} fontWeight={"light"}>
                   PROFIT
-          </Span>{" "}
-                <Span color={summaryOfCurrentRecord.status}
-                >
-                 {summaryOfCurrentRecord.sign}{summaryOfCurrentRecord.profit_loss}
+                </Span>{" "}
+                <Span color={summaryOfCurrentRecord.status}>
+                  {summaryOfCurrentRecord.sign}
+                  {summaryOfCurrentRecord.profit_loss}
                 </Span>{" "}
               </P>
             </CardHorizontalTransparent>
           );
-          return (renderAccordioTab(summaryOfCurrentRecord, accordionHeader, index));
+          return renderAccordioTab(
+            summaryOfCurrentRecord,
+            accordionHeader,
+            index
+          );
         })}
       </Accordion>
-    )
-  }
+    );
+  };
 
-  const renderAccordioTab = (summaryOfCurrentRecord, accordionHeader, index) => {
+  const renderAccordioTab = (
+    summaryOfCurrentRecord,
+    accordionHeader,
+    index
+  ) => {
     return (
       <AccordionTab headerTemplate={accordionHeader} key={index}>
         <Table value={summaryOfCurrentRecord.data}>
-          <Column
-            field="stockName"
-            header="Stock"
-            body={stocksBodyTemplate}
-          />
+          <Column field="stockName" header="Stock" body={stocksBodyTemplate} />
           <Column
             field="boughtAt"
             header="Bought At"
@@ -179,16 +192,16 @@ const Summary = (props) => {
           />
         </Table>
       </AccordionTab>
-    )
-  }
+    );
+  };
 
   const renderMessage = () => {
     return (
       <CardContent mt={4} flexCenter>
         <P>Please go to the Dashboard and create a Portfolio</P>
       </CardContent>
-    )
-  }
+    );
+  };
   return (
     <Container minHeight={"80vh"}>
       <Div>
@@ -198,10 +211,7 @@ const Summary = (props) => {
             Today / Previous Portfolio Details
           </Span>
         </P>
-        {
-          summaryData.length > 0 ? renderSummaryTable() : renderMessage()
-        }
-
+        {summaryData.length > 0 ? renderSummaryTable() : renderMessage()}
       </Div>
     </Container>
   );

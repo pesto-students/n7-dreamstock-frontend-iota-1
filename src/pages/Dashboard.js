@@ -6,24 +6,25 @@ import { ButtonSecondary } from "../components/Button";
 import { Span } from "../components/Span";
 import { Toast } from "../components/Toast";
 import { Column, Table } from "../components/Table";
-import axios from 'axios';
-import request from '../utils/interceptor'
-import {
-  CardContent,
-  CardHorizontal,
-} from "../components/Card";
+import request from "../utils/interceptor";
+import { CardContent, CardHorizontal } from "../components/Card";
 import { Search } from "../components/Search";
 import * as ObjectGenerator from "../utils/ObjectGenerator";
 import * as CommonUtils from "../utils/CommonUtils";
 import { Chart } from "../components/Chart";
 import { Input } from "../components/Input";
-import { Icon } from "../components/Icon";
+import Icon from "../components/Icon";
 import { close } from "../components/IconFonts";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchMyDashoardDetails, updateMyportfolio, fetchLiveStockPrice,fetchWalletUpdate } from '../store/actions/dashboardAction'
-import moment from 'moment'
+import {
+  fetchMyDashoardDetails,
+  updateMyportfolio,
+  fetchLiveStockPrice,
+  fetchWalletUpdate,
+} from "../store/actions/dashboardAction";
+import moment from "moment";
 
-const Dashboard = (props) => {
+const Dashboard = () => {
   const [filteredStocks, setFilteredStocks] = useState(null);
   const [selectedStock, setSelectedStock] = useState(null);
   const [stockChartData, setStockChartData] = useState(null);
@@ -34,42 +35,42 @@ const Dashboard = (props) => {
   const [selectedStockInfo, setSelectedStockInfo] = useState(null);
   const [selectedQuantity, setSelectedQuantity] = useState("");
   const [showTodaysPortfolio, setShowTodaysPortfolio] = useState(true);
-  const [isMarketOpen, setMarketOpen] = useState(false);
-  const { wallet_balance } = useSelector((state) => state.auth.user)
+  const [isMarketOpen, setMarketOpen] = useState(true);
+  const { wallet_balance } = useSelector((state) => state.auth.user);
   const [
     selectedStockCalculatedTotal,
     setSelectedStockCalculatedTotal,
   ] = useState(0);
-  const todaysPortfolioList = useSelector((state) => state.dashboard.myCurrentPortfolio) || []
+  const todaysPortfolioList =
+    useSelector((state) => state.dashboard.myCurrentPortfolio) || [];
   const { user } = useSelector((state) => state.auth);
 
   const toast = useRef(null);
-  let pollingTimer = {}
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    setWalletBalance(wallet_balance)
-  }, [wallet_balance])
-
+    setWalletBalance(wallet_balance);
+  }, [wallet_balance]);
 
   useEffect(() => {
-    const currentTime = moment().format('H')
-    if (currentTime >= 9 && currentTime < 16 || true) {
-      setMarketOpen(true)
+    let pollingTimer = {};
+    const currentTime = moment().format("H");
+    if (currentTime >= 9 && currentTime < 16) {
+      setMarketOpen(true);
       pollingTimer = setInterval(() => {
-        dispatch(fetchLiveStockPrice())
-      }, 1000 * 10 * 2)
-      dispatch(fetchLiveStockPrice())
-    }
-    else {
-      setMarketOpen(false)
-    }
-    dispatch(fetchWalletUpdate())
-    dispatch(fetchMyDashoardDetails())
+        dispatch(fetchLiveStockPrice());
+      }, 1000 * 10 * 2);
+      dispatch(fetchLiveStockPrice());
+    } 
+    // else {
+    //   setMarketOpen(false);
+    // }
+    dispatch(fetchWalletUpdate());
+    dispatch(fetchMyDashoardDetails());
     return () => {
-      clearInterval(pollingTimer)
-    }
-  }, []);
+      clearInterval(pollingTimer);
+    };
+  }, [dispatch]);
 
   const stocksBodyTemplate = (rowData) => {
     return (
@@ -94,19 +95,21 @@ const Dashboard = (props) => {
     return (
       <>
         <Span className="p-column-title">Current Price</Span>
-        {rowData.current_price ? (rowData.current_price).toFixed(2) : "-"}
+        {rowData.current_price ? rowData.current_price.toFixed(2) : "-"}
       </>
     );
   };
 
   const changeBodyTemplate = (rowData) => {
-    const { order_price ,current_price} = rowData;
-    const decideColor = current_price > order_price ? 'green' : 'red';
-    const sign = order_price > current_price ? '' : '+'
+    const { order_price, current_price } = rowData;
+    const decideColor = current_price > order_price ? "green" : "red";
+    const sign = order_price > current_price ? "" : "+";
     return (
       <>
         <Span className="p-column-title">Change</Span>
-        <Span color={decideColor} >{rowData.change ? sign + ((rowData.change)*100).toFixed(2) : "-"}</Span>
+        <Span color={decideColor}>
+          {rowData.change ? sign + (rowData.change * 100).toFixed(2) : "-"}
+        </Span>
       </>
     );
   };
@@ -121,13 +124,15 @@ const Dashboard = (props) => {
   };
 
   const earningsBodyTemplate = (rowData) => {
-    const { order_price ,current_price} = rowData;
-    const decideColor = current_price > order_price ? 'green' : 'red';
-    const sign = order_price > current_price ? '' : '+'
+    const { order_price, current_price } = rowData;
+    const decideColor = current_price > order_price ? "green" : "red";
+    const sign = order_price > current_price ? "" : "+";
     return (
       <>
         <Span className="p-column-title">Earnings</Span>
-        <Span color={decideColor} >{rowData.earnings ? sign + (rowData.earnings).toFixed(2) : "-"}</Span>
+        <Span color={decideColor}>
+          {rowData.earnings ? sign + rowData.earnings.toFixed(2) : "-"}
+        </Span>
       </>
     );
   };
@@ -142,24 +147,28 @@ const Dashboard = (props) => {
   };
 
   const handleStockSearch = (e) => {
-    setShowChart(false)
+    setShowChart(false);
     setShowTodaysPortfolio(false);
-    setStockData(false)
-    console.log("handleStockSearch", e.query)
-    request.get(`/api/stocks/search?name=${e.query}`)
+    setStockData(false);
+    console.log("handleStockSearch", e.query);
+    request
+      .get(`/api/stocks/search?name=${e.query}`)
       .then((res) => {
-        setFilteredStocks(res.data.response.result)
+        setFilteredStocks(res.data.response.result);
       })
-      .catch((err) => console.log('search err', err))
-  }
+      .catch((err) => console.log("search err", err));
+  };
 
   const handleStockSelection = (event) => {
     const selectedStockObj = event.value;
     setSelectedStock(selectedStockObj);
     if (selectedStockObj.displaySymbol !== undefined) {
-      request.get(`/api/stocks/getLiveStockInfo?name=${selectedStockObj.displaySymbol}`)
+      request
+        .get(
+          `/api/stocks/getLiveStockInfo?name=${selectedStockObj.displaySymbol}`
+        )
         .then((res) => {
-          setSelectedStockInfo(res.data)
+          setSelectedStockInfo(res.data);
           setStockData(true);
         })
         .catch((err) => {
@@ -170,12 +179,15 @@ const Dashboard = (props) => {
             life: 3000,
           });
           setStockData(false);
-          console.log('getLiveStockInfo err', err)
-        })
+          console.log("getLiveStockInfo err", err);
+        });
 
-      request.get(`/api/stocks/getStockDetails?name=${selectedStockObj.displaySymbol}`)
+      request
+        .get(
+          `/api/stocks/getStockDetails?name=${selectedStockObj.displaySymbol}`
+        )
         .then((res) => {
-          if (!res.data.response.error && res.data.response.s == 'ok')
+          if (!res.data.response.error && res.data.response.s === "ok")
             setStockChartData(
               ObjectGenerator.GenerateStockGraphDataObj(
                 selectedStockObj.displaySymbol,
@@ -192,10 +204,10 @@ const Dashboard = (props) => {
             life: 3000,
           });
           setShowChart(false);
-          console.log('getLiveStockInfo err', err)
-        })
+          console.log("getLiveStockInfo err", err);
+        });
     }
-  }
+  };
 
   const handleOfStocksInput = (event) => {
     const quantity = event.target.value.replace(/\D/, "");
@@ -205,7 +217,7 @@ const Dashboard = (props) => {
     );
   };
 
-  const handleAddStocksToPortfolioDraft = (event) => {
+  const handleAddStocksToPortfolioDraft = () => {
     if (selectedStockCalculatedTotal <= 0) {
       toast.current.show({
         severity: "error",
@@ -244,11 +256,13 @@ const Dashboard = (props) => {
   };
 
   const handleRemoveStocksFromPortfolioDraft = (index) => {
-    const modifiedPortfolioDraftList = portfolioDraftList.filter((el, i) => i !== index)
+    const modifiedPortfolioDraftList = portfolioDraftList.filter(
+      (el, i) => i !== index
+    );
     setPortfolioDraftList(modifiedPortfolioDraftList);
   };
 
-  const handleSubmitPortfolio = (event) => {
+  const handleSubmitPortfolio = () => {
     let requestObj = {};
     let payload = [];
     for (let i = 0; i < portfolioDraftList.length; i++) {
@@ -265,7 +279,7 @@ const Dashboard = (props) => {
     }
     requestObj.data = payload;
     // Create portfolio API call here
-    dispatch(updateMyportfolio(requestObj))
+    dispatch(updateMyportfolio(requestObj));
     // If success, show success toaster, reset page & show today's portfolio
     toast.current.show({
       severity: "success",
@@ -293,41 +307,37 @@ const Dashboard = (props) => {
             <Chart options={stockChartData} />
           </CardContent>
         )}
-        {
-          !showChart && !showStockData && (
-            <CardContent mt={4} flexCenter>
-              <P>
-                Welcome to DreamStock,{" "}{user && user.first_name ? user.first_name : "User"}{". "}Find stocks in the search bar and add them to your Portfolio.
-             </P>
-            </CardContent>
-          )
-        }
+        {!showChart && !showStockData && (
+          <CardContent mt={4} flexCenter>
+            <P>
+              Welcome to DreamStock,{" "}
+              {user && user.first_name ? user.first_name : "User"}
+              {". "}Find stocks in the search bar and add them to your
+              Portfolio.
+            </P>
+          </CardContent>
+        )}
         {showStockData ? (
           <CardContent mt={4}>
             <Div flexRow>
               <Div width={[1, 1, 1 / 2]}>
                 <Div flexRow width={[1, 1, 1 / 2]}>
                   <P ml={2}>
-                    {selectedStock?.description} ({selectedStock?.displaySymbol})
+                    {selectedStock?.description} ({selectedStock?.displaySymbol}
+                    )
                   </P>
                   <P ml={2}>
-                    <Span fontWeight={"light"}>
-                      Current Price
-                    </Span>{" "}
+                    <Span fontWeight={"light"}>Current Price</Span>{" "}
                     {selectedStockInfo?.response?.c}
                   </P>
                 </Div>
                 <Div flexRow width={[1, 1, 1 / 2]}>
                   <P ml={2}>
-                    <Span fontWeight={"light"}>
-                      Wallet Balance
-                    </Span>{" "}
+                    <Span fontWeight={"light"}>Wallet Balance</Span>{" "}
                     {walletBalance}
                   </P>
                   <P ml={2}>
-                    <Span fontWeight={"light"}>
-                      Total
-                    </Span>{" "}
+                    <Span fontWeight={"light"}>Total</Span>{" "}
                     {selectedStockCalculatedTotal}
                   </P>
                 </Div>
@@ -341,10 +351,12 @@ const Dashboard = (props) => {
                 />
                 <ButtonSecondary
                   mt={3}
-                  disabled={isMarketOpen}
+                  disabled={!isMarketOpen}
                   width={"200px"}
                   label="Add Stocks"
-                  {...(!isMarketOpen ? { tooltip: 'You can add stocks when market opens' } : {})}
+                  {...(!isMarketOpen
+                    ? { tooltip: "You can add stocks when market opens" }
+                    : {})}
                   // disabled={selectedStockCalculatedTotal <= 0}
                   onClick={(e) => handleAddStocksToPortfolioDraft(e)}
                 />
@@ -354,7 +366,11 @@ const Dashboard = (props) => {
         ) : null}
         {showTodaysPortfolio ? (
           <CardContent mt={4}>
-            <P>{moment().format('H') < 16 ? "TODAY'S PORTFOLIO" : "PORTFOLIO FOR NEXT MARKET SESSION"}</P>
+            <P>
+              {moment().format("H") < 16
+                ? "TODAY'S PORTFOLIO"
+                : "PORTFOLIO FOR NEXT MARKET SESSION"}
+            </P>
             <Div>
               <Table value={todaysPortfolioList}>
                 <Column
@@ -400,13 +416,11 @@ const Dashboard = (props) => {
 
       <Div width={["100%", "100%", "100%", "25%"]} p={3}>
         <CardHorizontal flexCenter p={2}>
-          <Span color="title">
-            PORTFOLIO DRAFT
-          </Span>
+          <Span color="title">PORTFOLIO DRAFT</Span>
         </CardHorizontal>
         <Div>
           {portfolioDraftList.map((portfolioDraftObj, index) => {
-            const { stockName, boughtAt, units, total } = portfolioDraftObj
+            const { stockName, boughtAt, units, total } = portfolioDraftObj;
             return (
               <CardContent mt={3} key={index}>
                 <Icon
@@ -419,22 +433,13 @@ const Dashboard = (props) => {
                   <P>{stockName}</P>
                 </Div>
                 <P>
-                  <Span fontWeight={"light"}>
-                    Bought At
-                  </Span>{" "}
-                  {boughtAt}
+                  <Span fontWeight={"light"}>Bought At</Span> {boughtAt}
                 </P>
                 <P>
-                  <Span fontWeight={"light"}>
-                    Units
-                  </Span>{" "}
-                  {units}
+                  <Span fontWeight={"light"}>Units</Span> {units}
                 </P>
                 <P>
-                  <Span fontWeight={"light"}>
-                    Total
-                  </Span>{" "}
-                  {total}
+                  <Span fontWeight={"light"}>Total</Span> {total}
                 </P>
               </CardContent>
             );

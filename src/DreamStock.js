@@ -14,7 +14,7 @@ import Header from "./components/Header/Header";
 import SideNavBar from "./components/Sidebar/Sidebar"
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import PrivateRoute from './utils/PrivateRoute';
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import ErrorBoundary from './components/ErrorBoundary'
 import moment from 'moment-timezone';
 

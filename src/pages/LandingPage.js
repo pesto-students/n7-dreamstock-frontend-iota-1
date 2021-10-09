@@ -36,7 +36,7 @@ const LandingPage = () => {
               />
             </Div>
             <Div flexCenter width={["100%", "100%", "50%", "50%"]}>
-              <Image src={StockImage} height="400px"/>
+              <Image src={StockImage} height="400px" />
             </Div>
           </Div>
         </Container>

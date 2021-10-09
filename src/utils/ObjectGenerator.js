@@ -38,9 +38,6 @@ export const GenerateStockGraphDataObj = (stockName, chartData) => {
         gapSize: 6,
       },
     },
-    rangeSelector: {
-      selected: 1,
-    },
     title: {
       text: stockName + " Stock Price",
     },

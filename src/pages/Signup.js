@@ -1,13 +1,14 @@
 import React from "react";
 import { Container } from "../components/Container";
 import { Div } from "../components/Div";
-import { ButtonSecondary, ButtonTransparent } from "../components/Button";
+import { ButtonSecondary } from "../components/Button";
 import { CardContent } from "../components/Card";
 import { Input } from "../components/Input";
 import { P } from "../components/Paragraph";
 import { A } from "../components/Link";
+import GLogin from "./google/Login";
 
-const Signup = (props) => {
+const Signup = () => {
   return (
     <Container flexCenter>
       <CardContent width={[1, 2 / 3, 3 / 5, 1 / 3]}>
@@ -31,10 +32,10 @@ const Signup = (props) => {
         <Div mt={4}>
           <ButtonSecondary label="Sign Up" width={"100%"} />
           <P textAlign={"center"}>OR</P>
-          <ButtonTransparent label="Google" width={"100%"} />
+          <GLogin />
           <P textAlign={"center"}>
             Already have an account?{" "}
-            <A onClick={(e) => (window.location.href = "/login")}>Log In</A>
+            <A onClick={() => (window.location.href = "/login")}>Log In</A>
           </P>
         </Div>
       </CardContent>

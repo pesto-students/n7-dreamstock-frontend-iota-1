@@ -63,7 +63,7 @@ const CarouselDemo = () => {
     ]);
   }, []);
 
-  const productTemplate = (product) => {
+  const productTemplate = () => {
     return (
       <div className="product-item-content">
         <Image height="200" src={STOCK} />

@@ -8,7 +8,6 @@ const clientId =
 
 const Logout = () => {
   const onSuccess = () => {
-    alert("Logout Success!");
     ClearLoggedInUserInfo();
   };
 

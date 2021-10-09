@@ -1,10 +1,10 @@
 import React from "react";
+import PropTypes from 'prop-types';
 import { Div } from "../Div";
 import { NavMenu } from "../NavMenu";
 import { CardContent, CardHorizontalTransparent } from "../Card";
 import { Image } from "../Image";
-import { Icon } from "../Icon";
-
+import Icon from "../Icon";
 import FullLogo from "../../assets/images/FullLogo.png";
 import { userCircle } from "../IconFonts";
 import { SideBar as SideNav } from "./style";
@@ -12,14 +12,12 @@ import { useSelector } from "react-redux";
 import { P } from "../Paragraph";
 import { useHistory } from "react-router";
 
-
-
 const SideNavBar = (props) => {
   const { user } = useSelector((state) => state.auth);
-  const history = useHistory()
-  const sidNaveClick = (link)=>{
-    history.push(link)
-  }
+  const history = useHistory();
+  const sidNaveClick = (link) => {
+    history.push(link);
+  };
 
   const items = [
     {
@@ -28,41 +26,41 @@ const SideNavBar = (props) => {
         {
           label: "Dashboard",
           icon: "pi pi-fw pi-briefcase",
-          command: (e) => {
-            sidNaveClick("/dashboard")
-            props.handleSideBarToggle()
+          command: () => {
+            sidNaveClick("/dashboard");
+            props.handleSideBarToggle();
           },
         },
         {
           label: "Summary",
           icon: "pi pi-fw pi-th-large",
-          command: (e) => {
-            sidNaveClick("/summary")
-            props.handleSideBarToggle()
+          command: () => {
+            sidNaveClick("/summary");
+            props.handleSideBarToggle();
           },
         },
         {
           label: "Passbook",
           icon: "pi pi-fw pi-book",
-          command: (e) => {
-            sidNaveClick("/passbook")
-            props.handleSideBarToggle()
+          command: () => {
+            sidNaveClick("/passbook");
+            props.handleSideBarToggle();
           },
         },
         {
           label: "Transactions",
           icon: "pi pi-fw pi-money-bill",
-          command: (e) => {
-            sidNaveClick("/transactions")
-            props.handleSideBarToggle()
+          command: () => {
+            sidNaveClick("/transactions");
+            props.handleSideBarToggle();
           },
         },
         {
           label: "Profile",
           icon: "pi pi-fw pi-user-edit",
-          command: (e) => {
-            sidNaveClick("/profile")
-            props.handleSideBarToggle()
+          command: () => {
+            sidNaveClick("/profile");
+            props.handleSideBarToggle();
           },
         },
       ],
@@ -75,7 +73,7 @@ const SideNavBar = (props) => {
       visible={props.visibleLeft}
       onHide={() => props.handleSideBarToggle()}
       icons={
-        <CardHorizontalTransparent pt={3}>
+        <CardHorizontalTransparent>
           <Image src={FullLogo} height="35" />
         </CardHorizontalTransparent>
       }
@@ -100,6 +98,11 @@ const SideNavBar = (props) => {
       <NavMenu model={items} />
     </SideNav>
   );
+};
+
+SideNavBar.propTypes = {
+  handleSideBarToggle: PropTypes.any,
+  visibleLeft: PropTypes.any,
 };
 
 export default SideNavBar;

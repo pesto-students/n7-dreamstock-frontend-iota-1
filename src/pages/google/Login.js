@@ -9,13 +9,11 @@ const clientId =
 const GLogin = () => {
   const dispatch = useDispatch();
   const onSuccess = (response) => {
-    console.log("success! initiateUserLogin");
     dispatch(initiateUserLogin(response.profileObj));
   };
 
-  const onFailure = (response) => {
-    console.log("Login Failed! response: ", response);
-    alert("Login Failed!");
+  const onFailure = () => {
+    alert("Google Login Failed!");
   };
 
   return (
