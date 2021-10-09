@@ -36,7 +36,7 @@ run ```npm i``` in your terminal
 
 * How to run the program:
 
-```npm start ``` in your terminal at project directory location to start the server
+```npm start``` in your terminal at project directory location to start the server
 
 ## Help
 
