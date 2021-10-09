@@ -7,6 +7,7 @@ import { Column, Table } from "../components/Table";
 import request from "../utils/interceptor";
 import { useDispatch } from "react-redux";
 import { fetchWalletUpdate } from "../store/actions/dashboardAction";
+import { LogError } from "../utils/SentryUtils";
 
 const Passbook = () => {
   const [passbookData, setPassbookData] = useState([]);
@@ -30,7 +31,7 @@ const Passbook = () => {
         });
         setPassbookData(data);
       })
-      .catch((err) => console.log("passbook err", err));
+      .catch((err) => LogError(err));
   }, [dispatch]);
 
   const dateBodyTemplate = (rowData) => {

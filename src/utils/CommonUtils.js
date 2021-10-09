@@ -1,5 +1,3 @@
-import { USER_INFO } from "./Constants";
-
 export const RemoveElementFromArray = (array, index) => {
   if (index > -1) {
     array.splice(index, 1);
@@ -43,28 +41,6 @@ export const ReturnColorBasedOnProfitLoss = (str) => {
     }
   }
   return color;
-};
-
-export const ClearLoggedInUserInfo = () => {
-  USER_INFO.name = "";
-  USER_INFO.email = "";
-  USER_INFO.googleId = "";
-  USER_INFO.imageUrl = "";
-  USER_INFO.familyName = "";
-  USER_INFO.givenName = "";
-  USER_INFO.userWalletAmount = "";
-};
-
-export const SetLoggedInUserInfo = (userObj) => {
-  USER_INFO.name = userObj.name ? userObj.name : "";
-  USER_INFO.email = userObj.email ? userObj.email : "";
-  USER_INFO.googleId = userObj.googleId ? userObj.googleId : "";
-  USER_INFO.imageUrl = userObj.imageUrl ? userObj.imageUrl : "";
-  USER_INFO.familyName = userObj.familyName ? userObj.familyName : "";
-  USER_INFO.givenName = userObj.givenName ? userObj.givenName : "";
-  USER_INFO.userWalletAmount = userObj.userWalletAmount
-    ? userObj.userWalletAmount
-    : "";
 };
 
 export const ConvertChartData = (chartData) => {

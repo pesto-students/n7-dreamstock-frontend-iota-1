@@ -23,6 +23,7 @@ import {
   fetchWalletUpdate,
 } from "../store/actions/dashboardAction";
 import moment from "moment";
+import { LogError } from "../utils/SentryUtils";
 
 const Dashboard = () => {
   const [filteredStocks, setFilteredStocks] = useState(null);
@@ -55,7 +56,6 @@ const Dashboard = () => {
   useEffect(() => {
     setWalletBalance(wallet_balance);
   }, [wallet_balance]);
-
 
   /**
    * @description - callback is triggered whenever component DidMount or will Unmount
@@ -168,13 +168,12 @@ const Dashboard = () => {
     setShowChart(false);
     setShowTodaysPortfolio(false);
     setStockData(false);
-    console.log("handleStockSearch", e.query);
     request
       .get(`/api/stocks/search?name=${e.query}`)
       .then((res) => {
         setFilteredStocks(res.data.response.result);
       })
-      .catch((err) => console.log("search err", err));
+      .catch((err) => LogError(err));
   };
 
   /**
@@ -202,7 +201,7 @@ const Dashboard = () => {
             life: 3000,
           });
           setStockData(false);
-          console.log("getLiveStockInfo err", err);
+          LogError(err);
         });
 
       request
@@ -296,7 +295,7 @@ const Dashboard = () => {
   /**
    * 描述
    * @date 2021-10-09
-   * @description - callback is triggered to dispatch the portfoio draft to backend so that 
+   * @description - callback is triggered to dispatch the portfoio draft to backend so that
    *                it can be added to your portfolio list
    * @returns {any}
    */
@@ -333,7 +332,7 @@ const Dashboard = () => {
         detail: "For Demo purposes we will close your trade in 1min.",
         life: 3000,
       });
-    }, 4000)
+    }, 4000);
     setPortfolioDraftList([]);
     setShowTodaysPortfolio(true);
   };

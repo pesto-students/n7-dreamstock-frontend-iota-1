@@ -5,10 +5,11 @@ import { P } from "../components/Paragraph";
 import { Input } from "../components/Input";
 import request from "../utils/interceptor";
 import { ButtonSecondary } from "../components/Button";
+import { LogError } from "../utils/SentryUtils";
 
 const Profile = () => {
   const [userData, setuserData] = useState({});
-  
+
   /**
    * @description - componentDidmount executes api call to fetch profile info
    * @returns {void}
@@ -19,7 +20,7 @@ const Profile = () => {
       .then((res) => {
         setuserData(res.data.user);
       })
-      .catch((err) => console.log("passbook err", err));
+      .catch((err) => LogError(err));
   }, []);
 
   const {

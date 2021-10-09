@@ -3,6 +3,7 @@ import request from "../../utils/interceptor";
 
 import setAuthToken from "../../utils/setAuthToken";
 import jwt_decode from "jwt-decode";
+import { LogError } from "../../utils/SentryUtils";
 
 export const initiateUserLogin = (payload) => (dispatch) => {
   request
@@ -20,7 +21,7 @@ export const initiateUserLogin = (payload) => (dispatch) => {
       dispatch(setCurrentUser(decoded));
     })
     .catch(
-      (err) => console.log("auth err", err)
+      (err) => LogError(err)
       // dispatch({
       //     type: actionTypes.GET_ERRORS,
       //     payload: err.response.data
@@ -44,7 +45,6 @@ export const logOutCurrentUser = () => {
 
 // Log user out
 export const logoutUser = () => (dispatch) => {
-  console.log("logoutUser");
   // Remove token from localStorage
   localStorage.removeItem("jwtToken");
   // Remove auth header for future requests
