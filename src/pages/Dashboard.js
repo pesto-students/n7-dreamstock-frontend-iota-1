@@ -6,7 +6,7 @@ import { ButtonSecondary } from "../components/Button";
 import { Span } from "../components/Span";
 import { Toast } from "../components/Toast";
 import { Column, Table } from "../components/Table";
-import request from "../utils/Interceptor";
+import request from "../utils/interceptor";
 import { CardContent, CardHorizontal } from "../components/Card";
 import { Search } from "../components/Search";
 import * as ObjectGenerator from "../utils/ObjectGenerator";

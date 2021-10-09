@@ -17,7 +17,7 @@ import {
   walletUpdate,
   fetchWalletUpdate,
 } from "../store/actions/dashboardAction";
-import request from "../utils/Interceptor";
+import request from "../utils/interceptor";
 const Transactions = () => {
   const toast = useRef(null);
   const [rechargeAmount, setRechargeAmount] = useState("");
