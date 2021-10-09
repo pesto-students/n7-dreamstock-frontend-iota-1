@@ -1,29 +1,40 @@
+import React from "react";
 import styled from "styled-components";
-import { compose, space, position, layout, typography } from "styled-system";
+import {
+  compose,
+  space,
+  position,
+  layout,
+  typography,
+  background,
+} from "styled-system";
 
 const StyledDiv = styled.div`
-  ${compose(space, position, layout, typography)}
+  ${compose(space, position, layout, typography, background)}
   width: 100%;
   padding-right: 15px;
   padding-left: 15px;
 
-  // @media (min-width: 576px) {
-  //   width: 540px;
-  // }
+  ${({ responsive }) =>
+    responsive &&
+    `@media (min-width: 576px) {
+    width: 540px;
+  }
 
-  // @media (min-width: 768px) {
-  //   width: 720px;
-  // }
+  @media (min-width: 768px) {
+    width: 720px;
+  }
 
-  // @media (min-width: 992px) {
-  //   width: 960px;
-  // }
+  @media (min-width: 992px) {
+    width: 960px;
+  }
 
-  // @media (min-width: 1920px) {
-  //   width: 1920px;
-  //   margin-right: auto;
-  //   margin-left: auto;
-  // }
+  @media (min-width: 1200px) {
+    width: 1140px;
+    margin-right: auto;
+    margin-left: auto;
+   }
+  `};
 
   ${({ flexCenter }) =>
     flexCenter &&

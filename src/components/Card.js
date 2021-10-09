@@ -14,7 +14,7 @@ export const Card = styled(PrimeCard)`
 `;
 
 export const CardContent = styled(Card)`
-font-weight: bold;
+  font-weight: bold;
   filter: drop-shadow(4px 4px 4px rgba(0, 0, 0, 0.25));
   .p-card-body {
     width: 100%;

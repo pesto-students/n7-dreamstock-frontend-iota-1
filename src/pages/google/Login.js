@@ -1,17 +1,19 @@
 import React from "react";
 import { GoogleLogin } from "react-google-login";
+import { useDispatch } from "react-redux";
 import { ButtonTransparent } from "../../components/Button";
-
+import { initiateUserLogin } from "../../store/actions/authAction";
 const clientId =
   "610233614673-jvsmjb0uhvppt0pqapelspsdibpvrd3c.apps.googleusercontent.com";
 
-const Login = () => {
+const GLogin = () => {
+  const dispatch = useDispatch();
   const onSuccess = (response) => {
-    console.log("Login Success! CurrentUser: ", response.profileObj);
+    dispatch(initiateUserLogin(response.profileObj));
   };
 
-  const onFailure = (response) => {
-    console.log("Login Failed! response: ", response);
+  const onFailure = () => {
+    alert("Google Login Failed!");
   };
 
   return (
@@ -24,9 +26,9 @@ const Login = () => {
       onSuccess={onSuccess}
       onFailure={onFailure}
       cookiePolicy={"single_host_origin"}
-      isSignedIn={true}
+      isSignedIn={false}
     />
   );
 };
 
-export default Login;
+export default GLogin;

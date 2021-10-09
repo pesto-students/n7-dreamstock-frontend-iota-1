@@ -6,9 +6,16 @@ import { CardContent } from "../components/Card";
 import { Input } from "../components/Input";
 import { P } from "../components/Paragraph";
 import { A } from "../components/Link";
-import Login from "./google/Login";
+import GLogin from "./google/Login";
+import { useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
 
-const Signup = (props) => {
+const Login = () => {
+  const { isAuthenticated } = useSelector((state) => state.auth);
+  const history = useHistory();
+  if (isAuthenticated) {
+    history.push("/dashboard");
+  }
   return (
     <Container flexCenter>
       <CardContent width={[1, 2 / 3, 3 / 5, 1 / 3]}>
@@ -31,9 +38,10 @@ const Signup = (props) => {
         <Div mt={4}>
           <ButtonSecondary label="Log In" width={"100%"} />
           <P textAlign={"center"}>OR</P>
-          <Login />
+          <GLogin />
           <P textAlign={"center"}>
-            Don't Have an account? <A>Sign Up</A>
+            Do not have an account?{" "}
+            <A onClick={() => (window.location.href = "/signup")}>Sign Up</A>
           </P>
         </Div>
       </CardContent>
@@ -41,4 +49,4 @@ const Signup = (props) => {
   );
 };
 
-export default Signup;
+export default Login;

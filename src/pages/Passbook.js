@@ -4,77 +4,101 @@ import { Div } from "../components/Div";
 import { P } from "../components/Paragraph";
 import { Span } from "../components/Span";
 import { Column, Table } from "../components/Table";
-import * as Constants from "../utils/Constants";
-import * as CommonUtils from "../utils/CommonUtils";
+import request from "../utils/interceptor";
+import { useDispatch } from "react-redux";
+import { fetchWalletUpdate } from "../store/actions/dashboardAction";
 
-const Passbook = (props) => {
+const Passbook = () => {
   const [passbookData, setPassbookData] = useState([]);
+  const dispatch = useDispatch();
 
+  /**
+   * 描述
+   * @description - callback is used to fetch passbook data
+   * @param {any} (
+   * @returns {any}
+   */
   useEffect(() => {
-    // Call the PASSBOOK API here and set the response data
-    setPassbookData(Constants.PASSBOOK_DATA.data);
-  }, []);
+    dispatch(fetchWalletUpdate());
+    request
+      .get("/api/passbook/data")
+      .then((res) => {
+        const data = res.data.order.map((el) => {
+          let date = el.date.split("T")[0];
+          el.date = date;
+          return el;
+        });
+        setPassbookData(data);
+      })
+      .catch((err) => console.log("passbook err", err));
+  }, [dispatch]);
 
   const dateBodyTemplate = (rowData) => {
     return (
-      <React.Fragment>
+      <>
         <Span className="p-column-title">Date</Span>
-        {CommonUtils.ConvertMillisIntoDate(parseInt(rowData.date))}
-      </React.Fragment>
+        {rowData.date}
+      </>
     );
   };
 
   const amountBodyTemplate = (rowData) => {
     return (
-      <React.Fragment>
+      <>
         <Span className="p-column-title">Amount</Span>
         {rowData.amount ? rowData.amount : "-"}
-      </React.Fragment>
+      </>
     );
   };
 
   const actionBodyTemplate = (rowData) => {
     return (
-      <React.Fragment>
+      <>
         <Span className="p-column-title">Action</Span>
         {rowData.action}
-      </React.Fragment>
+      </>
     );
   };
 
   const profitLossBodyTemplate = (rowData) => {
+    let color = "title";
+    if (rowData.action.includes("PROFIT")) {
+      color = "green";
+    } else if (rowData.action.includes("LOSS")) {
+      color = "red";
+    } else {
+      color = "title";
+    }
     return (
-      <React.Fragment>
+      <>
         <Span className="p-column-title">Profit/Loss</Span>
         {rowData.profit_loss ? (
-          <Span
-            color={CommonUtils.ReturnColorBasedOnProfitLoss(
-              rowData.profit_loss
-            )}
-          >
-            {rowData.profit_loss}
+          <Span color={color}>
+            {color === "title"
+              ? rowData.profit_loss
+              : Number(rowData.profit_loss).toFixed(2)}
           </Span>
         ) : (
           "-"
         )}
-      </React.Fragment>
+      </>
     );
   };
 
   const finalBalanceBodyTemplate = (rowData) => {
     return (
-      <React.Fragment>
+      <>
         <Span className="p-column-title">Final Balance</Span>
         {rowData.final_balance}
-      </React.Fragment>
+      </>
     );
   };
 
   return (
-    <Container minHeight={"80vh"} mb={4}>
+    <Container minHeight={"80vh"}>
       <Div>
         <P fontSize={"var(--fs-h2)"}>PASSBOOK</P>
-        <Table value={passbookData} paginator rows={10}>
+        <Table value={passbookData} paginator rows={5}>
           <Column field="date" header="DATE" body={dateBodyTemplate} />
           <Column field="amount" header="AMOUNT" body={amountBodyTemplate} />
           <Column field="action" header="ACTION" body={actionBodyTemplate} />

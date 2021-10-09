@@ -3,7 +3,6 @@ import { compose, space, position, layout, typography } from "styled-system";
 import { Button } from "primereact/button";
 
 export const ButtonPrimary = styled(Button)`
-  ${compose(space, position, layout, typography)};
   color: var(--title-color);
   font-weight: var(--semibold-weight);
   filter: drop-shadow(4px 4px 4px rgba(0, 0, 0, 0.25));
@@ -17,6 +16,8 @@ export const ButtonPrimary = styled(Button)`
     background-color: var(--card-bg);
     color: var(--title-color);
   }
+
+  ${compose(space, position, layout, typography)};
 `;
 
 export const ButtonSecondary = styled(ButtonPrimary)`

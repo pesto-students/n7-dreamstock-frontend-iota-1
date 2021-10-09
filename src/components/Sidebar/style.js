@@ -5,6 +5,7 @@ import styled from "styled-components";
 export const SideBar = styled(SideNav)`
   background-color: var(--sidebar-bg);
   width: inherit;
+  filter: drop-shadow(4px 4px 4px rgba(0,0,0,0.25));
 
   .p-sidebar-content {
     padding: 0;
