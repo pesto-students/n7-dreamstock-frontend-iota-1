@@ -74,7 +74,7 @@ const SideNavBar = (props) => {
       onHide={() => props.handleSideBarToggle()}
       icons={
         <CardHorizontalTransparent>
-          <Image src={FullLogo} height="35" />
+          <Image src={FullLogo} height="35" alt="User Image" />
         </CardHorizontalTransparent>
       }
       showCloseIcon={true}
