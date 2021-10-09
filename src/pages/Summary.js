@@ -8,7 +8,7 @@ import { AccordionTab } from "primereact/accordion";
 import { Accordion } from "../components/Accordion";
 import { Column, Table } from "../components/Table";
 import { fetchWalletUpdate } from "../store/actions/dashboardAction";
-import request from "../utils/Interceptor";
+import request from "../utils/interceptor";
 import { useDispatch } from "react-redux";
 import { CardContent } from "../components/Card";
 import { LogError } from "../utils/SentryUtils";
