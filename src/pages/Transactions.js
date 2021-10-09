@@ -31,7 +31,6 @@ const Transactions = () => {
     dispatch(fetchWalletUpdate());
   }, [dispatch]);
 
-
   /**
    * @description - callback is triggered for recharge/withdrawl of money into/from wallet
    * @returns {any}
@@ -42,14 +41,19 @@ const Transactions = () => {
     request
       .post(`/api/wallet/${actionType}`, { transactionAmount })
       .then((res) => {
-        dispatch(walletUpdate(res.data.wallet_balance));
-        // show success toast
-        toast.current.show({
-          severity: "success",
-          summary: "Transaction Success",
-          detail: "Your Transaction is successful.",
-          life: 3000,
-        });
+        if (res.data.sucess) {
+          dispatch(walletUpdate(res.data.wallet_balance));
+          // show success toast
+          toast.current.show({
+            severity: "success",
+            summary: "Transaction Success",
+            detail: "Your Transaction is successful.",
+            life: 3000,
+          });
+        }
+        else{
+          throw Error
+        }
       })
       .catch(() => {
         toast.current.show({
@@ -100,6 +104,7 @@ const Transactions = () => {
     );
   };
   const withdrawlPercentage = (Number(wallet_balance) / 10000).toFixed(2) * 100;
+  const withDrawalLimit = ((withdrawlPercentage) - 100) * 100
   return (
     <Container minHeight={"80vh"}>
       <Div width={[1, 2 / 3, 3 / 4, 3 / 5]}>
@@ -114,6 +119,7 @@ const Transactions = () => {
         <ButtonSecondary
           onClick={() => onShowModal("recharge")}
           label="PROCEED TO RECHARGE"
+          disabled={rechargeAmount == ""}
           mt={3}
         />
 
@@ -133,6 +139,7 @@ const Transactions = () => {
         <ButtonSecondary
           onClick={() => onShowModal("withdrawl")}
           label="PROCEED TO WITHDRAW"
+          disabled={withDrawalLimit< withDrawlAmount}
           mt={3}
         />
       </Div>

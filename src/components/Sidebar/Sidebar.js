@@ -28,7 +28,9 @@ const SideNavBar = (props) => {
           icon: "pi pi-fw pi-briefcase",
           command: () => {
             sidNaveClick("/dashboard");
-            // props.handleSideBarToggle();
+            if(window.screen.width < 576){
+              props.handleSideBarToggle();
+            }
           },
         },
         {
@@ -36,7 +38,9 @@ const SideNavBar = (props) => {
           icon: "pi pi-fw pi-th-large",
           command: () => {
             sidNaveClick("/summary");
-            // props.handleSideBarToggle();
+            if(window.screen.width < 576){
+              props.handleSideBarToggle();
+            }
           },
         },
         {
@@ -44,7 +48,9 @@ const SideNavBar = (props) => {
           icon: "pi pi-fw pi-book",
           command: () => {
             sidNaveClick("/passbook");
-            // props.handleSideBarToggle();
+            if(window.screen.width < 576){
+              props.handleSideBarToggle();
+            }
           },
         },
         {
@@ -52,7 +58,9 @@ const SideNavBar = (props) => {
           icon: "pi pi-fw pi-money-bill",
           command: () => {
             sidNaveClick("/transactions");
-            // props.handleSideBarToggle();
+            if(window.screen.width < 576){
+              props.handleSideBarToggle();
+            }
           },
         },
         {
@@ -60,7 +68,9 @@ const SideNavBar = (props) => {
           icon: "pi pi-fw pi-user-edit",
           command: () => {
             sidNaveClick("/profile");
-            // props.handleSideBarToggle();
+            if(window.screen.width < 576){
+              props.handleSideBarToggle();
+            }
           },
         },
       ],

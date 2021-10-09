@@ -72,7 +72,7 @@ const Dashboard = () => {
       setMarketOpen(true);
       pollingTimer = setInterval(() => {
         dispatch(fetchLiveStockPrice());
-      }, 1000 * 10 * 2);
+      }, 1000 * 5 * 2);
       dispatch(fetchLiveStockPrice());
     }
     // else {
