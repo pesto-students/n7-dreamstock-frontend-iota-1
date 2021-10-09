@@ -30,13 +30,18 @@ const Transactions = () => {
   useEffect(() => {
     dispatch(fetchWalletUpdate());
   }, [dispatch]);
+
+
+  /**
+   * @description - callback is triggered for recharge/withdrawl of money into/from wallet
+   * @returns {any}
+   */
   const makeTransaction = () => {
     const transactionAmount =
       actionType === "recharge" ? rechargeAmount : withDrawlAmount;
     request
       .post(`/api/wallet/${actionType}`, { transactionAmount })
       .then((res) => {
-        console.log("recharge", res);
         dispatch(walletUpdate(res.data.wallet_balance));
         // show success toast
         toast.current.show({
@@ -47,7 +52,6 @@ const Transactions = () => {
         });
       })
       .catch((err) => {
-        console.log("err", err);
         toast.current.show({
           severity: "error",
           summary: "Transaction Failed",
@@ -58,6 +62,11 @@ const Transactions = () => {
     onHideModal();
   };
 
+  /**
+   * @description- callback is used to set actionType(recharge/withdrawl) when confirmation modal opens
+   * @param {any} actionType
+   * @returns {any}
+   */
   const onShowModal = (actionType) => {
     setActionType(actionType);
     if (actionType === "withdrawl" && withDrawlAmount === "") {
@@ -69,6 +78,10 @@ const Transactions = () => {
     setShowModal(true);
   };
 
+  /**
+   * @description - callback to close the modal
+   * @returns {any}
+   */
   const onHideModal = () => {
     setActionType("");
     setShowModal(false);

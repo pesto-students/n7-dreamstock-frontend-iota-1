@@ -23,7 +23,7 @@ export default function DreamStock() {
   const [visibleLeft, setVisibleLeft] = useState(true);
 
   useEffect(() => {
-    moment.tz.setDefault("Asia/Mumbai");
+    moment.tz.setDefault('UTC');
   }, [])
 
 

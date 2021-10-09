@@ -15,6 +15,10 @@ import { CardContent } from "../components/Card";
 const Summary = () => {
   const [summaryData, setSummaryData] = useState([]);
   const dispatch = useDispatch();
+
+  /**
+   * @description - callback is triggered to fetch summary  data from backend
+   */
   useEffect(() => {
     // Call the Summary API here and set the response data
     dispatch(fetchWalletUpdate());
@@ -68,7 +72,7 @@ const Summary = () => {
   const changeBodyTemplate = (rowData) => {
     const { order_price, current_price } = rowData;
     const decideColor = current_price > order_price ? "green" : "red";
-    const sign = order_price > current_price ? "" : "+";
+    const sign = current_price>order_price  ? "+" : "";
     return (
       <>
         <Span className="p-column-title">Change</Span>
@@ -92,7 +96,7 @@ const Summary = () => {
   const earningsBodyTemplate = (rowData) => {
     const { order_price, current_price } = rowData;
     const decideColor = current_price > order_price ? "green" : "red";
-    const sign = order_price > current_price ? "" : "+";
+    const sign = current_price>order_price  ? "+" : "";
     return (
       <>
         <Span className="p-column-title">Earnings</Span>
@@ -112,6 +116,7 @@ const Summary = () => {
       </>
     );
   };
+
   const renderSummaryTable = () => {
     return (
       <Accordion activeIndex={0}>
@@ -202,6 +207,7 @@ const Summary = () => {
       </CardContent>
     );
   };
+
   return (
     <Container minHeight={"80vh"}>
       <Div>

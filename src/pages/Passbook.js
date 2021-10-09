@@ -12,6 +12,12 @@ const Passbook = () => {
   const [passbookData, setPassbookData] = useState([]);
   const dispatch = useDispatch();
 
+  /**
+   * 描述
+   * @description - callback is used to fetch passbook data
+   * @param {any} (
+   * @returns {any}
+   */
   useEffect(() => {
     dispatch(fetchWalletUpdate());
     request

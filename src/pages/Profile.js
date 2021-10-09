@@ -8,6 +8,11 @@ import { ButtonSecondary } from "../components/Button";
 
 const Profile = () => {
   const [userData, setuserData] = useState({});
+  
+  /**
+   * @description - componentDidmount executes api call to fetch profile info
+   * @returns {void}
+   */
   useEffect(() => {
     request
       .get("/api/profile/myprofile")

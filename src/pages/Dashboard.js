@@ -48,23 +48,35 @@ const Dashboard = () => {
   const toast = useRef(null);
   const dispatch = useDispatch();
 
+  /**
+   * @description - callback is triggered whenever wallet balance changes
+   * @returns {void}
+   */
   useEffect(() => {
     setWalletBalance(wallet_balance);
   }, [wallet_balance]);
 
+
+  /**
+   * @description - callback is triggered whenever component DidMount or will Unmount
+   *                to check if market is open, if yes trigger liveStocks Data polling
+   *                and to fetch dashboard data
+   * @returns {void}
+   */
   useEffect(() => {
     let pollingTimer = {};
     const currentTime = moment().format("H");
-    if (currentTime >= 9 && currentTime < 16) {
+    const day = moment().format("d")
+    if (currentTime >= 13 && currentTime < 20 && day > 0 && day < 6 || true) {// or trues Added to enable demo cuz market will be close
       setMarketOpen(true);
       pollingTimer = setInterval(() => {
         dispatch(fetchLiveStockPrice());
       }, 1000 * 10 * 2);
       dispatch(fetchLiveStockPrice());
-    } 
-    // else {
-    //   setMarketOpen(false);
-    // }
+    }
+    else {
+      setMarketOpen(false);
+    }
     dispatch(fetchWalletUpdate());
     dispatch(fetchMyDashoardDetails());
     return () => {
@@ -146,6 +158,11 @@ const Dashboard = () => {
     );
   };
 
+  /**
+   * @param {any} e
+   * @description - callback is triggered whenever user searches for stock
+   * @returns {any}
+   */
   const handleStockSearch = (e) => {
     setShowChart(false);
     setShowTodaysPortfolio(false);
@@ -159,6 +176,11 @@ const Dashboard = () => {
       .catch((err) => console.log("search err", err));
   };
 
+  /**
+   * @param {any} event
+   * @returns {any} void
+   * @description - callback is triggered on stock selection from autocomplete dropdown
+   */
   const handleStockSelection = (event) => {
     const selectedStockObj = event.value;
     setSelectedStock(selectedStockObj);
@@ -204,11 +226,15 @@ const Dashboard = () => {
             life: 3000,
           });
           setShowChart(false);
-          console.log("getLiveStockInfo err", err);
         });
     }
   };
 
+  /**
+   * @param {any} event
+   * @description - callback is triggered to do total calculations when quanity is input
+   * @returns {any}
+   */
   const handleOfStocksInput = (event) => {
     const quantity = event.target.value.replace(/\D/, "");
     setSelectedQuantity(quantity);
@@ -217,6 +243,10 @@ const Dashboard = () => {
     );
   };
 
+  /**
+   * @description - callback is triggered to check if user have sufficient wallet balance to add for portfolio
+   * @returns {any}
+   */
   const handleAddStocksToPortfolioDraft = () => {
     if (selectedStockCalculatedTotal <= 0) {
       toast.current.show({
@@ -262,6 +292,13 @@ const Dashboard = () => {
     setPortfolioDraftList(modifiedPortfolioDraftList);
   };
 
+  /**
+   * 描述
+   * @date 2021-10-09
+   * @description - callback is triggered to dispatch the portfoio draft to backend so that 
+   *                it can be added to your portfolio list
+   * @returns {any}
+   */
   const handleSubmitPortfolio = () => {
     let requestObj = {};
     let payload = [];
@@ -283,10 +320,19 @@ const Dashboard = () => {
     // If success, show success toaster, reset page & show today's portfolio
     toast.current.show({
       severity: "success",
-      summary: "Success",
+      summary: "success",
       detail: "The selected Stocks have been added to your Portfolio",
       life: 3000,
     });
+
+    setTimeout(() => {
+      toast.current.show({
+        severity: "success",
+        summary: "Success",
+        detail: "For Demo purposes we will close your trade in 1min.",
+        life: 3000,
+      });
+    }, 4000)
     setPortfolioDraftList([]);
     setShowTodaysPortfolio(true);
   };
@@ -351,7 +397,7 @@ const Dashboard = () => {
                 />
                 <ButtonSecondary
                   mt={3}
-                  disabled={!isMarketOpen}
+                  // disabled={isMarketOpen}
                   width={"200px"}
                   label="Add Stocks"
                   {...(!isMarketOpen
