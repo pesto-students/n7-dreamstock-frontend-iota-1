@@ -1,5 +1,7 @@
 # DreamStock
 
+Application URL - https://dreamstock-n7.web.app/
+
 DreamStock is platform where users can earn profits from their portfolios by buying virtual stocks in intraday trading.
 
 ## Description
@@ -34,7 +36,7 @@ run ```npm i``` in your terminal
 
 * How to run the program:
 
-```npm start ```in your terminal at project directory location to start the server
+```npm start ``` in your terminal at project directory location to start the server
 
 ## Help
 
