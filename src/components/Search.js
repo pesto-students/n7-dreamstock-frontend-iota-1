@@ -15,10 +15,7 @@ export const Search = styled(AutoComplete)`
     font-size: var(--fs-h5);
     font-weight: var(--normal-weight);
     color: var(--title-color);
-    padding: 13px 60px 13px 32px;
-    background-color: #393f74;
-    border: none;
-    outline: none;
+    padding: 13px 10px 13px 10px;
     border-radius: 10px;
   }
 `;

@@ -1,341 +1,509 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Container } from "../components/Container";
 import { Div } from "../components/Div";
 import { P } from "../components/Paragraph";
 import { ButtonSecondary } from "../components/Button";
 import { Span } from "../components/Span";
-import { Card, CardHorizontal } from "../components/Card";
+import { Toast } from "../components/Toast";
+import { Column, Table } from "../components/Table";
+import request from "../utils/interceptor";
+import { CardContent, CardHorizontal } from "../components/Card";
 import { Search } from "../components/Search";
+import * as ObjectGenerator from "../utils/ObjectGenerator";
+import * as CommonUtils from "../utils/CommonUtils";
+import { Chart } from "../components/Chart";
+import { Input } from "../components/Input";
+import Icon from "../components/Icon";
+import { close } from "../components/IconFonts";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  fetchMyDashoardDetails,
+  updateMyportfolio,
+  fetchLiveStockPrice,
+  fetchWalletUpdate,
+} from "../store/actions/dashboardAction";
+import moment from "moment";
 
-const Dashboard = (props) => {
-  const cardContent = [
-    { title: "", content: "Apple(AAPL)" },
-    { title: "Bought At", content: "150.00 INR" },
-    { title: "Units", content: "10.0" },
-    { title: "Total", content: "1500.00 INR" },
-  ];
+const Dashboard = () => {
+  const [filteredStocks, setFilteredStocks] = useState(null);
+  const [selectedStock, setSelectedStock] = useState(null);
+  const [stockChartData, setStockChartData] = useState(null);
+  const [showChart, setShowChart] = useState(false);
+  const [showStockData, setStockData] = useState(false);
+  const [portfolioDraftList, setPortfolioDraftList] = useState([]);
+  const [walletBalance, setWalletBalance] = useState(1000.0);
+  const [selectedStockInfo, setSelectedStockInfo] = useState(null);
+  const [selectedQuantity, setSelectedQuantity] = useState("");
+  const [showTodaysPortfolio, setShowTodaysPortfolio] = useState(true);
+  const [isMarketOpen, setMarketOpen] = useState(true);
+  const { wallet_balance } = useSelector((state) => state.auth.user);
+  const [
+    selectedStockCalculatedTotal,
+    setSelectedStockCalculatedTotal,
+  ] = useState(0);
+  const todaysPortfolioList =
+    useSelector((state) => state.dashboard.myCurrentPortfolio) || [];
+  const { user } = useSelector((state) => state.auth);
 
-  let cardData = [];
+  const toast = useRef(null);
+  const dispatch = useDispatch();
 
-  cardContent.forEach((lineItem) => {
-    cardData.push(
-      <P>
-        <Span fontSize={"var(--fs-milli)"} fontWeight={"light"}>
-          {lineItem.title}
-        </Span>{" "}
-        {lineItem.content}
-      </P>
-    );
-  });
+  /**
+   * @description - callback is triggered whenever wallet balance changes
+   * @returns {void}
+   */
+  useEffect(() => {
+    setWalletBalance(wallet_balance);
+  }, [wallet_balance]);
 
-  const AutoCompleteDemo = () => {
-    const [countries, setCountries] = useState([]);
-    const [filteredCountries, setFilteredCountries] = useState(null);
-    const [selectedCountry1, setSelectedCountry1] = useState(null);
 
-    useEffect(() => {
-      setCountries([
-        { name: "Afghanistan", code: "AF" },
-        { name: "Åland Islands", code: "AX" },
-        { name: "Albania", code: "AL" },
-        { name: "Algeria", code: "DZ" },
-        { name: "American Samoa", code: "AS" },
-        { name: "Andorra", code: "AD" },
-        { name: "Angola", code: "AO" },
-        { name: "Anguilla", code: "AI" },
-        { name: "Antarctica", code: "AQ" },
-        { name: "Antigua and Barbuda", code: "AG" },
-        { name: "Argentina", code: "AR" },
-        { name: "Armenia", code: "AM" },
-        { name: "Aruba", code: "AW" },
-        { name: "Australia", code: "AU" },
-        { name: "Austria", code: "AT" },
-        { name: "Azerbaijan", code: "AZ" },
-        { name: "Bahamas", code: "BS" },
-        { name: "Bahrain", code: "BH" },
-        { name: "Bangladesh", code: "BD" },
-        { name: "Barbados", code: "BB" },
-        { name: "Belarus", code: "BY" },
-        { name: "Belgium", code: "BE" },
-        { name: "Belize", code: "BZ" },
-        { name: "Benin", code: "BJ" },
-        { name: "Bermuda", code: "BM" },
-        { name: "Bhutan", code: "BT" },
-        { name: "Bolivia", code: "BO" },
-        { name: "Bosnia and Herzegovina", code: "BA" },
-        { name: "Botswana", code: "BW" },
-        { name: "Bouvet Island", code: "BV" },
-        { name: "Brazil", code: "BR" },
-        { name: "British Indian Ocean Territory", code: "IO" },
-        { name: "Brunei Darussalam", code: "BN" },
-        { name: "Bulgaria", code: "BG" },
-        { name: "Burkina Faso", code: "BF" },
-        { name: "Burundi", code: "BI" },
-        { name: "Cambodia", code: "KH" },
-        { name: "Cameroon", code: "CM" },
-        { name: "Canada", code: "CA" },
-        { name: "Cape Verde", code: "CV" },
-        { name: "Cayman Islands", code: "KY" },
-        { name: "Central African Republic", code: "CF" },
-        { name: "Chad", code: "TD" },
-        { name: "Chile", code: "CL" },
-        { name: "China", code: "CN" },
-        { name: "Christmas Island", code: "CX" },
-        { name: "Cocos (Keeling) Islands", code: "CC" },
-        { name: "Colombia", code: "CO" },
-        { name: "Comoros", code: "KM" },
-        { name: "Congo", code: "CG" },
-        { name: "Congo, The Democratic Republic of the", code: "CD" },
-        { name: "Cook Islands", code: "CK" },
-        { name: "Costa Rica", code: "CR" },
-        { name: 'Cote D"Ivoire', code: "CI" },
-        { name: "Croatia", code: "HR" },
-        { name: "Cuba", code: "CU" },
-        { name: "Cyprus", code: "CY" },
-        { name: "Czech Republic", code: "CZ" },
-        { name: "Denmark", code: "DK" },
-        { name: "Djibouti", code: "DJ" },
-        { name: "Dominica", code: "DM" },
-        { name: "Dominican Republic", code: "DO" },
-        { name: "Ecuador", code: "EC" },
-        { name: "Egypt", code: "EG" },
-        { name: "El Salvador", code: "SV" },
-        { name: "Equatorial Guinea", code: "GQ" },
-        { name: "Eritrea", code: "ER" },
-        { name: "Estonia", code: "EE" },
-        { name: "Ethiopia", code: "ET" },
-        { name: "Falkland Islands (Malvinas)", code: "FK" },
-        { name: "Faroe Islands", code: "FO" },
-        { name: "Fiji", code: "FJ" },
-        { name: "Finland", code: "FI" },
-        { name: "France", code: "FR" },
-        { name: "French Guiana", code: "GF" },
-        { name: "French Polynesia", code: "PF" },
-        { name: "French Southern Territories", code: "TF" },
-        { name: "Gabon", code: "GA" },
-        { name: "Gambia", code: "GM" },
-        { name: "Georgia", code: "GE" },
-        { name: "Germany", code: "DE" },
-        { name: "Ghana", code: "GH" },
-        { name: "Gibraltar", code: "GI" },
-        { name: "Greece", code: "GR" },
-        { name: "Greenland", code: "GL" },
-        { name: "Grenada", code: "GD" },
-        { name: "Guadeloupe", code: "GP" },
-        { name: "Guam", code: "GU" },
-        { name: "Guatemala", code: "GT" },
-        { name: "Guernsey", code: "GG" },
-        { name: "Guinea", code: "GN" },
-        { name: "Guinea-Bissau", code: "GW" },
-        { name: "Guyana", code: "GY" },
-        { name: "Haiti", code: "HT" },
-        { name: "Heard Island and Mcdonald Islands", code: "HM" },
-        { name: "Holy See (Vatican City State)", code: "VA" },
-        { name: "Honduras", code: "HN" },
-        { name: "Hong Kong", code: "HK" },
-        { name: "Hungary", code: "HU" },
-        { name: "Iceland", code: "IS" },
-        { name: "India", code: "IN" },
-        { name: "Indonesia", code: "ID" },
-        { name: "Iran, Islamic Republic Of", code: "IR" },
-        { name: "Iraq", code: "IQ" },
-        { name: "Ireland", code: "IE" },
-        { name: "Isle of Man", code: "IM" },
-        { name: "Israel", code: "IL" },
-        { name: "Italy", code: "IT" },
-        { name: "Jamaica", code: "JM" },
-        { name: "Japan", code: "JP" },
-        { name: "Jersey", code: "JE" },
-        { name: "Jordan", code: "JO" },
-        { name: "Kazakhstan", code: "KZ" },
-        { name: "Kenya", code: "KE" },
-        { name: "Kiribati", code: "KI" },
-        { name: 'Korea, Democratic People"S Republic of', code: "KP" },
-        { name: "Korea, Republic of", code: "KR" },
-        { name: "Kuwait", code: "KW" },
-        { name: "Kyrgyzstan", code: "KG" },
-        { name: 'Lao People"S Democratic Republic', code: "LA" },
-        { name: "Latvia", code: "LV" },
-        { name: "Lebanon", code: "LB" },
-        { name: "Lesotho", code: "LS" },
-        { name: "Liberia", code: "LR" },
-        { name: "Libyan Arab Jamahiriya", code: "LY" },
-        { name: "Liechtenstein", code: "LI" },
-        { name: "Lithuania", code: "LT" },
-        { name: "Luxembourg", code: "LU" },
-        { name: "Macao", code: "MO" },
-        { name: "Macedonia, The Former Yugoslav Republic of", code: "MK" },
-        { name: "Madagascar", code: "MG" },
-        { name: "Malawi", code: "MW" },
-        { name: "Malaysia", code: "MY" },
-        { name: "Maldives", code: "MV" },
-        { name: "Mali", code: "ML" },
-        { name: "Malta", code: "MT" },
-        { name: "Marshall Islands", code: "MH" },
-        { name: "Martinique", code: "MQ" },
-        { name: "Mauritania", code: "MR" },
-        { name: "Mauritius", code: "MU" },
-        { name: "Mayotte", code: "YT" },
-        { name: "Mexico", code: "MX" },
-        { name: "Micronesia, Federated States of", code: "FM" },
-        { name: "Moldova, Republic of", code: "MD" },
-        { name: "Monaco", code: "MC" },
-        { name: "Mongolia", code: "MN" },
-        { name: "Montserrat", code: "MS" },
-        { name: "Morocco", code: "MA" },
-        { name: "Mozambique", code: "MZ" },
-        { name: "Myanmar", code: "MM" },
-        { name: "Namibia", code: "NA" },
-        { name: "Nauru", code: "NR" },
-        { name: "Nepal", code: "NP" },
-        { name: "Netherlands", code: "NL" },
-        { name: "Netherlands Antilles", code: "AN" },
-        { name: "New Caledonia", code: "NC" },
-        { name: "New Zealand", code: "NZ" },
-        { name: "Nicaragua", code: "NI" },
-        { name: "Niger", code: "NE" },
-        { name: "Nigeria", code: "NG" },
-        { name: "Niue", code: "NU" },
-        { name: "Norfolk Island", code: "NF" },
-        { name: "Northern Mariana Islands", code: "MP" },
-        { name: "Norway", code: "NO" },
-        { name: "Oman", code: "OM" },
-        { name: "Pakistan", code: "PK" },
-        { name: "Palau", code: "PW" },
-        { name: "Palestinian Territory, Occupied", code: "PS" },
-        { name: "Panama", code: "PA" },
-        { name: "Papua New Guinea", code: "PG" },
-        { name: "Paraguay", code: "PY" },
-        { name: "Peru", code: "PE" },
-        { name: "Philippines", code: "PH" },
-        { name: "Pitcairn", code: "PN" },
-        { name: "Poland", code: "PL" },
-        { name: "Portugal", code: "PT" },
-        { name: "Puerto Rico", code: "PR" },
-        { name: "Qatar", code: "QA" },
-        { name: "Reunion", code: "RE" },
-        { name: "Romania", code: "RO" },
-        { name: "Russian Federation", code: "RU" },
-        { name: "RWANDA", code: "RW" },
-        { name: "Saint Helena", code: "SH" },
-        { name: "Saint Kitts and Nevis", code: "KN" },
-        { name: "Saint Lucia", code: "LC" },
-        { name: "Saint Pierre and Miquelon", code: "PM" },
-        { name: "Saint Vincent and the Grenadines", code: "VC" },
-        { name: "Samoa", code: "WS" },
-        { name: "San Marino", code: "SM" },
-        { name: "Sao Tome and Principe", code: "ST" },
-        { name: "Saudi Arabia", code: "SA" },
-        { name: "Senegal", code: "SN" },
-        { name: "Serbia and Montenegro", code: "CS" },
-        { name: "Seychelles", code: "SC" },
-        { name: "Sierra Leone", code: "SL" },
-        { name: "Singapore", code: "SG" },
-        { name: "Slovakia", code: "SK" },
-        { name: "Slovenia", code: "SI" },
-        { name: "Solomon Islands", code: "SB" },
-        { name: "Somalia", code: "SO" },
-        { name: "South Africa", code: "ZA" },
-        { name: "South Georgia and the South Sandwich Islands", code: "GS" },
-        { name: "Spain", code: "ES" },
-        { name: "Sri Lanka", code: "LK" },
-        { name: "Sudan", code: "SD" },
-        { name: "Suriname", code: "SR" },
-        { name: "Svalbard and Jan Mayen", code: "SJ" },
-        { name: "Swaziland", code: "SZ" },
-        { name: "Sweden", code: "SE" },
-        { name: "Switzerland", code: "CH" },
-        { name: "Syrian Arab Republic", code: "SY" },
-        { name: "Taiwan, Province of China", code: "TW" },
-        { name: "Tajikistan", code: "TJ" },
-        { name: "Tanzania, United Republic of", code: "TZ" },
-        { name: "Thailand", code: "TH" },
-        { name: "Timor-Leste", code: "TL" },
-        { name: "Togo", code: "TG" },
-        { name: "Tokelau", code: "TK" },
-        { name: "Tonga", code: "TO" },
-        { name: "Trinidad and Tobago", code: "TT" },
-        { name: "Tunisia", code: "TN" },
-        { name: "Turkey", code: "TR" },
-        { name: "Turkmenistan", code: "TM" },
-        { name: "Turks and Caicos Islands", code: "TC" },
-        { name: "Tuvalu", code: "TV" },
-        { name: "Uganda", code: "UG" },
-        { name: "Ukraine", code: "UA" },
-        { name: "United Arab Emirates", code: "AE" },
-        { name: "United Kingdom", code: "GB" },
-        { name: "United States", code: "US" },
-        { name: "United States Minor Outlying Islands", code: "UM" },
-        { name: "Uruguay", code: "UY" },
-        { name: "Uzbekistan", code: "UZ" },
-        { name: "Vanuatu", code: "VU" },
-        { name: "Venezuela", code: "VE" },
-        { name: "Viet Nam", code: "VN" },
-        { name: "Virgin Islands, British", code: "VG" },
-        { name: "Virgin Islands, U.S.", code: "VI" },
-        { name: "Wallis and Futuna", code: "WF" },
-        { name: "Western Sahara", code: "EH" },
-        { name: "Yemen", code: "YE" },
-        { name: "Zambia", code: "ZM" },
-        { name: "Zimbabwe", code: "ZW" },
-      ]);
-    }, []);
-
-    const searchCountry = (event) => {
-      setTimeout(() => {
-        let _filteredCountries;
-        if (!event.query.trim().length) {
-          _filteredCountries = [...countries];
-        } else {
-          _filteredCountries = countries.filter((country) => {
-            return country.name
-              .toLowerCase()
-              .startsWith(event.query.toLowerCase());
-          });
-        }
-
-        setFilteredCountries(_filteredCountries);
-      }, 250);
+  /**
+   * @description - callback is triggered whenever component DidMount or will Unmount
+   *                to check if market is open, if yes trigger liveStocks Data polling
+   *                and to fetch dashboard data
+   * @returns {void}
+   */
+  useEffect(() => {
+    let pollingTimer = {};
+    const currentTime = moment().format("H");
+    const day = moment().format("d");
+    if (currentTime >= 13 && currentTime < 20 && day > 0 && day < 6) {
+      // or trues Added to enable demo cuz market will be close
+      setMarketOpen(true);
+      pollingTimer = setInterval(() => {
+        dispatch(fetchLiveStockPrice());
+      }, 1000 * 10 * 2);
+      dispatch(fetchLiveStockPrice());
+    }
+    // else {
+    //   setMarketOpen(false);
+    // }
+    dispatch(fetchWalletUpdate());
+    dispatch(fetchMyDashoardDetails());
+    return () => {
+      clearInterval(pollingTimer);
     };
+  }, [dispatch]);
 
+  const stocksBodyTemplate = (rowData) => {
     return (
-      <Search
-        value={selectedCountry1}
-        suggestions={filteredCountries}
-        completeMethod={searchCountry}
-        field="name"
-        placeholder="Search Countries"
-        onChange={(e) => setSelectedCountry1(e.value)}
-      />
+      <>
+        <Span className="p-column-title">Stock</Span>
+        <P m={0}>{rowData.stock_name}</P>
+        <Span color="yellow">{rowData.stock_symbol}</Span>
+      </>
     );
   };
 
+  const boughtAtBodyTemplate = (rowData) => {
+    return (
+      <>
+        <Span className="p-column-title">Bought At</Span>
+        {rowData.order_price ? rowData.order_price : "-"}
+      </>
+    );
+  };
+
+  const currentPriceBodyTemplate = (rowData) => {
+    return (
+      <>
+        <Span className="p-column-title">Current Price</Span>
+        {rowData.current_price ? rowData.current_price.toFixed(2) : "-"}
+      </>
+    );
+  };
+
+  const changeBodyTemplate = (rowData) => {
+    const { order_price, current_price } = rowData;
+    const decideColor = current_price > order_price ? "green" : "red";
+    const sign = order_price > current_price ? "" : "+";
+    return (
+      <>
+        <Span className="p-column-title">Change</Span>
+        <Span color={decideColor}>
+          {rowData.change ? sign + (rowData.change * 100).toFixed(2) : "-"}
+        </Span>
+      </>
+    );
+  };
+
+  const mySharesBodyTemplate = (rowData) => {
+    return (
+      <>
+        <Span className="p-column-title">My Shares</Span>
+        {rowData.quantity}
+      </>
+    );
+  };
+
+  const earningsBodyTemplate = (rowData) => {
+    const { order_price, current_price } = rowData;
+    const decideColor = current_price > order_price ? "green" : "red";
+    const sign = order_price > current_price ? "" : "+";
+    return (
+      <>
+        <Span className="p-column-title">Earnings</Span>
+        <Span color={decideColor}>
+          {rowData.earnings ? sign + rowData.earnings.toFixed(2) : "-"}
+        </Span>
+      </>
+    );
+  };
+
+  const investmentBodyTemplate = (rowData) => {
+    return (
+      <>
+        <Span className="p-column-title">Total Investment</Span>
+        {rowData.investment}
+      </>
+    );
+  };
+
+  /**
+   * @param {any} e
+   * @description - callback is triggered whenever user searches for stock
+   * @returns {any}
+   */
+  const handleStockSearch = (e) => {
+    setShowChart(false);
+    setShowTodaysPortfolio(false);
+    setStockData(false);
+    console.log("handleStockSearch", e.query);
+    request
+      .get(`/api/stocks/search?name=${e.query}`)
+      .then((res) => {
+        setFilteredStocks(res.data.response.result);
+      })
+      .catch((err) => console.log("search err", err));
+  };
+
+  /**
+   * @param {any} event
+   * @returns {any} void
+   * @description - callback is triggered on stock selection from autocomplete dropdown
+   */
+  const handleStockSelection = (event) => {
+    const selectedStockObj = event.value;
+    setSelectedStock(selectedStockObj);
+    if (selectedStockObj.displaySymbol !== undefined) {
+      request
+        .get(
+          `/api/stocks/getLiveStockInfo?name=${selectedStockObj.displaySymbol}`
+        )
+        .then((res) => {
+          setSelectedStockInfo(res.data);
+          setStockData(true);
+        })
+        .catch((err) => {
+          toast.current.show({
+            severity: "error",
+            summary: "Stock Unlisted from Market",
+            detail: "Please choose another stock",
+            life: 3000,
+          });
+          setStockData(false);
+          console.log("getLiveStockInfo err", err);
+        });
+
+      request
+        .get(
+          `/api/stocks/getStockDetails?name=${selectedStockObj.displaySymbol}`
+        )
+        .then((res) => {
+          if (!res.data.response.error && res.data.response.s === "ok")
+            setStockChartData(
+              ObjectGenerator.GenerateStockGraphDataObj(
+                selectedStockObj.displaySymbol,
+                CommonUtils.ConvertChartData(res.data.response)
+              )
+            );
+          setShowChart(true);
+        })
+        .catch(() => {
+          toast.current.show({
+            severity: "error",
+            summary: "Chart not available",
+            detail: "Stock data unavailable",
+            life: 3000,
+          });
+          setShowChart(false);
+        });
+    }
+  };
+
+  /**
+   * @param {any} event
+   * @description - callback is triggered to do total calculations when quanity is input
+   * @returns {any}
+   */
+  const handleOfStocksInput = (event) => {
+    const quantity = event.target.value.replace(/\D/, "");
+    setSelectedQuantity(quantity);
+    setSelectedStockCalculatedTotal(
+      parseFloat(quantity * selectedStockInfo.response.c).toFixed(2)
+    );
+  };
+
+  /**
+   * @description - callback is triggered to check if user have sufficient wallet balance to add for portfolio
+   * @returns {any}
+   */
+  const handleAddStocksToPortfolioDraft = () => {
+    if (selectedStockCalculatedTotal <= 0) {
+      toast.current.show({
+        severity: "error",
+        summary: "Quantity missing",
+        detail: "Please enter the quantity of Stock",
+        life: 3000,
+      });
+      return;
+    } else if (walletBalance - selectedStockCalculatedTotal < 0) {
+      toast.current.show({
+        severity: "error",
+        summary: "Balance Insufficient",
+        detail: "Purchase exceeds wallet balance",
+        life: 3000,
+      });
+      return;
+    }
+
+    const portfolioDraftObj = {};
+    portfolioDraftObj.stockName =
+      selectedStock.description + " (" + selectedStock.displaySymbol + ")";
+    portfolioDraftObj.symbol = selectedStock.symbol;
+    portfolioDraftObj.description = selectedStock.description;
+    portfolioDraftObj.boughtAt = selectedStockInfo.response.c;
+    portfolioDraftObj.open = selectedStockInfo.response.o;
+    portfolioDraftObj.units = selectedQuantity;
+    portfolioDraftObj.total = selectedStockCalculatedTotal;
+
+    const currentBalance = walletBalance - selectedStockCalculatedTotal;
+    setWalletBalance(parseFloat(currentBalance).toFixed(2));
+    const currentPortfolioDraftList = portfolioDraftList;
+    currentPortfolioDraftList.push(portfolioDraftObj);
+    setPortfolioDraftList(currentPortfolioDraftList);
+    setSelectedQuantity(0);
+    setSelectedStockCalculatedTotal(0);
+  };
+
+  const handleRemoveStocksFromPortfolioDraft = (index) => {
+    const modifiedPortfolioDraftList = portfolioDraftList.filter(
+      (el, i) => i !== index
+    );
+    setPortfolioDraftList(modifiedPortfolioDraftList);
+  };
+
+  /**
+   * 描述
+   * @date 2021-10-09
+   * @description - callback is triggered to dispatch the portfoio draft to backend so that 
+   *                it can be added to your portfolio list
+   * @returns {any}
+   */
+  const handleSubmitPortfolio = () => {
+    let requestObj = {};
+    let payload = [];
+    for (let i = 0; i < portfolioDraftList.length; i++) {
+      let data = {};
+      let portfolioDraftObj = portfolioDraftList[i];
+      data.stock_name = portfolioDraftObj.description;
+      data.stock_symbol = portfolioDraftObj.symbol;
+      data.quantity = portfolioDraftObj.units;
+      data.order_price = portfolioDraftObj.boughtAt;
+      data.current_price = portfolioDraftObj.boughtAt;
+      data.open = portfolioDraftObj.open;
+      data.investment = portfolioDraftObj.total;
+      payload.push(data);
+    }
+    requestObj.data = payload;
+    // Create portfolio API call here
+    dispatch(updateMyportfolio(requestObj));
+    // If success, show success toaster, reset page & show today's portfolio
+    toast.current.show({
+      severity: "success",
+      summary: "success",
+      detail: "The selected Stocks have been added to your Portfolio",
+      life: 3000,
+    });
+
+    setTimeout(() => {
+      toast.current.show({
+        severity: "success",
+        summary: "Success",
+        detail: "For Demo purposes we will close your trade in 1min.",
+        life: 3000,
+      });
+    }, 4000)
+    setPortfolioDraftList([]);
+    setShowTodaysPortfolio(true);
+  };
   return (
-    <Container flexRow>
-      <Div width={[1, 2 / 3, 3 / 4, 4 / 5]} p={3}>
-        <AutoCompleteDemo />
-        <Card mt={6}>{cardData}</Card>
-      </Div>
-      <Div width={[1, 1 / 3, 1 / 4, 1 / 5]} p={3}>
-        <CardHorizontal flexCenter>
-          <Span color="title" fontSize={"var(--fs-h3)"}>
-            Portfolio Draft
-          </Span>
-        </CardHorizontal>
-        <Card mt={3}>{cardData}</Card>
-        <Card mt={3}>{cardData}</Card>
-        <Card mt={3}>{cardData}</Card>
-        <Card mt={3}>{cardData}</Card>
-        <Card mt={3}>{cardData}</Card>
-        <Card mt={3}>{cardData}</Card>
-        <ButtonSecondary
-          style={{ width: "100%" }}
-          p={3}
-          mt={3}
-          mb={3}
-          label="ADD TO PORTFOLIO"
+    <Container flexRow minHeight={"80vh"}>
+      <Div width={["100%", "100%", "100%", "75%"]} p={3}>
+        <Search
+          autoFocus={true}
+          value={selectedStock}
+          suggestions={filteredStocks}
+          completeMethod={handleStockSearch}
+          field="description"
+          placeholder="Search Stocks"
+          onChange={(e) => handleStockSelection(e)}
         />
+        {showChart && (
+          <CardContent mt={4} flexCenter>
+            <Chart options={stockChartData} />
+          </CardContent>
+        )}
+        {!showChart && !showStockData && (
+          <CardContent mt={4} flexCenter>
+            <P>
+              Welcome to DreamStock,{" "}
+              {user && user.first_name ? user.first_name : "User"}
+              {". "}Find stocks in the search bar and add them to your
+              Portfolio.
+            </P>
+          </CardContent>
+        )}
+        {showStockData ? (
+          <CardContent mt={4}>
+            <Div flexRow>
+              <Div width={[1, 1, 1 / 2]}>
+                <Div flexRow width={[1, 1, 1 / 2]}>
+                  <P ml={2}>
+                    {selectedStock?.description} ({selectedStock?.displaySymbol}
+                    )
+                  </P>
+                  <P ml={2}>
+                    <Span fontWeight={"light"}>Current Price</Span>{" "}
+                    {selectedStockInfo?.response?.c}
+                  </P>
+                </Div>
+                <Div flexRow width={[1, 1, 1 / 2]}>
+                  <P ml={2}>
+                    <Span fontWeight={"light"}>Wallet Balance</Span>{" "}
+                    {walletBalance}
+                  </P>
+                  <P ml={2}>
+                    <Span fontWeight={"light"}>Total</Span>{" "}
+                    {selectedStockCalculatedTotal}
+                  </P>
+                </Div>
+              </Div>
+              <Div flexCenter width={[1, 1, 1 / 2]}>
+                <Input
+                  width={"200px"}
+                  placeholder={"Enter Quantity"}
+                  value={selectedQuantity}
+                  onChange={(e) => handleOfStocksInput(e)}
+                />
+                <ButtonSecondary
+                  mt={3}
+                  // disabled={isMarketOpen}
+                  width={"200px"}
+                  label="Add Stocks"
+                  {...(!isMarketOpen
+                    ? { tooltip: "You can add stocks when market opens" }
+                    : {})}
+                  // disabled={selectedStockCalculatedTotal <= 0}
+                  onClick={(e) => handleAddStocksToPortfolioDraft(e)}
+                />
+              </Div>
+            </Div>
+          </CardContent>
+        ) : null}
+        {showTodaysPortfolio ? (
+          <CardContent mt={4}>
+            <P>
+              {moment().format("H") < 16
+                ? "TODAY'S PORTFOLIO"
+                : "PORTFOLIO FOR NEXT MARKET SESSION"}
+            </P>
+            <Div>
+              <Table value={todaysPortfolioList}>
+                <Column
+                  field="stockName"
+                  header="Stock"
+                  body={stocksBodyTemplate}
+                />
+                <Column
+                  field="boughtAt"
+                  header="Bought At"
+                  body={boughtAtBodyTemplate}
+                />
+                <Column
+                  field="currentPrice"
+                  header="Current Price"
+                  body={currentPriceBodyTemplate}
+                />
+                <Column
+                  field="investmentChangePercentage"
+                  header="Change"
+                  body={changeBodyTemplate}
+                />
+                <Column
+                  field="investment"
+                  header="My Shares"
+                  body={mySharesBodyTemplate}
+                />
+                <Column
+                  field="totalInvestment"
+                  header="Investment"
+                  body={investmentBodyTemplate}
+                />
+                <Column
+                  field="investmentChange"
+                  header="Earnings"
+                  body={earningsBodyTemplate}
+                />
+              </Table>
+            </Div>
+          </CardContent>
+        ) : null}
       </Div>
+
+      <Div width={["100%", "100%", "100%", "25%"]} p={3}>
+        <CardHorizontal flexCenter p={2}>
+          <Span color="title">PORTFOLIO DRAFT</Span>
+        </CardHorizontal>
+        <Div>
+          {portfolioDraftList.map((portfolioDraftObj, index) => {
+            const { stockName, boughtAt, units, total } = portfolioDraftObj;
+            return (
+              <CardContent mt={3} key={index}>
+                <Icon
+                  name={close}
+                  topright
+                  size="2x"
+                  onClick={() => handleRemoveStocksFromPortfolioDraft(index)}
+                />
+                <Div>
+                  <P>{stockName}</P>
+                </Div>
+                <P>
+                  <Span fontWeight={"light"}>Bought At</Span> {boughtAt}
+                </P>
+                <P>
+                  <Span fontWeight={"light"}>Units</Span> {units}
+                </P>
+                <P>
+                  <Span fontWeight={"light"}>Total</Span> {total}
+                </P>
+              </CardContent>
+            );
+          })}
+          {portfolioDraftList.length > 0 ? (
+            <ButtonSecondary
+              onClick={(e) => handleSubmitPortfolio(e)}
+              width={"100%"}
+              p={3}
+              mt={3}
+              mb={3}
+              label="ADD TO PORTFOLIO"
+            />
+          ) : null}
+        </Div>
+      </Div>
+      <Toast ref={toast} />
     </Container>
   );
 };

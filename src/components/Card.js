@@ -7,6 +7,13 @@ export const Card = styled(PrimeCard)`
   background-color: var(--card-bg);
   color: var(--title-color);
   border-radius: 5px;
+
+  .p-card-body {
+    padding: 10px;
+  }
+`;
+
+export const CardContent = styled(Card)`
   font-weight: bold;
   filter: drop-shadow(4px 4px 4px rgba(0, 0, 0, 0.25));
   .p-card-body {
@@ -22,7 +29,7 @@ export const Card = styled(PrimeCard)`
   `};
 `;
 
-export const CardHorizontal = styled(Card)`
+export const CardHorizontal = styled(CardContent)`
   width: 100%;
   background-color: var(--primary-bg);
   .p-card-body {

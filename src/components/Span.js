@@ -1,3 +1,4 @@
+import React from "react";
 import styled from "styled-components";
 import { compose, space, position, layout, typography } from "styled-system";
 
@@ -8,6 +9,8 @@ const StyledSpan = styled.span`
       ? "var(--green-color)"
       : color === "red"
       ? "var(--red-color)"
+      : color === "yellow"
+      ? "var(--secondary-color)"
       : color === "title"
       ? "var(--title-color)"
       : "var(--user-text)"};

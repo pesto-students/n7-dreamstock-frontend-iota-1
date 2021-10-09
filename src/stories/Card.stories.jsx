@@ -1,5 +1,5 @@
 import React from "react";
-import { Card } from "../components/Card";
+import { CardContent } from "../components/Card";
 import { Div } from "../components/Div";
 import { P } from "../components/Paragraph";
 import { Span } from "../components/Span";
@@ -32,7 +32,7 @@ export const PrimaryCard = () => {
 
   return (
     <Div>
-      <Card>{cardData}</Card>
+      <CardContent>{cardData}</CardContent>
     </Div>
   );
 };

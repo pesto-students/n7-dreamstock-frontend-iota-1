@@ -1,118 +1,117 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Container } from "../components/Container";
 import { Div } from "../components/Div";
 import { P } from "../components/Paragraph";
 import { Span } from "../components/Span";
-import { Table, Td, Th, Tr } from "../components/Table";
+import { Column, Table } from "../components/Table";
+import request from "../utils/interceptor";
+import { useDispatch } from "react-redux";
+import { fetchWalletUpdate } from "../store/actions/dashboardAction";
 
-const Passbook = (props) => {
-  //   const content = [
-  //     [
-  //       { title: "Date", content: "08-Aug-2021" },
-  //       { title: "Amount", content: "150.00 INR" },
-  //       { title: "Action", content: "Wallet Top Up" },
-  //       { title: "Profit / Loss", content: "N/A" },
-  //       { title: "Final Balance", content: "20000.00 INR" },
-  //     ],
-  //     [
-  //       { title: "Date", content: "09-Aug-2021" },
-  //       { title: "Amount", content: "2000.00 INR" },
-  //       { title: "Action", content: "Win" },
-  //       { title: "Profit / Loss", content: "+100.00 INR" },
-  //       { title: "Final Balance", content: "20100.00 INR" },
-  //     ],
-  //     [
-  //       { title: "Date", content: "10-Aug-2021" },
-  //       { title: "Amount", content: "2000.00 INR" },
-  //       { title: "Action", content: "Loss" },
-  //       { title: "Profit / Loss", content: "-100.00 INR" },
-  //       { title: "Final Balance", content: "20000.00 INR" },
-  //     ],
-  //   ];
+const Passbook = () => {
+  const [passbookData, setPassbookData] = useState([]);
+  const dispatch = useDispatch();
 
-  const lineItemContent = [
-    {
-      date: "07-Aug-2021",
-      amount: "150.00 INR",
-      action: "Wallet Top Up",
-      pl: "N/A",
-      finalBalance: "20000.00 INR",
-    },
-    {
-      date: "08-Aug-2021",
-      amount: "1500.00 INR",
-      action: "Wallet Top Up",
-      pl: "+100.00 INR",
-      isProfit: true,
-      finalBalance: "20000.00 INR",
-    },
-    {
-      date: "09-Aug-2021",
-      amount: "150.00 INR",
-      action: "Loss",
-      isLoss: true,
-      pl: "-150.00 INR",
-      finalBalance: "20000.00 INR",
-    },
-  ];
+  /**
+   * 描述
+   * @description - callback is used to fetch passbook data
+   * @param {any} (
+   * @returns {any}
+   */
+  useEffect(() => {
+    dispatch(fetchWalletUpdate());
+    request
+      .get("/api/passbook/data")
+      .then((res) => {
+        const data = res.data.order.map((el) => {
+          let date = el.date.split("T")[0];
+          el.date = date;
+          return el;
+        });
+        setPassbookData(data);
+      })
+      .catch((err) => console.log("passbook err", err));
+  }, [dispatch]);
 
-  let passBookDataBody = [];
-  let passBookDataHeader = [];
-
-  lineItemContent.forEach((lineItem) => {
-    let fontColor = lineItem.isProfit ? "green" : lineItem.isLoss ? "red" : "";
-    passBookDataBody.push(
-      <Tr>
-        <Td>
-          <Span>{lineItem.date}</Span>
-        </Td>
-        <Td>
-          <Span>{lineItem.amount}</Span>
-        </Td>
-        <Td>
-          <Span>{lineItem.action}</Span>
-        </Td>
-        <Td>
-          <Span color={fontColor}>{lineItem.pl}</Span>
-        </Td>
-        <Td>
-          <Span>{lineItem.finalBalance}</Span>
-        </Td>
-      </Tr>
+  const dateBodyTemplate = (rowData) => {
+    return (
+      <>
+        <Span className="p-column-title">Date</Span>
+        {rowData.date}
+      </>
     );
-  });
+  };
 
-  passBookDataHeader.push(
-    <Tr>
-      <Th style={{ textAlign: "left" }}>
-        <Span>Date</Span>
-      </Th>
-      <Th style={{ textAlign: "left" }}>
-        <Span>Amount</Span>
-      </Th>
-      <Th style={{ textAlign: "left" }}>
-        <Span>Action</Span>
-      </Th>
-      <Th style={{ textAlign: "left" }}>
-        <Span>Profit / Loss</Span>
-      </Th>
-      <Th style={{ textAlign: "left" }}>
-        <Span>Final Balance</Span>
-      </Th>
-    </Tr>
-  );
+  const amountBodyTemplate = (rowData) => {
+    return (
+      <>
+        <Span className="p-column-title">Amount</Span>
+        {rowData.amount ? rowData.amount : "-"}
+      </>
+    );
+  };
 
-  console.log(passBookDataBody);
+  const actionBodyTemplate = (rowData) => {
+    return (
+      <>
+        <Span className="p-column-title">Action</Span>
+        {rowData.action}
+      </>
+    );
+  };
+
+  const profitLossBodyTemplate = (rowData) => {
+    let color = "title";
+    if (rowData.action.includes("PROFIT")) {
+      color = "green";
+    } else if (rowData.action.includes("LOSS")) {
+      color = "red";
+    } else {
+      color = "title";
+    }
+    return (
+      <>
+        <Span className="p-column-title">Profit/Loss</Span>
+        {rowData.profit_loss ? (
+          <Span color={color}>
+            {color === "title"
+              ? rowData.profit_loss
+              : Number(rowData.profit_loss).toFixed(2)}
+          </Span>
+        ) : (
+          "-"
+        )}
+      </>
+    );
+  };
+
+  const finalBalanceBodyTemplate = (rowData) => {
+    return (
+      <>
+        <Span className="p-column-title">Final Balance</Span>
+        {rowData.final_balance}
+      </>
+    );
+  };
 
   return (
-    <Container pb={3}>
+    <Container minHeight={"80vh"}>
       <Div>
         <P fontSize={"var(--fs-h2)"}>PASSBOOK</P>
-        <Table width={"100%"}>
-          {passBookDataHeader}
-          {passBookDataBody}
-          {passBookDataBody}
-          {passBookDataBody}
+        <Table value={passbookData} paginator rows={5}>
+          <Column field="date" header="DATE" body={dateBodyTemplate} />
+          <Column field="amount" header="AMOUNT" body={amountBodyTemplate} />
+          <Column field="action" header="ACTION" body={actionBodyTemplate} />
+          <Column
+            field="profit_loss"
+            header="PROFIT / LOSS"
+            body={profitLossBodyTemplate}
+          />
+          <Column
+            field="final_balance"
+            header="FINAL BALANCE"
+            body={finalBalanceBodyTemplate}
+          />
         </Table>
       </Div>
     </Container>
