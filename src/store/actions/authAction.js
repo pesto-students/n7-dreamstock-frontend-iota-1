@@ -1,5 +1,5 @@
 import * as actionTypes from "../actionTypes/authActionTypes";
-import request from "../../utils/Interceptor";
+import request from "../../utils/interceptor";
 import setAuthToken from "../../utils/setAuthToken";
 import jwt_decode from "jwt-decode";
 import { LogError } from "../../utils/SentryUtils";

@@ -1,5 +1,5 @@
 import * as actionTypes from "../actionTypes/dashboardActionTypes";
-import request from "../../utils/Interceptor";
+import request from "../../utils/interceptor";
 import { LogError } from "../../utils/SentryUtils";
 
 export const fetchMyDashoardDetails = () => (dispatch) => {
