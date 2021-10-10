@@ -22,7 +22,6 @@ import {
   fetchLiveStockPrice,
   fetchWalletUpdate,
 } from "../store/actions/dashboardAction";
-import moment from "moment";
 import { LogError } from "../utils/SentryUtils";
 
 const Dashboard = () => {
@@ -412,7 +411,7 @@ const Dashboard = () => {
         {showTodaysPortfolio ? (
           <CardContent mt={4}>
             <P>
-              {"PORTFOLIO FOR NEXT MARKET SESSION"}
+              {"PORTFOLIO"}
             </P>
             <Div>
               <Table value={todaysPortfolioList}>
