@@ -103,7 +103,7 @@ const Transactions = () => {
       </Div>
     );
   };
-  const withdrawlPercentage = (Number(wallet_balance) / 10000).toFixed(2) * 100;
+  const withdrawlPercentage = (Number(wallet_balance) / 10000).toFixed(4) * 100;
   const withDrawalLimit = ((withdrawlPercentage) - 100) * 100
   return (
     <Container minHeight={"80vh"}>
@@ -120,7 +120,7 @@ const Transactions = () => {
         <ButtonSecondary
           onClick={() => onShowModal("recharge")}
           label="PROCEED TO RECHARGE"
-          disabled={rechargeAmount == ""}
+          disabled={rechargeAmount == "" || rechargeAmount<=0}
           mt={3}
         />
 
@@ -141,7 +141,7 @@ const Transactions = () => {
         <ButtonSecondary
           onClick={() => onShowModal("withdrawl")}
           label="PROCEED TO WITHDRAW"
-          disabled={withDrawalLimit< withDrawlAmount}
+          disabled={withDrawalLimit< withDrawlAmount || withDrawlAmount<1000}
           mt={3}
         />
       </Div>
@@ -153,6 +153,8 @@ const Transactions = () => {
         width={"50vw"}
         footer={renderModalFooter("displayResponsive")}
       >
+        <P>{actionType ==="recharge" ? `rechargin with ${rechargeAmount} will give you ${rechargeAmount*1000} credit points`:
+        `${Number(withDrawlAmount/1000).toFixed(4)} INR will be credited to your account on withdrawal of ${withDrawlAmount} credit points` }</P>
         <P>{Constants.MODAL_ACTION_CONFIRMATION}</P>
       </Dialog>
       <Toast ref={toast} />

@@ -45,7 +45,7 @@ const Login = () => {
           <GLogin />
           <P textAlign={"center"}>
             Do not have an account?{" "}
-            <A onClick={() => (window.location.href = "/signup")}>Sign Up</A>
+            <A onClick={() =>history.push("/dashboard")}>Sign Up</A>
           </P>
         </Div>
       </CardContent>

@@ -88,6 +88,9 @@ const Header = (props) => {
           </Span>
         }
         mr={3}
+        onClick={() => {
+          history.push("/passbook");
+        }}
         p={[2, 3]}
       />
       <ButtonSecondary

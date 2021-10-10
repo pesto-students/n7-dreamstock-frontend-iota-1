@@ -23,6 +23,7 @@ import {
   fetchWalletUpdate,
 } from "../store/actions/dashboardAction";
 import { LogError } from "../utils/SentryUtils";
+import { useHistory } from "react-router";
 
 const Dashboard = () => {
   const [filteredStocks, setFilteredStocks] = useState(null);
@@ -44,7 +45,7 @@ const Dashboard = () => {
   const todaysPortfolioList =
     useSelector((state) => state.dashboard.myCurrentPortfolio) || [];
   const { user } = useSelector((state) => state.auth);
-
+  const history = useHistory()
   const toast = useRef(null);
   const dispatch = useDispatch();
 
@@ -71,7 +72,7 @@ const Dashboard = () => {
       setMarketOpen(true);
       pollingTimer = setInterval(() => {
         dispatch(fetchLiveStockPrice());
-      }, 1000 * 5 * 2);
+      }, 1000 * 10 * 1);
       dispatch(fetchLiveStockPrice());
     // }
     // else {
@@ -331,6 +332,10 @@ const Dashboard = () => {
         life: 10000,
       });
     }, 4000);
+      
+    setTimeout(()=>
+      history.push('/summary')
+      ,35*1000)
     setPortfolioDraftList([]);
     setShowTodaysPortfolio(true);
   };
