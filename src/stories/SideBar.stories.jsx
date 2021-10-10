@@ -1,12 +1,12 @@
 import React, { useState } from "react";
-import { SideBar as SideNav } from "../components/SideBar";
+import { SideBar as SideNav } from "../components/Sidebar/style";
 import FullLogo from "../assets/images/FullLogo.png";
 import { CardHorizontal, CardContent } from "../components/Card";
 import { ButtonSecondary } from "../components/Button";
 import { Image } from "../components/Image";
 import { NavMenu } from "../components/NavMenu";
 import { Div } from "../components/Div";
-import { Icon } from "../components/Icon";
+import Icon from "../components/Icon";
 import { userCircle } from "../components/IconFonts";
 
 export default {
@@ -21,32 +21,27 @@ const NavMenuDemo = () => {
         {
           label: "Dashboard",
           icon: "pi pi-fw pi-briefcase",
-          command: (e) => {
-          },
+          command: () => {},
         },
         {
           label: "Summary",
           icon: "pi pi-fw pi-th-large",
-          command: (e) => {
-          },
+          command: () => {},
         },
         {
           label: "Passbook",
           icon: "pi pi-fw pi-book",
-          command: (e) => {
-          },
+          command: () => {},
         },
         {
           label: "Transactions",
           icon: "pi pi-fw pi-money-bill",
-          command: (e) => {
-          },
+          command: () => {},
         },
         {
           label: "Profile",
           icon: "pi pi-fw pi-user-edit",
-          command: (e) => {
-          },
+          command: () => {},
         },
       ],
     },

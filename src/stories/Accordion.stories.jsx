@@ -10,20 +10,18 @@ export default {
   title: "Component/Accordion",
 };
 
-const props = {
-  content: [
-    { title: "", content: "Apple(AAPL)" },
-    { title: "Bought At", content: "150.00 INR" },
-    { title: "Units", content: "10.0" },
-    { title: "Total", content: "1500.00 INR" },
-  ],
-};
+const content = [
+  { title: "", content: "Apple(AAPL)" },
+  { title: "Bought At", content: "150.00 INR" },
+  { title: "Units", content: "10.0" },
+  { title: "Total", content: "1500.00 INR" },
+];
 
 let accordionData = [];
 
 const AccordionStories = () => {
   accordionData = [];
-  props?.content?.forEach((lineItem) => {
+  content?.forEach((lineItem) => {
     accordionData.push(
       <P>
         <Span fontSize={"var(--fs-milli)"} fontWeight={"light"}>
