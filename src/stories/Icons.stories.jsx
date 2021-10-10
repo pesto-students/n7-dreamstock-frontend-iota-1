@@ -6,11 +6,11 @@ export default {
   title: "Component/Icons",
 };
 
-export const Wallet = () => <Icon name={wallet} size="5x" />;
+export const Wallet = () => <Icon name={wallet} size="6x" />;
 
-export const User = () => <Icon name={user} size="5x" />;
+export const User = () => <Icon name={user} size="6x" />;
 
-export const UserCircle = () => <Icon name={userCircle} size="5x" />;
+export const UserCircle = () => <Icon name={userCircle} size="6x" />;
 
-export const Close = () => <Icon name={close} size="5x" />;
+export const Close = () => <Icon name={close} size="6x" />;
 
