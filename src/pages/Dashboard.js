@@ -327,7 +327,7 @@ const Dashboard = () => {
       toast.current.show({
         severity: "success",
         summary: "Success",
-        detail: "For Demo purposes we will close your trade in 1min.",
+        detail: "For Demo purposes we will close your trade in 30 sec.",
         life: 10000,
       });
     }, 4000);
