@@ -125,11 +125,11 @@ const Summary = () => {
           const accordionHeader = (
             <CardHorizontalTransparent>
               <P>
-                <Span fontWeight={"light"}>DATE</Span>{" : "}
+                <Span fontWeight={"light"}>DATE</Span>{" "}
                 {summaryOfCurrentRecord.date}
               </P>
               <P>
-                <Span fontWeight={"light"}>TOTAL COST</Span>{" : "}
+                <Span fontWeight={"light"}>TOTAL COST</Span>{" "}
                 {summaryOfCurrentRecord.total_cost.toFixed(2) +" INR"}
               </P>
               <P>
