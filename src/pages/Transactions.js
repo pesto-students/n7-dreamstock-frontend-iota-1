@@ -153,7 +153,7 @@ const Transactions = () => {
         width={"50vw"}
         footer={renderModalFooter("displayResponsive")}
       >
-        <P>{actionType ==="recharge" ? `rechargin with ${rechargeAmount} will give you ${rechargeAmount*1000} credit points`:
+        <P>{actionType ==="recharge" ? `Recharging with ${rechargeAmount} will give you ${rechargeAmount*1000} credit points`:
         `${Number(withDrawlAmount/1000).toFixed(4)} INR will be credited to your account on withdrawal of ${withDrawlAmount} credit points` }</P>
         <P>{Constants.MODAL_ACTION_CONFIRMATION}</P>
       </Dialog>
