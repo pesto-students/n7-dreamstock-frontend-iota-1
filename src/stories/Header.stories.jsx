@@ -52,7 +52,7 @@ const HeaderStories = () => {
       <ButtonTransparent
         label={
           <Span>
-            <Icon name={wallet} /> <Span color={"title"}>2000 INR</Span>
+            <Icon name={wallet} /> <Span color={"title"}>10000 INR</Span>
           </Span>
         }
         mr={3}
