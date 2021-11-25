@@ -68,7 +68,7 @@ const Dashboard = () => {
     const currentTime = moment().format("H");
     const day = moment().format("d");
     if (currentTime >= 13 && currentTime < 20 && day > 0 && day < 6) {
-      // or trues Added to enable demo cuz market will be close
+      // or true Added to enable demo as market will be closed
       setMarketOpen(true);
       pollingTimer = setInterval(() => {
         dispatch(fetchLiveStockPrice());
@@ -119,7 +119,7 @@ const Dashboard = () => {
     const sign = order_price > current_price ? "" : "+";
     return (
       <>
-        <Span className="p-column-title">Change</Span>
+        <Span className="p-column-title">Change(%)</Span>
         <Span color={decideColor}>
           {rowData.change ? sign + (rowData.change * 100).toFixed(2) : "-"}
         </Span>
@@ -329,7 +329,7 @@ const Dashboard = () => {
       toast.current.show({
         severity: "success",
         summary: "Success",
-        detail: "For Demo purposes we will close your trade in 1min.",
+        detail: "For Demo purposes we will close your trade in 1 min.",
         life: 3000,
       });
     }, 4000);
@@ -357,7 +357,8 @@ const Dashboard = () => {
           <CardContent mt={4} flexCenter>
             <P>
               Welcome to DreamStock,{" "}
-              {user && user.first_name ? user.first_name : "User"}
+              {user && user.first_name ? user.first_name : "User"} {" "}
+              {user && user.last_name ? user.last_name : ""}
               {". "}Find stocks in the search bar and add them to your
               Portfolio.
             </P>
@@ -436,7 +437,7 @@ const Dashboard = () => {
                 />
                 <Column
                   field="investmentChangePercentage"
-                  header="Change"
+                  header="Change(%)"
                   body={changeBodyTemplate}
                 />
                 <Column

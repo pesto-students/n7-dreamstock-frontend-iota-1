@@ -18,9 +18,9 @@ const Login = () => {
 
   const manualLogin = () => {
     const payload = {
-      "imageUrl": "https://i.imgur.com/x0X6HFt.png",
+      "imageUrl": "https://i.imgur.com/x0X6HFt.png?1",
       "email": "partners@pesto.tech",
-      "name": "partners pesto",
+      "name": "Pesto Partners",
       "givenName": "Partners",
       "familyName": "Pesto"
     }
@@ -39,11 +39,11 @@ const Login = () => {
         </Div>
         <Div>
           <P>Email</P>
-          <Input disabled placeholder="pesto@pesto.com" type="text" p={3} />
+          <Input disabled placeholder="partners@pesto.tech" type="text" p={3} />
         </Div>
         <Div>
           <P>Password</P>
-          <Input disabled placeholder="pesto12345" type="password" p={3} />
+          <Input disabled placeholder="********" type="password" p={3} />
           <P>
             <A>Forgot Password?</A>
           </P>
@@ -53,6 +53,7 @@ const Login = () => {
             label="Log In"
             width={"100%"}
             onClick={manualLogin}
+            tooltip={"Login as Pesto Partner / Guest"}
           />
           <P textAlign={"center"}>OR</P>
           <GLogin />

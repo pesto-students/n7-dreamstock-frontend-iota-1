@@ -76,7 +76,7 @@ const Summary = () => {
     const sign = current_price > order_price ? "+" : "";
     return (
       <>
-        <Span className="p-column-title">Change</Span>
+        <Span className="p-column-title">Change(%)</Span>
         <Span color={decideColor}>
           {sign}
           {rowData.change ? (rowData.change * 100).toFixed(2) : "-"}
@@ -130,13 +130,13 @@ const Summary = () => {
               </P>
               <P>
                 <Span fontWeight={"light"}>TOTAL COST</Span>{" "}
-                {summaryOfCurrentRecord.total_cost.toFixed(2)}
+                {summaryOfCurrentRecord.total_cost.toFixed(2)} {" INR"}
               </P>
               <P>
                 <Span fontWeight={"light"}>PROFIT</Span>{" "}
                 <Span color={summaryOfCurrentRecord.status}>
                   {summaryOfCurrentRecord.sign}
-                  {summaryOfCurrentRecord.profit_loss}
+                  {summaryOfCurrentRecord.profit_loss}{"%"}
                 </Span>{" "}
               </P>
             </CardHorizontalTransparent>
@@ -172,7 +172,7 @@ const Summary = () => {
           />
           <Column
             field="investmentChangePercentage"
-            header="Change"
+            header="Change(%)"
             body={changeBodyTemplate}
           />
           <Column

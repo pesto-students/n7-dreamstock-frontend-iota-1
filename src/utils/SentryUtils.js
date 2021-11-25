@@ -7,7 +7,7 @@ export const InitSentry = () => {
   Sentry.init({
     dsn: config.SENTRY_DSN,
     integrations: [new Integrations.BrowserTracing()],
-    tracesSampleRate: 0,
+    tracesSampleRate: 1,
   });
 };
 

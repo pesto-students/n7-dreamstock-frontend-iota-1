@@ -100,17 +100,17 @@ const Passbook = () => {
       <Div>
         <P fontSize={"var(--fs-h2)"}>PASSBOOK</P>
         <Table value={passbookData} paginator rows={5}>
-          <Column field="date" header="DATE" body={dateBodyTemplate} />
-          <Column field="amount" header="AMOUNT" body={amountBodyTemplate} />
-          <Column field="action" header="ACTION" body={actionBodyTemplate} />
+          <Column field="date" header="Date" body={dateBodyTemplate} />
+          <Column field="amount" header="Amount" body={amountBodyTemplate} />
+          <Column field="action" header="Action" body={actionBodyTemplate} />
           <Column
             field="profit_loss"
-            header="PROFIT / LOSS"
+            header="Profit / Loss"
             body={profitLossBodyTemplate}
           />
           <Column
             field="final_balance"
-            header="FINAL BALANCE"
+            header="Final Balance"
             body={finalBalanceBodyTemplate}
           />
         </Table>
