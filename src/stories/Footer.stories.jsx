@@ -1,7 +1,7 @@
 import React from "react";
 import { CardFooter } from "../components/Card";
 import { Div } from "../components/Div";
-import { Menubar } from "../components/Header";
+import { Menubar } from "../components/Header/style";
 import { P } from "../components/Paragraph";
 import { ALL_RIGHTS_RESERVED, COPYRIGHT_TEXT } from "../utils/Constants";
 
