@@ -1,5 +1,5 @@
 import React from "react";
-import { Menubar } from "../components/Header";
+import { Menubar } from "../components/Header/style";
 import {
   ButtonPrimary,
   ButtonSecondary,
@@ -10,8 +10,8 @@ import { P } from "../components/Paragraph";
 import { Div } from "../components/Div";
 import { Span } from "../components/Span";
 import { Image } from "../components/Image";
-import { userCircle, wallet } from "../components/IconFonts";
-import { Icon } from "../components/Icon";
+import { wallet } from "../components/IconFonts";
+import Icon from "../components/Icon";
 
 export default {
   title: "Component/Header",
@@ -38,7 +38,7 @@ const HeaderStories = () => {
 
   const itemsAfter = [];
 
-  const start = <Image src={FullLogo} height="40"/>;
+  const start = <Image src={FullLogo} height="40" />;
 
   const endBefore = (
     <Div>
@@ -49,18 +49,16 @@ const HeaderStories = () => {
 
   const endAfter = (
     <Div>
-      <ButtonTransparent label="100.00 INR" mr={3} p={3} />
       <ButtonTransparent
-        label={<Icon name={wallet} size="2x" />}
+        label={
+          <Span>
+            <Icon name={wallet} /> <Span color={"title"}>10000 INR</Span>
+          </Span>
+        }
         mr={3}
-        p={2}
+        p={[2, 3]}
       />
-      <Div display={"inline-block"}>
-        <Icon name={userCircle} size="3x" />
-        <Span display={"inline-block"} ml={2} color={"title"}>
-          User Name
-        </Span>
-      </Div>
+      <ButtonSecondary label="Log Out" p={[2, 3]} />
     </Div>
   );
 
