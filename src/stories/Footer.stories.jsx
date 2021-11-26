@@ -12,7 +12,7 @@ export default {
 const FooterStories = () => {
   const items = [
     {
-      label: "Contact US",
+      label: "Contact Us",
     },
     {
       label: "Terms Of Use",

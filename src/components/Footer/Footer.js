@@ -7,7 +7,7 @@ import { ALL_RIGHTS_RESERVED, COPYRIGHT_TEXT } from "../../utils/Constants";
 const Footer = () => {
   const items = [
     {
-      label: "Contact US",
+      label: "Contact Us",
     },
     {
       label: "Terms Of Use",

@@ -12,9 +12,9 @@ export default {
 
 const content = [
   { title: "", content: "Apple(AAPL)" },
-  { title: "Bought At", content: "150.00 INR" },
+  { title: "Bought At", content: "1500.00 INR" },
   { title: "Units", content: "10.0" },
-  { title: "Total", content: "1500.00 INR" },
+  { title: "Total", content: "15000.00 INR" },
 ];
 
 let accordionData = [];
