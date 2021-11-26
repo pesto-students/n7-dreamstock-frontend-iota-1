@@ -1,0 +1,312 @@
+@import url(https://code.highcharts.com/css/highcharts.css);
+html,
+body,
+div,
+span,
+object,
+iframe,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+blockquote,
+pre,
+abbr,
+address,
+cite,
+code,
+del,
+dfn,
+em,
+img,
+ins,
+kbd,
+q,
+samp,
+small,
+strong,
+sub,
+sup,
+var,
+b,
+i,
+dl,
+dt,
+dd,
+ol,
+ul,
+li,
+fieldset,
+form,
+label,
+legend,
+table,
+caption,
+tbody,
+tfoot,
+thead,
+tr,
+th,
+td,
+article,
+aside,
+canvas,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+menu,
+nav,
+section,
+summary,
+time,
+mark,
+audio,
+video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  outline: 0;
+  font-size: var(--fs-base);
+  vertical-align: baseline;
+  background: transparent;
+}
+
+body {
+  line-height: 1.5;
+}
+
+body::-webkit-scrollbar {
+  width: 8px;
+}
+body::-webkit-scrollbar-track {
+  background-color: #202442;
+}
+body::-webkit-scrollbar-thumb {
+  background-color: #343a6a;
+  border-radius: 5px;
+}
+
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+menu,
+nav,
+section {
+  display: block;
+}
+
+nav ul {
+  list-style: none;
+}
+
+blockquote,
+q {
+  quotes: none;
+}
+
+blockquote:before,
+blockquote:after,
+q:before,
+q:after {
+  content: "";
+  content: none;
+}
+
+a {
+  margin: 0;
+  padding: 0;
+  font-size: 100%;
+  vertical-align: baseline;
+  background: transparent;
+}
+
+ins {
+  background-color: #ff9;
+  color: var(--title-color);
+  text-decoration: none;
+}
+
+mark {
+  background-color: var(--hover-color);
+  color: var(--title-color);
+  font-style: italic;
+  font-weight: bold;
+}
+
+del {
+  text-decoration: line-through;
+}
+
+abbr[title],
+dfn[title] {
+  border-bottom: 1px dotted;
+  cursor: help;
+}
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+hr {
+  display: block;
+  height: 1px;
+  border: 0;
+  border-top: 1px solid var(--card-bg);
+  margin: 1em 0;
+  padding: 0;
+}
+
+input,
+select {
+  vertical-align: middle;
+}
+
+:root {
+  /* Background Colours */
+  --primary-bg: #25294a;
+  --secondary-bg: #181e4e;
+  --nav-bg: #2d325a;
+  --card-bg: #3d447a;
+  --sidebar-bg: #202442;
+
+  /* Font & Other Colours */
+  --title-color: #ffffff;
+  --para-color: #fafaff;
+  --nav-color: #d7d8ff;
+  --hover-color: #f5317f;
+  --hover-secondary-color: #ff7c6e;
+  --user-title: #dae8ff;
+  --user-text: #a8b1d1;
+  --secondary-color: #ffc600;
+  --green-color: #198754;
+  --red-color: #dc3545;
+  --link-color: #0dcaf0;
+  --outline-color: #6342ff;
+  --gradient-color-primary: #242849;
+  --gradient-color-secondary: #202442;
+
+  /* Font Sizes */
+  --fs-base: 16px;
+  --fs-giga: 80px;
+  --fs-mega: 70px;
+  --fs-kilo: 60px;
+  --fs-h1: 40px;
+  --fs-h2: 35px;
+  --fs-h3: 26px;
+  --fs-h4: 20px;
+  --fs-h5: 18px;
+  --fs-h6: 14px;
+  --fs-max: 42px;
+  --fs-milli: 12px;
+  --fs-micro: 10px;
+  --fs-nano: 8px;
+
+  /* Font Weights */
+  --hairline-weight: 100;
+  --thin-weight: 200;
+  --light-weight: 300;
+  --normal-weight: 400;
+  --medium-weight: 500;
+  --semibold-weight: 600;
+  --bold-weight: 700;
+  --xbold-weight: 800;
+  --black-weight: 900;
+}
+
+.highcharts-title {
+  color: var(--title-color) !important;
+  fill: var(--title-color) !important;
+}
+.highcharts-background {
+  fill: var(--secondary-bg);
+}
+
+.p-carousel .p-carousel-content .p-carousel-prev:enabled:hover,
+.p-carousel .p-carousel-content .p-carousel-next:enabled:hover {
+  background: var(--hover-color);
+  color: var(--title-color) !important;
+}
+
+.p-carousel .p-carousel-indicators .p-carousel-indicator.p-highlight button {
+  background: var(--hover-color);
+}
+
+.highcharts-range-selector-group,
+.highcharts-navigator,
+.highcharts-scrollbar,
+.highcharts-credits {
+  display: none;
+}
+
+.highcharts-container {
+  margin-bottom: -30px;
+}
+
+.highcharts-axis-labels text {
+  fill: var(--nav-color) !important;
+}
+
+.p-tooltip .p-tooltip-text {
+  background-color: var(--secondary-bg);
+}
+
+.p-tooltip.p-tooltip-right .p-tooltip-arrow {
+  border-right-color: var(--secondary-bg) !important;
+}
+
+.App {
+  background-color: var(--primary-bg);
+  color: var(--title-color);
+  min-height: 100vh;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica,
+    Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  font-size: 1rem;
+  font-size: var(--fs-base);
+  background-color: white;
+  background-image: url(../../static/media/Banner.e87548b9.png);
+  background-size: auto 100%;
+  background-repeat: no-repeat;
+  background-position: left top;
+}
+
+.p-autocomplete-panel {
+  background-color: var(--primary-bg);
+  color: var(--title-color);
+}
+.p-autocomplete-panel::-webkit-scrollbar {
+  width: 8px;
+}
+.p-autocomplete-panel::-webkit-scrollbar-track {
+  background-color: #202442;
+}
+.p-autocomplete-panel::-webkit-scrollbar-thumb {
+  background-color: #343a6a;
+  border-radius: 5px;
+}
+.p-autocomplete-panel .p-autocomplete-items .p-autocomplete-item {
+  padding: 13px 10px 13px 10px;
+}
+
+.product-item-content {
+  margin: 0 10px;
+}
+
+/* Sidebar*/
+.p-sidebar .p-sidebar-header {
+  padding: 20px 10px 0px 10px;
+}
+
+
+/*# sourceMappingURL=main.6a365b23.chunk.css.map*/
